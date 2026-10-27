@@ -8,7 +8,7 @@ playing and tarot cards.
 > (`docs/LayoutDesigner_ARCHITECTURE.md`). See `README_PROTOTYPE.md` for the file map and
 > what is built vs deferred.
 
-![Composed stamp](preview_stamp.png)
+![Composed stamp](screenshots/preview_stamp.png)
 
 ## Design in one breath
 

@@ -16,8 +16,8 @@ WYSIWYG), exactement comme prévu.
 | Changer de **format** → tout le document se recompose | ✅ |
 | Geler un `.lydoc` en `.lypart` et le replacer transformé | ⏳ étape 8 |
 
-Aperçus : `preview_stamp.png` (timbre composé, 6 couches), `preview_symmetry.png`
-(symétrie quadrant active), `preview_banknote.png` (même document recomposé en billet).
+Aperçus : `screenshots/preview_stamp.png` (timbre composé, 6 couches), `screenshots/preview_symmetry.png`
+(symétrie quadrant active), `screenshots/preview_banknote.png` (même document recomposé en billet).
 
 ## Lancer
 
