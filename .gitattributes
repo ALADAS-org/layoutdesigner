@@ -1,0 +1,32 @@
+# ===== Layout Designer — .gitattributes =====
+# Pin end-of-line per type so Windows core.autocrlf cannot rewrite checked-out
+# files and create phantom CRLF. Committed bytes stay LF; only checkout EOL is set.
+
+# Default: text, normalized to LF in the repo and at checkout on every platform.
+* text=auto eol=lf
+
+# Windows batch scripts must be CRLF to run reliably under cmd.exe.
+*.bat text eol=crlf
+
+# POSIX shell scripts stay LF.
+*.sh  text eol=lf
+
+# Layout Designer file formats (JSON-based) and the legacy pattern DSL — LF, so the
+# raw CDN and the validator see identical bytes on every platform.
+*.pattern text eol=lf
+*.lydoc   text eol=lf
+*.lygrid  text eol=lf
+*.lypart  text eol=lf
+
+# Binary assets — never touched by EOL normalization.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.pdf  binary
+*.ico  binary
+*.ttf  binary
+*.otf  binary
+*.woff  binary
+*.woff2 binary

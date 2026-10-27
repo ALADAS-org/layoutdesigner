@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (615 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (616 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **assets/**
   - **legacy/**
@@ -640,6 +640,7 @@
     - undo.js ★
   - **renderer/**
     - app.js
+- .gitattributes
 - .gitignore
 - 0003-Add-LD_Workflow.md-development-workflow-to-the-reboo.patch
 - _00_open_cmd_window.bat
