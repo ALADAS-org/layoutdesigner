@@ -67,6 +67,13 @@ the Silverquote Default.pattern display.
 > When the live engine renders `.lygrid` for real (§15.4), port this same default-outline
 > rule into the `layer-pattern` primitive drawing.
 
+## Cell-for-cell verification
+
+HalfCircles was verified **cell-for-cell** against a Silverquote run (exported value
+grid, 44x26). This surfaced the centre-relative `position` rule; see the three
+rendering rules in `pattern.spec.md`. Full-page references (digits off) are in
+`screenshots/legacy/*_fullpage.png` for Default, NestedSquares, Polygram, HalfCircles.
+
 ## Next step (optional)
 
 Fold this grammar into `schemas/` as the `.lygrid` validator for the real §15.4

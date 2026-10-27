@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (617 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (620 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **assets/**
   - **legacy/**
@@ -615,9 +615,12 @@
     - arcs.png
     - default.png
     - Default_fullpage.png
+    - HalfCircles_fullpage.png
     - iching.png
     - moire.png
+    - NestedSquares_fullpage.png
     - polygram.png
+    - Polygram_fullpage.png
     - quad-square.png
     - quad-triangle.png
     - rectangles.png

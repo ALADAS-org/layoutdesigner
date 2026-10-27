@@ -160,3 +160,22 @@ Script Python/JS complétant le schéma pour les points 5 : résolution des `$re
 ## 8. Points d'extension (lien RFC)
 - **`icon` inline** : ajouter `icon_data` (data-URI/base64) à côté de `icon_url` -> pattern auto-contenu, corrige 6.1. Bon usage de Base64 (binaire).
 - **Forme procédurale** : `type:"script"`, corps **lisible** (tableau de lignes, pas Base64) + **sandbox** (façade restreinte, `contextIsolation`). Concept générique M2 (« réalisation déclarative ou procédurale »), corps concrets en M0.
+
+---
+
+## Rendering rules (fidelity to Silverquote)
+
+Verified cell-for-cell against Silverquote (using an exported value grid). The live
+engine (§15.4 `layer-pattern`) MUST implement these, or renders diverge:
+
+1. **`position: [x, y]` is relative to the cell CENTRE**, not the top-left corner.
+   With `NumberFormat: "absolute"` the offsets are pixels (e.g. `["0","-12.5"]` places
+   a part on the top edge of a 25 px cell); with `"percent"` they are fractions ×
+   `CellSize`. String anchors (`center`, `N`, `NE`, …) are centre-relative too.
+2. **Filled shapes get a default BLACK outline** when the part declares no `drawColor`.
+   An explicit `"drawColor": "none"` suppresses the outline.
+3. **`digit_mark` is an optional VIEW overlay** (Silverquote's `5∣3/6` toolbar toggle),
+   not an always-drawn part — the renderer must be able to hide all digit marks.
+
+Known gap: at non-integer cell sizes, adjacent cell fills can leave thin sub-pixel
+seams (faint grid lines). Snap cell boxes to integer pixels to avoid them.
