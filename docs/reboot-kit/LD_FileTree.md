@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (36 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (37 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **assets/**
   - iching.lygrid.js
@@ -25,6 +25,7 @@
     - LD_ReferenceCorpus.md
     - LD_ReferenceCorpus_Bootstrap.md
     - LD_SmartPrompt.md
+    - LD_Workflow.md
   - LayoutDesigner_ARCHITECTURE.md ★
 - **schemas/**
   - .gitkeep

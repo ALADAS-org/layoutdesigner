@@ -16,6 +16,7 @@
    - `LD_ReferenceCorpus_Bootstrap.md` — invariants (façade-only drawing, mm, Command,
      the three formats `.lydoc`/`.lygrid`/`.lypart`, Electron security).
    - `LD_ReferenceCorpus.md` — the HEAD router (where each contract lives).
+   - `LD_Workflow.md` — the development workflow (setup + per-task loop).
    - `LD_FileTree.md` — the repo path map (★ marks authority files).
    If any is missing, say so in one line and continue.
 

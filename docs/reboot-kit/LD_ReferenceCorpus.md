@@ -74,6 +74,7 @@ from memory.
 | Purpose | Path |
 |---|---|
 | Session loader (fetched by project custom instructions) | `docs/reboot-kit/LD_SmartPrompt.md` |
+| Development workflow (setup + per-task loop, human-facing) | `docs/reboot-kit/LD_Workflow.md` |
 | Invariants | `docs/reboot-kit/LD_ReferenceCorpus_Bootstrap.md` |
 | This router | `docs/reboot-kit/LD_ReferenceCorpus.md` |
 | Repo path map (generated) | `docs/reboot-kit/LD_FileTree.md` |

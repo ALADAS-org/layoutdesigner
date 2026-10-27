@@ -66,12 +66,13 @@ custom-instructions field instead.)*
 **B — Resident in Project Knowledge (loaded once, always in context):**
 1. `LD_ReferenceCorpus_Bootstrap.md` — invariants (this file).
 2. `LD_ReferenceCorpus.md` — the HEAD router.
-3. `docs/reboot-kit/LD_FileTree.md` — the repo path map.
+3. `LD_Workflow.md` — the development workflow (setup + per-task loop).
+4. `docs/reboot-kit/LD_FileTree.md` — the repo path map.
 
-> Item 3 **drifts** as the repo evolves. That is the **project owner's** occasional
+> Item 4 **drifts** as the repo evolves. That is the **project owner's** occasional
 > maintenance — regenerate it with `cli_tools/ld_generate_filetree.py` and reload it after
 > structural changes — never the user's per-conversation burden. Keep the resident set
-> small — **three files, not the whole repo.**
+> small — **four files, not the whole repo.**
 
 **Read from HEAD on demand (never loaded into the project):**
 - The **source code** (core, plugins, renderer) and the **architecture spec**
