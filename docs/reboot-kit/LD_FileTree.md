@@ -1,0 +1,57 @@
+# Layout Designer — Repository File Tree
+
+*Generated from `git ls-files` (36 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+
+- **assets/**
+  - iching.lygrid.js
+- **builtin-plugins/**
+  - **formats-print/**
+    - index.js
+  - **layer-fill/**
+    - index.js
+  - **layer-guilloche/**
+    - index.js
+  - **layer-pattern/**
+    - index.js
+  - **layer-perforation/**
+    - index.js
+  - **layer-text/**
+    - index.js
+- **cli_tools/**
+  - ld_generate_filetree.py
+- **docs/**
+  - **reboot-kit/**
+    - LD_FileTree.md
+    - LD_ReferenceCorpus.md
+    - LD_ReferenceCorpus_Bootstrap.md
+    - LD_SmartPrompt.md
+  - LayoutDesigner_ARCHITECTURE.md ★
+- **schemas/**
+  - .gitkeep
+- **src/**
+  - **core/**
+    - **geometry/**
+      - grid_layout.js
+      - guilloche.js
+    - **render/**
+      - compositor.js ★
+      - facade.js ★
+    - commands.js ★
+    - document.js ★
+    - i18n.js
+    - registry.js ★
+    - session.js
+    - undo.js ★
+  - **renderer/**
+    - app.js
+- .gitignore
+- demo.html
+- LICENSE
+- main.js
+- package.json
+- preload.cjs
+- preview_banknote.png
+- preview_stamp.png
+- preview_symmetry.png
+- README.md
+- README_PROTOTYPE.md
