@@ -5,6 +5,8 @@
 // et des presets de document (§4.2). Reprend `formats.js` (source de vérité unique).
 "use strict";
 
+import { makePostmark, makeStampCutout, makeTornStrip } from "../../assets/lyparts.js";
+
 export const FORMATS = [
   { id: "postcard_a6", label: "Carte postale A6", category: "postcard", w: 148, h: 105, bleed: 3, safe: 4, corner: 0, orient: "landscape" },
   { id: "postcard_us", label: "Carte postale US 4×6", category: "postcard", w: 152.4, h: 101.6, bleed: 3, safe: 4, corner: 0, orient: "landscape" },
@@ -56,6 +58,26 @@ export function register(reg) {
     ],
   });
 
-  reg.registerLocale("fr", { "preset.stamp": "Timbre commémoratif", "preset.banknote": "Billet fantaisie" });
-  reg.registerLocale("en", { "preset.stamp": "Commemorative stamp", "preset.banknote": "Fantasy banknote" });
+  // Preset « ATC » : les 4 couches nommées par défaut, de bas en haut :
+  //   background (fond) -> guilloche -> pattern -> ATC (composants .lypart posés).
+  reg.registerPreset("atc", {
+    label: "ATC (carte d'artiste)",
+    formatId: "atc",
+    build: (api) => [
+      api.fill({ name: "background", color: "#f0ead8", color2: "#e3d7bd" }),
+      api.guilloche({ name: "guilloche", style: "combo", color: "#2b6b5e", color2: "#8a5a2b", lineWidth: 0.07,
+        gradient: { from: "#2b6b5e", to: "#8a5a2b" },
+        field: { sub: "net", spacingMm: 2.2, ampMm: 2.6, cycles: 7, crossed: true }, combo: { fieldOpacity: 0.35 },
+        rosette: { radiusMm: 11, placement: "center", layers: [ { k: 15.4, dFrac: 0.38, turns: 30, rScale: 1 }, { k: 9.2, dFrac: 0.6, turns: 24, rScale: 0.45 } ] } }),
+      api.pattern({ name: "pattern", color: "#6b3f2b", opacity: 0.22 }),
+      api.component({ name: "ATC", items: [
+        { svg: makeTornStrip({ color: "#cdb894" }).svg, x: 6, y: 60, w: 46, h: 9, rotation: -3, opacity: 0.95 },
+        { svg: makeStampCutout({ value: "1.20" }).svg, x: 33, y: 9, w: 23, h: 29, rotation: 5 },
+        { svg: makePostmark({ date: "27 X 26" }).svg, x: 26, y: 26, w: 30, h: 16, rotation: -14, opacity: 0.9 },
+      ] }),
+    ],
+  });
+
+  reg.registerLocale("fr", { "preset.stamp": "Timbre commémoratif", "preset.banknote": "Billet fantaisie", "preset.atc": "ATC (carte d'artiste)" });
+  reg.registerLocale("en", { "preset.stamp": "Commemorative stamp", "preset.banknote": "Fantasy banknote", "preset.atc": "ATC (artist card)" });
 }

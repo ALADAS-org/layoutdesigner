@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (620 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (622 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **assets/**
   - **legacy/**
@@ -582,8 +582,11 @@
       - OpenGameArt.org.url
       - ProjectUtumno_full.png
   - iching.lygrid.js
+  - lyparts.js
 - **builtin-plugins/**
   - **formats-print/**
+    - index.js
+  - **layer-component/**
     - index.js
   - **layer-fill/**
     - index.js

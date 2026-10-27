@@ -69,12 +69,18 @@ function drawField(gfx, p, region, alpha) {
   const lw = p.lineWidth || 0.1;
   const W = region.w, H = region.h;
 
+  const grad = p.gradient || null;   // { from, to } -> dégradé de teinte sur la famille
+  const nH = Math.ceil(H / spacing) + 2, nV = Math.ceil(W / spacing) + 2;
+
   gfx.save();
   gfx.setAlpha(alpha);
+  gfx.noFill();
   // famille horizontale (débord d'une ligne de chaque côté -> aucun trou aux bords)
-  gfx.noFill().setStroke(p.color || "#1d5e54", lw);
-  for (let i = -1; i <= H / spacing + 1; i++) {
+  let li = 0;
+  for (let i = -1; i <= H / spacing + 1; i++, li++) {
     const base = i * spacing, ph = i * 0.6;
+    const col = grad ? lerpColor(grad.from, grad.to, li / nH) : (p.color || "#1d5e54");
+    gfx.setStroke(col, lw);
     const pts = [];
     for (let x = -2; x <= W + 2; x += 1.1) pts.push({ x, y: base + amp * Math.sin((cyc * TAU * x) / W + ph) });
     gfx.polyline(pts);
@@ -82,9 +88,11 @@ function drawField(gfx, p, region, alpha) {
   // famille verticale croisée -> filet / moiré
   if (f.crossed) {
     gfx.setAlpha(alpha * 0.8);
-    gfx.setStroke(p.color2 || "#1d3e6e", lw);
-    for (let i = -1; i <= W / spacing + 1; i++) {
+    li = 0;
+    for (let i = -1; i <= W / spacing + 1; i++, li++) {
       const base = i * spacing, ph = i * 0.6;
+      const col = grad ? lerpColor(grad.to, grad.from, li / nV) : (p.color2 || "#1d3e6e");
+      gfx.setStroke(col, lw);
       const pts = [];
       for (let y = -2; y <= H + 2; y += 1.1) pts.push({ x: base + amp * Math.sin((cyc * TAU * y) / H + ph), y });
       gfx.polyline(pts);
@@ -110,11 +118,22 @@ function drawRosette(gfx, p, region) {
   const [cx, cy] = place;
   const lw = p.lineWidth || 0.1;
   const layers = ro.layers || [{ k: 15.4, dFrac: 0.38, turns: 40, rScale: 1 }];
+  const grad = p.gradient || null;   // dégradé du centre (to) vers l'extérieur (from)
   gfx.noFill();
   layers.forEach((L, i) => {
     const R = R0 * (L.rScale != null ? L.rScale : 1);
     const d = (L.dFrac != null ? L.dFrac : 0.4) * R;
-    gfx.setStroke(i % 2 ? (p.color2 || "#7a1f2b") : (p.color || "#1d5e54"), lw);
+    const t = layers.length > 1 ? i / (layers.length - 1) : 0;
+    const col = grad ? lerpColor(grad.from, grad.to, t) : (i % 2 ? (p.color2 || "#7a1f2b") : (p.color || "#1d5e54"));
+    gfx.setStroke(col, lw);
     gfx.polyline(spiro(cx, cy, R, L.k != null ? L.k : 15.4, d, L.turns || 40));
   });
+}
+
+// ---- interpolation de couleur (hex) -------------------------------------------------
+function hex(c) { const m = String(c).replace("#", ""); return [parseInt(m.slice(0, 2), 16), parseInt(m.slice(2, 4), 16), parseInt(m.slice(4, 6), 16)]; }
+function lerpColor(a, b, t) {
+  const pa = hex(a), pb = hex(b);
+  const r = Math.round(pa[0] + (pb[0] - pa[0]) * t), g = Math.round(pa[1] + (pb[1] - pa[1]) * t), bl = Math.round(pa[2] + (pb[2] - pa[2]) * t);
+  return `rgb(${r},${g},${bl})`;
 }

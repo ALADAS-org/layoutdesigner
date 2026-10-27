@@ -26,11 +26,13 @@ import * as layerGuilloche from "../../builtin-plugins/layer-guilloche/index.js"
 import * as layerPattern from "../../builtin-plugins/layer-pattern/index.js";
 import * as layerText from "../../builtin-plugins/layer-text/index.js";
 import * as layerPerforation from "../../builtin-plugins/layer-perforation/index.js";
+import * as layerComponent from "../../builtin-plugins/layer-component/index.js";
+import { preloadComponents } from "../../builtin-plugins/layer-component/index.js";
 import { makeIChing } from "../../assets/iching.lygrid.js";
 
 // ---- 1. Registry + plugins ----------------------------------------------------------
 const reg = new Registry();
-reg.install([formatsPrint, layerFill, layerGuilloche, layerPattern, layerText, layerPerforation]);
+reg.install([formatsPrint, layerFill, layerGuilloche, layerPattern, layerText, layerPerforation, layerComponent]);
 
 // locales : base + celles des plugins
 const locales = { fr: { ...BASE_LOCALES.fr, ...(reg.locales.fr || {}) }, en: { ...BASE_LOCALES.en, ...(reg.locales.en || {}) } };
@@ -47,6 +49,7 @@ function instantiatePreset(presetId) {
     pattern: (o) => ({ type: "pattern", name: o.name, opacity: o.opacity, props: { drawColor: o.color, cellSizeMm: 6, grid, forceSymmetry: null } }),
     text: (o) => ({ type: "text", name: o.name, props: { text: o.text, sizeMm: o.sizeMm, color: o.color, anchor: o.anchor, weight: o.weight || "normal" } }),
     perforation: (o) => ({ type: "perforation", name: o.name, props: {} }),
+    component: (o) => ({ type: "component", name: o.name, props: { items: o.items || [] } }),
   };
   const layers = preset.build(api).map((s) => {
     const def = reg.layerType(s.type);
@@ -56,7 +59,9 @@ function instantiatePreset(presetId) {
   return createDocument({ title: preset.label, format, layers });
 }
 
-const session = new Session(instantiatePreset("stamp"));
+const session = new Session(instantiatePreset("atc"));
+// pré-décoder les SVG des composants .lypart puis redessiner
+preloadComponents(session.doc, () => renderAll());
 
 // ---- 3. Rendu --------------------------------------------------------------------
 let DPI = 96;        // écran de travail
@@ -73,6 +78,8 @@ function fitZoom(format) {
 }
 
 function render() {
+  const cv = canvas();
+  if (!cv) return; // DOM pas prêt (ex. preload image avant DOMContentLoaded)
   const doc = session.doc;
   const format = doc.format;
   ZOOM = fitZoom(format);
@@ -80,7 +87,6 @@ function render() {
   const bw = format.w + 2 * format.bleed;
   const bh = format.h + 2 * format.bleed;
 
-  const cv = canvas();
   cv.width = Math.ceil(bw * k);
   cv.height = Math.ceil(bh * k);
   const ctx = cv.getContext("2d");

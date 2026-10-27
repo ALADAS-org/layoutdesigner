@@ -178,6 +178,25 @@ export class CanvasTarget {
     return this;
   }
 
+  /**
+   * Pose une image (ex. SVG rasterisé d'un .lypart) dans une box {x,y,w,h} en mm.
+   * w/h indépendants -> déformation ratio H/L ; rotation (deg) autour du centre de la
+   * box ; flipX miroir horizontal. L'image doit être déjà décodée (HTMLImageElement /
+   * ImageBitmap / canvas). Backend SVG : émettrait un <image>/<use> au même contrat.
+   */
+  image(img, x, y, w, h, { rotation = 0, flipX = false, opacity = 1 } = {}) {
+    if (!img) return this;
+    const c = this.ctx;
+    c.save();
+    if (opacity !== 1) c.globalAlpha *= opacity;
+    c.translate(x + w / 2, y + h / 2);
+    if (rotation) c.rotate((rotation * Math.PI) / 180);
+    if (flipX) c.scale(-1, 1);
+    try { c.imageSmoothingEnabled = true; c.drawImage(img, -w / 2, -h / 2, w, h); } catch (e) { /* image pas prête */ }
+    c.restore();
+    return this;
+  }
+
   // -- clip ---------------------------------------------------------------------------
   clipRect(x, y, w, h, r = 0) {
     const c = this.ctx;
