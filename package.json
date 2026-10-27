@@ -1,0 +1,16 @@
+{
+  "name": "layout-designer",
+  "version": "0.1.0-proto",
+  "description": "Layout Designer — premier prototype (noyau + façade gfx + plugins). ElectronJS + modules ES.",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "check": "node --check src/renderer/app.js"
+  },
+  "author": "Echopraxium (Michel) with Claude AI",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": ">=30.0.0"
+  }
+}
