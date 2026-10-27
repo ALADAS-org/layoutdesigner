@@ -26,7 +26,7 @@ export function register(reg) {
   reg.registerLayerType({
     type: "pattern",
     label: "Pattern (.lygrid)",
-    createDefault: () => ({ grid: null, cellSizeMm: 6, showDigits: false, seed: 1, valueGrid: null }),
+    createDefault: () => ({ grid: null, cellSizeMm: 6, showDigits: false, seed: 1, valueGrid: null, paintBackground: false, showGrid: false, cellBleedPx: 0.75 }),
     render: (gfx, layer, doc, env) => {
       const { region } = env;
       const grid = layer.props.grid || (doc.assets[layer.props.gridRef] && doc.assets[layer.props.gridRef].data);
@@ -54,6 +54,14 @@ export function renderPattern(gfx, pat, region, opts = {}) {
   const rng = makeRng(opts.seed || 1);
   const vg = opts.valueGrid || null;
 
+  // Débord de cellule (anti-couture) : les cellules sont JOINTIVES (centre à centre =
+  // CellSize), mais à taille de cellule non entière en px l'anti-aliasing laisse un
+  // cheveu entre remplissages voisins. On agrandit chaque cellule d'environ `bleedPx`
+  // px pour que les voisines se recouvrent d'un poil. Désactivable (cellBleedPx: 0).
+  const kPxPerMm = gfx.k || 4;
+  const bleedPx = opts.cellBleedPx != null ? opts.cellBleedPx : 0.75;
+  const sb = s * (1 + bleedPx / Math.max(cellMm * kPxPerMm, 1));
+
   gfx.save();
   gfx.clipRect(0, 0, region.w, region.h);
 
@@ -78,7 +86,7 @@ export function renderPattern(gfx, pat, region, opts = {}) {
       const sym = opts.forceSymmetry != null ? opts.forceSymmetry : (shape.symmetry || "none");
       gfx.save();
       gfx.translate(ctr.x, ctr.y);
-      gfx.scale(s, s);
+      gfx.scale(sb, sb);
       if (sym === "quadrant") {
         for (const [mx, my] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]) {
           gfx.save(); gfx.scale(mx, my); drawShape(gfx, shape, CellSize, symbols, nf, cellOpts); gfx.restore();
@@ -88,6 +96,15 @@ export function renderPattern(gfx, pat, region, opts = {}) {
       }
       gfx.restore();
     }
+  }
+
+  // Overlay de grille optionnel (GridColor), tracé PAR-DESSUS les cellules jointives
+  // (cf. Silverquote : la grille cyan est un calque, pas un espace entre cellules).
+  if (opts.showGrid) {
+    const col = pat.GridColor || "#00e5ff";
+    gfx.noFill().setStroke(col, (opts.gridWidthMm != null ? opts.gridWidthMm : 0.12));
+    for (let c = 0; c <= columns; c++) { const x = c * cellMm; gfx.line(x, 0, x, rows * cellMm); }
+    for (let r = 0; r <= rows; r++) { const y = r * cellMm; gfx.line(0, y, columns * cellMm, y); }
   }
   gfx.restore();
 }

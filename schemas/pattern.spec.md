@@ -179,3 +179,9 @@ engine (§15.4 `layer-pattern`) MUST implement these, or renders diverge:
 
 Known gap: at non-integer cell sizes, adjacent cell fills can leave thin sub-pixel
 seams (faint grid lines). Snap cell boxes to integer pixels to avoid them.
+
+**Cells are JOINTIVE (edge-to-edge)** — cell centres are spaced by `CellSize`, with no
+gap between them. An optional **grid overlay** (`GridColor`, e.g. `cyan`) is drawn ON TOP
+of the filled cells, never as a space between them. At non-integer on-screen cell sizes,
+adjacent fills can leave sub-pixel anti-alias seams; the engine overdraws each cell by a
+fraction of a pixel (`cellBleedPx`, default 0.75) so neighbours overlap and seams vanish.
