@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (616 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (617 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **assets/**
   - **legacy/**
@@ -59,6 +59,7 @@
       - Nuts.pattern
       - PI.pattern
       - Polygram.pattern
+      - Screenshot_Default.png
     - **tilesets/**
       - **496_RPG_icons/**
         - A_Armor04.png
@@ -613,6 +614,7 @@
   - **legacy/**
     - arcs.png
     - default.png
+    - Default_fullpage.png
     - iching.png
     - moire.png
     - polygram.png
@@ -642,7 +644,6 @@
     - app.js
 - .gitattributes
 - .gitignore
-- 0003-Add-LD_Workflow.md-development-workflow-to-the-reboo.patch
 - _00_open_cmd_window.bat
 - _run_LayoutDesigner_W.bat
 - _run_LayoutDesigner_X.sh

@@ -55,6 +55,18 @@ Swords, Icons, Icons 32x32) reference external **tilesets** (`assets/legacy/tile
 `assets/legacy/icons/`) via an `icon` primitive — rendering them needs image loading,
 out of scope for this pass. They still **validate** under the grammar.
 
+
+## Rendering fidelity — default outline
+
+Filled shapes are stroked **black by default** even when the `.pattern` part declares no
+`drawColor` (Silverquote behaviour; `"none"` still suppresses the outline). Without this,
+circles/diamonds render as flat discs with no contour. The previews here include it.
+`Default_fullpage.png` is the full-page view (44×25 grid, `#b9b9b9` background) matching
+the Silverquote Default.pattern display.
+
+> When the live engine renders `.lygrid` for real (§15.4), port this same default-outline
+> rule into the `layer-pattern` primitive drawing.
+
 ## Next step (optional)
 
 Fold this grammar into `schemas/` as the `.lygrid` validator for the real §15.4

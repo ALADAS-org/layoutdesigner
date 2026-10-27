@@ -30,3 +30,6 @@ __pycache__/
 # --- OS / éditeur ---
 .DS_Store
 Thumbs.db
+
+# Patch files delivered into the repo folder (never commit them)
+*.patch
