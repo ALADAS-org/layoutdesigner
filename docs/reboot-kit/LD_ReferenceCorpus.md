@@ -75,6 +75,7 @@ from memory.
 |---|---|
 | Session loader (fetched by project custom instructions) | `docs/reboot-kit/LD_SmartPrompt.md` |
 | Development workflow (setup + per-task loop, human-facing) | `docs/reboot-kit/LD_Workflow.md` |
+| Current-state handover (read on resume) | `docs/reboot-kit/LD_HANDOVER.md` |
 | Invariants | `docs/reboot-kit/LD_ReferenceCorpus_Bootstrap.md` |
 | This router | `docs/reboot-kit/LD_ReferenceCorpus.md` |
 | Repo path map (generated) | `docs/reboot-kit/LD_FileTree.md` |
@@ -91,11 +92,13 @@ from memory.
 | 3 | plugin-host + registry + LayerType/Primitive contracts ; load builtin-plugins | ✅ done |
 | 4 | `files.js` : `.lydoc`/`.lygrid` open/save + JSON Schemas + validation | ⏳ deferred |
 | 5 | i18n (fr/en) ; UI shell : toolbar, tabs, canvas, Layers panel | ✅ done (tabs = v1) |
-| 6 | Plugins : formats-print, layer-fill, layer-pattern, layer-guilloche, layer-text, (layer-image) | ✅ done (image = v1) |
-| 7 | `SvgTarget` + export-svg → `.lypart` ; `component` layer | ⏳ deferred |
+| 6 | Plugins : formats-print, layer-fill, layer-pattern (faithful .pattern engine), layer-guilloche (currency grammar), layer-text, layer-perforation, layer-component (.lypart) | ✅ done |
+| 7a | `component` layer (place .lypart: pos/scale/aspect/rotation) | ✅ done |
+| 7b | `SvgTarget` + export-svg → `.lypart` (real frozen components) | ⏳ deferred |
 | 8/9 | WYSIWYG pattern editor (§11) | ⏳ deferred (sub-project) |
 
-**Deferred / not-yet-built (do not assume these exist):** `files.js`, `SvgTarget`,
+**Deferred / not-yet-built (do not assume these exist):** `files.js` (open/save), `SvgTarget` + `.lypart` export,
+quad/hex cell rendering in layer-pattern, the WYSIWYG editor; see `LD_HANDOVER.md` for the full roadmap. Earlier: `SvgTarget`,
 `.lypart` export, the WYSIWYG editor, the `postmark` / `ink-stamp` layer types (§4.1),
 torn-edge masks and named groups (§4) — the compositor already carries the `mask` hook.
 
