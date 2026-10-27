@@ -603,7 +603,7 @@
   - pattern_validate.cjs
 - **docs/**
   - **Handovers/**
-    - 2026_10_27_22g19_LD_Handover.md
+    - 2026_10_27_22h-19_LD_Handover.md
   - **reboot-kit/**
     - LD_FileTree.md
     - LD_ReferenceCorpus.md
