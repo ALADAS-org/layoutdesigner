@@ -13,7 +13,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const ROOT = path.dirname(fileURLToPath(import.meta.url));
+const HERE = path.dirname(fileURLToPath(import.meta.url));      // src/main/
+const ROOT = path.resolve(HERE, "..", "..");                     // racine du repo (sert demo.html)
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml" };
 
 function startServer() {
@@ -41,7 +42,7 @@ async function createWindow() {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      preload: path.join(ROOT, "preload.cjs"),
+      preload: path.join(HERE, "preload.cjs"),
     },
   });
   win.loadURL(`http://127.0.0.1:${port}/demo.html`);

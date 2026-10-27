@@ -42,7 +42,7 @@ src/core/render/     gfx façade (facade.js) + compositor
 src/core/geometry/   grid layout, guilloche math
 builtin-plugins/     formats-print, layer-{fill,pattern,guilloche,text,perforation}
 src/renderer/app.js  app wiring + DOM UI      · demo.html  browser host
-main.js / preload.cjs  Electron shell
+src/main/main.js, preload.cjs  Electron shell
 assets/              iching.lygrid.js (mini-language reference sample)
 docs/                architecture spec + reboot-kit (Claude lazy-loading corpus)
 cli_tools/           ld_generate_filetree.py

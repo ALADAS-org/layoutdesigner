@@ -602,9 +602,10 @@
   - ld_generate_filetree.py
   - pattern_validate.cjs
 - **docs/**
+  - **Handovers/**
+    - 2026_10_27_22g19_LD_Handover.md
   - **reboot-kit/**
     - LD_FileTree.md
-    - LD_HANDOVER.md
     - LD_ReferenceCorpus.md
     - LD_ReferenceCorpus_Bootstrap.md
     - LD_SmartPrompt.md
@@ -647,6 +648,9 @@
     - registry.js ★
     - session.js
     - undo.js ★
+  - **main/**
+    - main.js
+    - preload.cjs
   - **renderer/**
     - app.js
 - .gitattributes
@@ -656,8 +660,6 @@
 - _run_LayoutDesigner_X.sh
 - demo.html
 - LICENSE
-- main.js
 - package.json
-- preload.cjs
 - README.md
 - README_PROTOTYPE.md

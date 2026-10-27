@@ -75,7 +75,7 @@ from memory.
 |---|---|
 | Session loader (fetched by project custom instructions) | `docs/reboot-kit/LD_SmartPrompt.md` |
 | Development workflow (setup + per-task loop, human-facing) | `docs/reboot-kit/LD_Workflow.md` |
-| Current-state handover (read on resume) | `docs/reboot-kit/LD_HANDOVER.md` |
+| Current-state handovers (read the latest on resume) | `docs/Handovers/*_LD_Handover.md` (timestamped) |
 | Invariants | `docs/reboot-kit/LD_ReferenceCorpus_Bootstrap.md` |
 | This router | `docs/reboot-kit/LD_ReferenceCorpus.md` |
 | Repo path map (generated) | `docs/reboot-kit/LD_FileTree.md` |
