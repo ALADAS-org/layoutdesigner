@@ -33,13 +33,29 @@ export function register(reg) {
     build: (api) => [
       api.fill({ name: "fond", color: "#f3ead4", color2: "#e4d3a8" }),
       api.pattern({ name: "frise (I Ching)", color: "#6b3f2b", opacity: 0.5 }),
-      api.guilloche({ name: "guilloché", family: "hypotrochoid", color: "#2b6b5e", lineWidth: 0.1, count: 3 }),
+      api.guilloche({ name: "guilloché", style: "rosette", color: "#2b6b5e", color2: "#1d5e54", lineWidth: 0.06,
+        rosette: { radiusMm: 9, placement: "center", layers: [ { k: 15.4, dFrac: 0.38, turns: 36, rScale: 1 }, { k: 9.2, dFrac: 0.6, turns: 28, rScale: 0.45 } ] } }),
       api.text({ name: "faciale", text: "1.20", sizeMm: 7, color: "#8a1f1f", anchor: "SE", weight: "bold" }),
       api.text({ name: "pays", text: "TSCG·POSTE", sizeMm: 2.6, color: "#333", anchor: "N" }),
       api.perforation({ name: "dentelure" }),
     ],
   });
 
-  reg.registerLocale("fr", { "preset.stamp": "Timbre commémoratif" });
-  reg.registerLocale("en", { "preset.stamp": "Commemorative stamp" });
+  // Preset « billet fantaisie » : fond + guilloché combo (fond pleine surface + rosace)
+  // + faciale + nom. La couche guilloché est la plus basse (juste au-dessus du fond).
+  reg.registerPreset("banknote", {
+    label: "Billet fantaisie",
+    formatId: "banknote_fantasy",
+    build: (api) => [
+      api.fill({ name: "fond", color: "#eef3ee" }),
+      api.guilloche({ name: "guilloché", style: "combo", color: "#2b6b5e", color2: "#7a1f2b", lineWidth: 0.08,
+        field: { sub: "net", spacingMm: 1.8, ampMm: 2.2, cycles: 11, crossed: true }, combo: { fieldOpacity: 0.4 },
+        rosette: { radiusMm: 22, placement: "center", layers: [ { k: 15.4, dFrac: 0.38, turns: 40, rScale: 1 }, { k: 23.3, dFrac: 0.4, turns: 40, rScale: 0.55 }, { k: 9.2, dFrac: 0.6, turns: 30, rScale: 0.28 } ] } }),
+      api.text({ name: "faciale", text: "20", sizeMm: 13, color: "#1d3e6e", anchor: "NE", weight: "bold" }),
+      api.text({ name: "banque", text: "BANQUE TSCG", sizeMm: 3, color: "#333", anchor: "SW" }),
+    ],
+  });
+
+  reg.registerLocale("fr", { "preset.stamp": "Timbre commémoratif", "preset.banknote": "Billet fantaisie" });
+  reg.registerLocale("en", { "preset.stamp": "Commemorative stamp", "preset.banknote": "Fantasy banknote" });
 }

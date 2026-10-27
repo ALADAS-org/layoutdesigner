@@ -43,7 +43,7 @@ function instantiatePreset(presetId) {
   const grid = makeIChing("#6b3f2b");
   const api = {
     fill: (o) => ({ type: "fill", name: o.name, props: { color: o.color, color2: o.color2 || null } }),
-    guilloche: (o) => ({ type: "guilloche", name: o.name, props: { family: o.family, color: o.color, lineWidth: o.lineWidth, count: o.count } }),
+    guilloche: (o) => { const { name, opacity, ...props } = o; return { type: "guilloche", name, opacity, props }; },
     pattern: (o) => ({ type: "pattern", name: o.name, opacity: o.opacity, props: { drawColor: o.color, cellSizeMm: 6, grid, forceSymmetry: null } }),
     text: (o) => ({ type: "text", name: o.name, props: { text: o.text, sizeMm: o.sizeMm, color: o.color, anchor: o.anchor, weight: o.weight || "normal" } }),
     perforation: (o) => ({ type: "perforation", name: o.name, props: {} }),
