@@ -1,0 +1,19 @@
+{
+	"Name"                  : "Text_No_UT",
+	"Family"		        : "text",
+	"Description"		    : "Content Type selected by user (FileDialogBox, UserInput)",
+	"ContentInfo"           : { "textFormat": "fac_simile"},
+	"FontInfo"              : { "family": "sans-serif", "size": 23 },
+    "CellSize"              : "25",
+	"MaxCellValue"          : "*",
+    "CellValueMode"         : "Sequence",
+    "BackgroundColor"       : "#787676",
+	"Shapes"				: { "*":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "letter", "size": 1, 
+												  "fillColor": "#e5e6dd", 
+												  "drawColor": "black", "drawThickness": 2 }									
+											]
+										}
+							  }							
+}

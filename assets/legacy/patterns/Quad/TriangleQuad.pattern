@@ -1,0 +1,37 @@
+{
+	"Name"					: "TriangleQuad",
+	"Description"           : "Demo pattern with circle shapes inside cell quarters",
+	"Tags"                  : "Quad",
+	"Schema"				: "pattern.schema",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "7",
+    "CellValueMode"         : "Random",
+    "BackgroundColor"       : "#1a487d",
+	
+	"Shapes"				: 	{ 	"0":	{ 	"type": "TriangleQuadCell", "size": "7",
+												"colorPairChoices": [ "white+black", "yellow+red", "black+yellow", "green+white" ],
+												"colorPairs": [ "none+none", "none+none", "none+none", "none+none" ]
+											},										 							
+									"1":	{ 	"type": "TriangleQuadCell", "drawThickness": "0",
+												"colorPairs": [ "none+none", "none+none", "none+none", "pink+black" ]
+											},
+									"2":	{ 	"type": "TriangleQuadCell", "drawThickness": "0", 
+												"colorPairs": [ "none+none", "none+none", "cyan+white", "none+none" ]
+											},
+									"3":	{ 	"type": "TriangleQuadCell", "drawThickness": "0",
+												"colorPairs": [ "none+none", "none+none", "red+white", "cyan+lightgrey" ] 
+											},
+									"4":	{ 	"type": "TriangleQuadCell", "drawThickness": "0",
+												"colorPairs": [ "none+none", "red+yellow", "none+none", "none+none" ] 
+											},										
+									"5":	{ 	"type": "TriangleQuadCell", "drawThickness": "0",
+												"colorPairs": [ "none+none", "white+brown", "none+none", "orange+#7bed9a"  ]  
+											},
+									"6":	{ 	"type": "TriangleQuadCell", "drawThickness": "0",
+												"colorPairs": [ "none+none", "green+white", "red+lightgreen", "none+none" ]
+											},
+									"7":	{ 	"type": "TriangleQuadCell", "drawThickness": "0",
+												"colorPairs": [ "none+none", "red+white", "yellow+pink", "black+yellow" ] 
+											}
+								}							
+}

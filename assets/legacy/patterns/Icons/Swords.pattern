@@ -1,0 +1,76 @@
+{
+	"Name"                  : "Swords",
+	"Tags"                  : "Sword, Icon, Pictogram",
+	"Description"           : "Swords icons from 'Henrique Lazarini (7Soul1) OpenGameArt.org",
+	"Reference"             : "https://opengameart.org/content/496-pixel-art-icons-for-medievalfantasy-rpg", 
+    "CellSize"              : "32",
+	"MaxCellValue"          : "6",
+	"GridColor"             : "cyan",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "white",
+	"BaseURL"               : "http://127.0.0.1:3000/img/tilesets/swords/",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["7", "7"], 
+	                                           "drawColor": "red", "drawThickness": 0.3
+											 }		
+							  },
+	  
+	"Shapes"				: { "0":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "icon", 
+												  "icon_url": "S_Sword15.png"
+												},					  
+												"$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "S_Sword16.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "S_Sword17.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "S_Sword18.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "S_Sword19.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"5":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "S_Sword20.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"6":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "S_Sword21.png"												
+												}, 
+												"$DigitMark"
+											]
+										}									
+							  }							
+}

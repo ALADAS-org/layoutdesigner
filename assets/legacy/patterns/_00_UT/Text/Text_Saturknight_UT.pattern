@@ -1,0 +1,18 @@
+{
+	"Name"                  : "Text_Saturknight_UT",
+	"Description"		    : "Lorem Ipsum Generator: https://fr.lipsum.com/",
+	"Family"		        : "text",
+	"ContentInfo"           : { "type": "LocalFile", "source": "lorem_ipsum.txt" },
+	"FontInfo"              : { "family": "Saturknight", "size": 33, "style": "BOLD" },
+    "CellSize"              : "25",
+	"MaxCellValue"          : "*",
+    "CellValueMode"         : "Sequence",
+    "BackgroundColor"       : "#361500",
+	"Shapes"				: { "*":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "letter", "fillColor": "#e5e6dd", 
+												  "drawColor": "black", "drawThickness": 1.75 }									
+											]
+										}
+							  }							
+}

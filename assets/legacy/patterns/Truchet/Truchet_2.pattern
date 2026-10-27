@@ -1,0 +1,198 @@
+{
+	"Name"              : "Truchet_2",
+	"Description"	    : "https://www.youtube.com/watch?v=99Hr8lpWWSg timecode: 9:21",
+	"Reference"		    : "https://christophercarlson.com/portfolio/multi-scale-truchet-patterns/",
+	"Tags"              : "Truchet, Procedural",
+    "CellSize"          : "25",
+	"MaxCellValue"      : "14",
+    "CellValueMode"     : "Random",
+	"NumberFormat"	    : "absolute",
+    "BackgroundColor"   : "black",
+	
+	"Variables"         : { "DigitMark":     { "type": "digit_mark", "drawColor": "black", 
+	                                           "fillColor": "white",
+	                                           "drawThickness": 6, "position": ["3.7", "3.7"] },
+											   
+						    "W2NArc":        { "type": "arc", "size": 25, "capStyle": "round",
+											   "position": ["-12.5", "-12.5"], "rotation": 0,
+											   "startAngle": 0, "endAngle": 90,
+											   "drawColor": "white", "drawThickness": 7.7 },
+							"N2EArc":        { "type": "arc", "size": 25, "capStyle": "round",
+											   "position": ["12.5", "-12.5"], "rotation": 0,
+											   "startAngle": 90, "endAngle": 180,
+											   "drawColor": "white", "drawThickness": 7.7 },
+							"E2SArc":        { "type": "arc", "size": 25, "capStyle": "round",
+											   "position": ["12.5", "12.5"], "rotation": 0,
+											   "startAngle": 180, "endAngle": 270,
+											   "drawColor": "white", "drawThickness": 7.7 },
+							"S2WArc":        { "type": "arc", "size": 25, "capStyle": "round",
+											   "position": ["-12.5", "12.5"], "rotation": 0,
+											   "startAngle": 270, "endAngle": 0,
+											   "drawColor": "white", "drawThickness": 7.7 },
+											   
+							"HorizontalBar": { "type": "cardinal_line", 
+											   "start": "W", "end": "E", "capStyle": "round",
+											   "drawColor": "white", "drawThickness": 7.7 },
+											   
+						    "VerticalBar":   { "type": "cardinal_line", "Z": "1",
+                                               "start": "N", "end": "S", "capStyle": "round",
+											   "drawColor": "white", "drawThickness": 7.7 },
+											   
+						    "TwoDotsNE":     [ { "type": "circle", 
+											     "position": ["12.5",  "0"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" },
+											   { "type": "circle",
+											     "position": ["25",  "12.5"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" }
+											 ],
+					        "TwoDotsSW":     [ { "type": "circle",
+											     "position": ["12.5",  "25"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" },
+											   { "type": "circle",
+											     "position": ["0",  "12.5"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" }
+											 ],
+							"TwoDotsES":     [ { "type": "circle",
+											     "position": ["25",  "12.5"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" },
+								               { "type": "circle",
+											     "position": ["12.5",  "25"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" }
+											 ],
+							"TwoDotsWE":     [ { "type": "circle",
+											     "position": ["0",  "12.5"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" },
+								               { "type": "circle",
+											     "position": ["25",  "12.5"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" }
+											 ],
+										 
+							"TwoDotsWN":     [ { "type": "circle",
+											     "position": ["0",  "12.5"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" },
+								               { "type": "circle",
+											     "position": ["12.5",  "0"], "size": 7.7,
+											     "fillColor": "white", "drawThickness": 0,
+												 "drawColor": "none" }
+											 ],
+											 
+                            "NorthDot":      { "type": "circle",
+											   "position": ["12.5",  "0"], "size": 7.7,
+											   "fillColor": "white", "drawThickness": 0,
+											   "drawColor": "none" }, 
+                            
+							"SouthDot":      { "type": "circle",
+											   "position": ["12.5",  "25"], "size": 7.7,
+											   "fillColor": "white", "drawThickness": 0,
+											   "drawColor": "none" } 										 
+	                    },
+							  
+	"Shapes"		:   {   "0":	{   "type":  "ComboShape",
+									    "parts": [												  
+											"$N2EArc", "$S2WArc",											  
+											"$DigitMark"
+										]
+									},
+	                        "1":	{   "type": "ComboShape",
+										"parts": [												  
+											"$W2NArc", "$E2SArc",																					  
+											"$DigitMark"
+										]
+									},
+                            "2":	{   "type": "ComboShape",
+										"parts": [												  
+											"$NorthDot", 
+											"$HorizontalBar",												
+											"$SouthDot", "$DigitMark"
+										]
+									},
+                            "3":	{   "type": "ComboShape",
+										"parts": [
+                                            "$TwoDotsWE",										
+											"$VerticalBar",												
+											"$DigitMark"
+										]
+									},		
+							"4":	{   "type": "ComboShape",
+										"parts": [												  
+                                            "$TwoDotsNE", "$TwoDotsSW",											
+											"$DigitMark"
+										]
+									},
+                            "5":	{   "type": "ComboShape",
+										"parts": [												  
+                                            "$N2EArc", "$S2WArc",
+											"$W2NArc", "$E2SArc",
+                                            "$VerticalBar", "$HorizontalBar",											
+											"$DigitMark"
+										]
+									},
+							"6":	{   "type": "ComboShape",
+										"parts": [	
+											"$VerticalBar", "$HorizontalBar",										
+											"$DigitMark"
+										]
+									},
+							"7":	{   "type": "ComboShape",
+										"parts": [
+                                            "$N2EArc", "$TwoDotsSW",											
+											"$DigitMark"
+										]
+									},
+							"8":	{   "type": "ComboShape",
+										"parts": [
+                                            "$S2WArc", "$TwoDotsNE",											
+											"$DigitMark"
+										]
+									},
+							"9":	{   "type": "ComboShape",
+										"parts": [
+                                            "$W2NArc", "$TwoDotsES",											
+											"$DigitMark"
+										]
+									},
+							"A":	{   "type": "ComboShape",
+										"parts": [
+                                            "$E2SArc", "$TwoDotsWN",											
+											"$DigitMark"
+										]
+									},
+							"B":	{   "type": "ComboShape",
+										"parts": [
+                                            "$W2NArc", "$N2EArc",
+											"$HorizontalBar", "$SouthDot",												
+											"$DigitMark"
+										]
+									},
+							"C":	{   "type": "ComboShape",
+										"parts": [
+                                            "$NorthDot", "$HorizontalBar", 
+                                            "$E2SArc", "$S2WArc",												
+											"$DigitMark"
+										]
+									},
+							"D":	{   "type": "ComboShape",
+										"parts": [
+										    "$N2EArc", "$E2SArc",
+                                            "$VerticalBar", 												
+											"$DigitMark"
+										]
+									},
+							"E":	{   "type": "ComboShape",
+										"parts": [
+										    "$S2WArc", "$W2NArc",
+                                            "$VerticalBar", 												
+											"$DigitMark"
+										]
+									}									
+						}								
+}									  											  												  

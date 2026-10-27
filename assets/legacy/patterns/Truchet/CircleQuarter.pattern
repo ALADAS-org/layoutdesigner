@@ -1,0 +1,54 @@
+{
+	"Name"                  : "CircleQuarter_Mono",
+	"Reference"				: "https://en.wikipedia.org/wiki/Truchet_tiles",
+	"Tags"                  : "Truchet",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "3",
+	"GridColor"             : "cyan",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "black",
+
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["4", "4"], 
+	                                           "drawColor": "cyan", "drawThickness": 0.3
+											 }		
+							  },
+							  
+	"Shapes"				: { "0":	{   "type": "ComboShape", 
+											"parts": [
+												{ "type": "arc", "fillColor": "white", "fillStyle": "PIE",
+												  "drawColor": "white", "drawThickness": 0.5,
+												  "position": ["-25", "-25"], "size": 50,
+												  "startAngle": 0, "endAngle": 90 },					  
+											  "$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [
+												{ "type": "arc", "fillColor": "#999999", "fillStyle": "PIE",
+												  "drawColor": "#999999", "drawThickness": 0.5,
+												  "position": ["0", "-25"], "size": 50,
+												  "startAngle": 90, "endAngle": 180 },					  
+											  "$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "arc", "fillColor": "red", "fillStyle": "PIE",
+												  "drawColor": "red", "drawThickness": 0.5,
+												  "position": ["0", "0"], "size": 50,
+												  "startAngle": 180, "endAngle": 270 }, 
+												"$DigitMark"
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "arc", "fillColor": "yellow", "fillStyle": "PIE",
+												  "drawColor": "yellow", "drawThickness": 0.5,
+												  "position": ["-25", "0"], "size": 50,
+												  "startAngle": 270, "endAngle": 0 }, 
+												"$DigitMark"
+											]
+										}
+							  }							
+}

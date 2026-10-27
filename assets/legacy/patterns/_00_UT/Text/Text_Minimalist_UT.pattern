@@ -1,0 +1,18 @@
+{
+	"Name"                  : "Text_Minimalist_UT",
+	"Description"		    : "Die Allgemeine Erklärung der Menschenrechte",
+	"Family"		        : "text",
+	"ContentInfo"           : { "type": "LocalFile", "source": "human_rights_de.txt" },
+	"FontInfo"              : { "family": "Minimalist_1", "size": 28, "style" : "BOLD" },
+    "CellSize"              : "25",
+	"MaxCellValue"          : "*",
+    "CellValueMode"         : "Sequence",
+    "BackgroundColor"       : "#787676",
+	"Shapes"				: { "*":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "letter", "size": 1, "fillColor": "#e5e6dd", 
+												  "drawColor": "black", "drawThickness": 3 }									
+											]
+										}
+							  }							
+}

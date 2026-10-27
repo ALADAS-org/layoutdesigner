@@ -1,0 +1,215 @@
+{
+	"Name"                  : "IChing",
+	"Description"		    : "IChing Trigrams (8 different trigrams)",
+	"Reference"				: "https://en.wikipedia.org/wiki/Bagua",
+	"Tags"                  : "IChing, Trigram",
+	"ColorPaletteReference"	: "https://en.wikipedia.org/wiki/Color_in_Chinese_culture",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "7",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "percent",
+    "BackgroundColor"       : "#b9b9b9",
+	
+    "Variables"             : { "DigitMark": { "type": "digit_mark", "position":["0.3", "0.3"]
+											 }		
+							  },
+	
+	"Shapes"				: { "0":	{   "type": "ComboShape",
+											"description": { "name": "qián", "comment": "|||" }, 
+											"parts": [	
+												{ "type": "square", "size": 0.9, 
+												  "fillColor": "black", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.1", "0.18"], "size":["0.8", "0.12"], 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.1", "0.43"], "size":["0.8", "0.12"], 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.1", "0.68"], "size":["0.8", "0.12"],
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												  
+												"$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"description": { "name": "duì", "comment": "¦||" },
+											"parts": [	
+												{ "type": "square", "size": 0.9, 
+												  "fillColor": "#d30000", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.1", "0.18"], "size":["0.29", "0.12"], 
+												  "fillColor": "white", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.6", "0.18"], "size":["0.29", "0.12"], 
+												  "fillColor": "white", "drawColor": "none" },													  
+												{ "type": "rectangle",
+												  "position":["0.1", "0.43"], "size":["0.8", "0.12"], 
+												  "fillColor": "white", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.1", "0.68"], "size":["0.8", "0.12"],
+												  "fillColor": "white", "drawColor": "none" },
+												  
+												"$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboShape",
+								            "description": { "name": "lí", "comment": "|¦|" },
+											"parts": [
+												{ "type": "square", "size": 0.9, 
+												  "drawColor": "none", "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position":["0.1", "0.18"], "size": ["0.8", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position":["0.1", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position":["0.1", "0.68"], "size":["0.8", "0.12"],
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												"$DigitMark"
+											]
+										},
+										
+								"3":	{	"type": "ComboShape",
+								            "description": { "name": "zhèn", "comment": "¦¦|" },
+											"parts": [
+												{ "type": "square", "size": 0.9, 
+												  "fillColor": "#0026ff", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position":["0.1", "0.18"], "size":["0.29", "0.12"], 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.6", "0.18"], "size":["0.29", "0.12"], 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position":["0.1", "0.43"], "size":["0.29", "0.12"], 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position":["0.6", "0.43"], "size":["0.29", "0.12"], 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												  
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position":["0.1", "0.68"], "size":["0.8", "0.12"],
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												  
+												"$DigitMark"
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"description": { "name": "xùn", "comment": "||¦" },
+											"parts": [	
+												{ "type": "square", "size": 0.9, 
+												  "fillColor": "white", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.8", "0.12"],
+												  "fillColor": "#d30000", "drawColor": "none" },												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.8", "0.12"], 
+												  "fillColor": "#d30000", "drawColor": "none" },
+
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.68"], "size": ["0.29", "0.12"], 
+												  "fillColor": "#d30000", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.68"], "size": ["0.29", "0.12"], 
+												  "fillColor": "#d30000", "drawColor": "none" },
+												  
+												{ "type": "digit_mark", "position": ["0.3", "0.3"] }
+											]
+										},
+								"5":	{	"type": "ComboShape",
+											"description": { "name": "kǎn", "comment": "¦|¦" },
+											"parts": [
+												{ "type": "square", "size": "0.9", 
+												  "fillColor": "white", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.8", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.8", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position": ["0.1", "0.68"], "size": ["0.8", "0.12"],
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												"$DigitMark"
+											]
+										},
+								"6":	{	"type": "ComboShape",
+								            "description": { "name": "gèn", "comment": "|¦¦" },
+											"parts": [
+												{ "type": "square", "size": 0.9, 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.29", "0.12"], 
+												  "fillColor": "#0026ff", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.18"], "size": ["0.29", "0.12"], 
+												  "fillColor": "#0026ff", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "#0026ff", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "#0026ff", "drawColor": "none" },
+												  
+												{ "type": "rectangle", "drawThickness": "1.1",
+												  "position": ["0.1", "0.68"], "size": ["0.8", "0.12"],
+												  "fillColor": "#0026ff", "drawColor": "none" },
+												  
+												"$DigitMark"
+											]
+										},
+								"7":	{	"type": "ComboShape",
+											"description": { "name": "kūn", "comment": "|||" },
+											"parts": [
+												{ "type": "square", "size": 0.9, 
+												  "fillColor": "#ffd800", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.18"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.68"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.68"], "size": ["0.29", "0.12"], 
+												  "fillColor": "black", "drawColor": "none" },
+												  
+												"$DigitMark"
+											]
+										}
+								}							
+}

@@ -1,0 +1,97 @@
+{
+	"Name"                  : "CircleQuarter_GreySepia",
+	"Reference"				: "https://en.wikipedia.org/wiki/Truchet_tiles",
+	"Tags"                  : "Truchet",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "7",
+	"GridColor"             : "cyan",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "#fcf6eb",
+
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["4", "4"], 
+	                                           "drawColor": "yellow", "drawThickness": 0.3
+											 },
+								"WhiteCellBackground":  
+								             { "type": "square", "size": 25, 
+											   "fillColor": "#fcf6eb", "drawColor": "none" }
+							  },
+							  
+	"Shapes"				: { "0":	{   "type": "ComboShape", 
+											"parts": [
+												{ "type": "arc", "fillColor": "#e6ddba", "fillStyle": "PIE",
+												  "drawColor": "#e6ddba", "drawThickness": 0.5,
+												  "position": ["-25", "-25"], "size": 50,
+												  "startAngle": 0, "endAngle": 90 },					  
+											  "$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [
+												{ "type": "arc", "fillColor": "#bfb086", "fillStyle": "PIE",
+												  "drawColor": "#bfb086", "drawThickness": 0.5,
+												  "position": ["0", "-25"], "size": 50,
+												  "startAngle": 90, "endAngle": 180 },					  
+											  "$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "arc", "fillColor": "#857f46", "fillStyle": "PIE",
+												  "drawColor": "#857f46", "drawThickness": 0.5,
+												  "position": ["0", "0"], "size": 50,
+												  "startAngle": 180, "endAngle": 270 }, 
+												"$DigitMark"
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "arc", "fillColor": "#bda669", "fillStyle": "PIE",
+												  "drawColor": "#bda669", "drawThickness": 0.5,
+												  "position": ["-25", "0"], "size": 50,
+												  "startAngle": 270, "endAngle": 0 }, 
+												"$DigitMark"
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"parts": [
+                                                "$WhiteCellBackground",											
+												{ "type": "arc", "fillColor": "#614b2f", "fillStyle": "PIE",
+												  "drawColor": "#614b2f", "drawThickness": 0.5,
+												  "position": ["-25", "-25"], "size": 50,
+												  "startAngle": 0, "endAngle": 90 }, 
+												"$DigitMark"
+											]
+										},
+								"5":	{	"type": "ComboShape",
+											"parts": [
+                                                "$WhiteCellBackground",											
+												{ "type": "arc", "fillColor": "#D0D0D0", "fillStyle": "PIE",
+												  "drawColor": "#D0D0D0", "drawThickness": 0.5,
+												  "position": ["0", "-25"], "size": 50,
+												  "startAngle": 90, "endAngle": 180 }, 
+												"$DigitMark"
+											]
+										},
+								"6":	{	"type": "ComboShape",
+											"parts": [
+                                                "$WhiteCellBackground",											
+												{ "type": "arc", "fillColor": "#888888", "fillStyle": "PIE",
+												  "drawColor": "#888888", "drawThickness": 0.5,
+												  "position": ["0", "0"], "size": 50,
+												  "startAngle": 180, "endAngle": 270 }, 
+												"$DigitMark"
+											]
+										},
+								"7":	{	"type": "ComboShape",
+											"parts": [
+                                                "$WhiteCellBackground",											
+												{ "type": "arc", "fillColor": "#595959", "fillStyle": "PIE",
+												  "drawColor": "#595959", "drawThickness": 0.5,
+												  "position": ["-25", "0"], "size": 50,
+												  "startAngle": 270, "endAngle": 0 }, 
+												"$DigitMark"
+											]
+										}
+							  }							
+}

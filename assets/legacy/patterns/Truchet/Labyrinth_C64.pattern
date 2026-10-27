@@ -1,0 +1,36 @@
+{
+	"Name"                  : "Labyrinth_C64",
+	"Reference"				: "https://en.wikipedia.org/wiki/Truchet_tiles",
+	"Description"		    : "Simplest Labyrinth drawn on Commodore 64 with Graphic characters",
+	"Tags"                  : "Truchet, Procedural, Labyrinth, Commodore64",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "1",
+	"GridColor"             : "cyan",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "black",
+
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["4", "4"], 
+	                                           "drawColor": "yellow", "drawThickness": 0.3
+											 }		
+							  },
+							  
+	"Shapes"				: { "0":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "diagonal", "drawColor": "white",
+                                                  "start": "NW", "end": "SE",												
+												  "drawThickness": 5.5, "capStyle": "round" },					  
+												"$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "diagonal", "drawColor": "white",
+                                                  "start": "SW", "end": "NE",												
+												  "drawThickness": 5.5,
+												  "capStyle": "round" }, 
+												"$DigitMark"
+											]
+										}
+							  }							
+}

@@ -1,0 +1,181 @@
+{
+	"Name"                  : "IChing TriColor",
+	"Reference"				: "https://en.wikipedia.org/wiki/Bagua",
+	"Description"		    : "IChing Trigrams (8 different trigrams)",
+	"Tags"                  : "IChing, Trigram",
+	"ColorPaletteReference"	: "https://en.wikipedia.org/wiki/Color_in_Chinese_culture",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "7",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "percent",
+    "BackgroundColor"       : "#b9b9b9",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "drawColor": "black", 
+	                                           "position": ["0.3", "0.3"] }								 
+	                          },
+							  
+	"Shapes"				: { "0":	{   "type": "ComboShape",
+											"description": { "name": "qián", "comment": "|||" },
+											"drawColor": "none", 											
+											"parts": [	
+												{ "type": "square", "size": 0.9, "fillColor": "black" },
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.8", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.8", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.68"], "size": ["0.8", "0.12"], "fillColor": "white" },
+												"$DigitMark"
+											]
+										},
+								
+								"1":	{	"type": "ComboShape",
+											"description": { "name": "duì", "comment": "¦||" },
+											"drawColor": "none",
+											"parts": [	
+												{ "type": "square", "size": "0.9", "fillColor": "red" },
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.18"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.8", "0.12"], "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.68"], "size": ["0.8", "0.12"],"fillColor": "white" }, 
+												"$DigitMark"
+											]
+										},
+										
+								"2":	{	"type": "ComboShape",
+								            "description": { "name": "lí", "comment": "|¦|" },
+											"drawColor": "none",
+											"parts": [
+												{ "type": "square", "size": 0.9, "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.8", "0.12"], "fillColor": "black" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], "fillColor": "black" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], "fillColor": "black" },
+												  
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position": ["0.1", "0.68"], "size": ["0.8", "0.12"],"fillColor": "black" },
+												"$DigitMark"
+											]
+										},
+										
+								"3":	{	"type": "ComboShape",
+								            "description": { "name": "zhèn", "comment": "¦¦|" },
+											"drawColor": "none",
+											"parts": [
+												{ "type": "square", "size": 0.9, "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.29", "0.12"], "fillColor": "red" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.18"], "size": ["0.29", "0.12"], "fillColor": "red" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], "fillColor": "red" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], "fillColor": "red" },
+												  
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position": ["0.1", "0.68"], "size": ["0.8", "0.12"],  "fillColor": "red" },
+	
+												"$DigitMark"
+											]
+										},
+										
+								"4":	{	"type": "ComboShape",
+											"description": { "name": "xùn", "comment": "||¦" },
+											"drawColor": "none",
+											"parts": [	
+												{ "type": "square", "size": 0.9, "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"],"size": ["0.8", "0.12"], "fillColor": "red" },												
+												{ "type": "rectangle", 
+												  "position": ["0.1", "0.43"],"size": ["0.8", "0.12"], "fillColor": "red" },
+
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.68"],"size": ["0.29", "0.12"],"fillColor": "red" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.68"],"size": ["0.29", "0.12"],"fillColor": "red" },
+												"$DigitMark"
+											]
+										},
+										
+								"5":	{	"type": "ComboShape",
+											"description": { "name": "kǎn", "comment": "¦|¦" },
+											"drawColor": "none",
+											"parts": [
+												{ "type": "square", "size": 0.9, "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.29", "0.12"], "fillColor": "black" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.18"], "size": ["0.29", "0.12"], "fillColor": "black" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.8", "0.12"], "fillColor": "black" },
+		  
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position": ["0.1", "0.68"], "size": ["0.29", "0.12"], "fillColor": "black" },
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position": ["0.6", "0.68"], "size": ["0.29", "0.12"], "fillColor": "black" },
+												"$DigitMark"
+											]
+										},
+										
+								"6":	{	"type": "ComboShape",
+								            "description": { "name": "gèn", "comment": "|¦¦" },
+											"drawColor": "none",
+											"parts": [
+												{ "type": "square", "size": 0.9, "fillColor": "red" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.8", "0.12"], "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												  
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position": ["0.1", "0.68"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle", "drawThickness": 1.1,
+												  "position": ["0.6", "0.68"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												"$DigitMark"
+											]
+										},
+										
+								"7":	{	"type": "ComboShape",
+											"description": { "name": "kūn", "comment": "¦¦¦" },
+											"drawColor": "none",
+											"parts": [
+												{ "type": "square", "size": 0.9, "fillColor": "black" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.18"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.18"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												  
+												{ "type": "rectangle",
+												  "position": ["0.1", "0.68"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												{ "type": "rectangle",
+												  "position": ["0.6", "0.68"], "size": ["0.29", "0.12"], "fillColor": "white" },
+												"$DigitMark"
+											]
+										}
+						    }										
+}

@@ -1,0 +1,121 @@
+{
+    "Name"				    : 	"CircleQuad",
+	"Description"           :   "Demo pattern with circle shapes inside cell quarters",
+	"Tags"                  :   "Quad",
+	"Schema"				: 	"pattern.schema",
+    "CellSize"              : 	"25",
+	"MaxCellValue"          : 	"7",
+    "CellValueMode"         : 	"Random",
+	"PatternFamily"			:	"quad",
+	"NumberFormat"			:	"percent",
+    "BackgroundColor"       : 	"black",
+	
+	"Variables"             : { "TopLeftDigitMark": 
+	                                         { "type": "digit_mark", "position": ["0.25", "0.25"], 
+	                                           "drawColor": "yellow" },
+								"TopRightDigitMark": 
+	                                         { "type": "digit_mark", "position": ["0.75", "0.25"], 
+	                                           "drawColor": "yellow" },
+                                "BottomLeftDigitMark": 
+	                                         { "type": "digit_mark", "position": ["0.25", "0.75"], 
+	                                           "drawColor": "yellow" },											   
+                                "BottomRightDigitMark": 
+	                                         { "type": "digit_mark", "position": ["0.75", "0.75"], 
+	                                           "drawColor": "yellow" }											   
+							  },
+	
+	"Shapes"				: 	{ 	"0":	{ 	"type": "QuadComboCell",
+												"parts": [	
+													{ 	"type": "concave_diamond", "drawColor": "none",
+														"position": ["0.5", "0.5"], "size": 0.22,
+														"colorPairChoices": 
+														"red+black|white+blue|yellow+red|black+yellow|magenta+white" },
+													"$TopLeftDigitMark"
+												]
+											},										
+									"1":	{ 	"type": "QuadComboCell",
+												"parts": [	
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.25"], "size": 0.48, "fillColor": "black" },
+													{ 	"type": "circle", "drawColor": "none", 
+														"position": ["0.25", "0.25"], "size": 0.30, "fillColor": "white" },
+													"$TopRightDigitMark"
+												]
+											},
+									"2":	{ 	"type": "QuadComboCell",
+												"parts": [	
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": 0.48, "fillColor": "white" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": 0.24, "fillColor": "red" },
+													"$TopLeftDigitMark"
+												]
+											},
+									"3":	{ 	"type": "QuadComboCell",
+												"parts": [	
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.25"], "size": 0.48, "fillColor": "red" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.25"], "size": 0.24, "fillColor": "white" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": 0.48, "fillColor": "yellow" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": 0.30, "fillColor": "black" },
+													"$BottomLeftDigitMark"
+												]
+											},
+									"4":	{ 	"type": "QuadComboCell",
+												"parts": [	
+													{   "type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": 0.48, "fillColor": "blue" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": 0.30, "fillColor": "yellow" },
+													"$TopLeftDigitMark"
+												]
+											},
+										
+									"5":	{ 	"type": "QuadComboCell",
+												"parts": [	
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.25"], "size": 0.48, "fillColor": "black" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.25"], "size": 0.30, "fillColor": "orange" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": 0.48, "fillColor": "magenta" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": 0.24, "fillColor": "white" },
+													"$BottomRightDigitMark"
+												]
+											},
+									"6":	{ 	"type": "QuadComboCell",
+												"parts": [									
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": 0.48, "fillColor": "white" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": "0.30", "fillColor": "green" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": 0.48, "fillColor": "red" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": 0.24, "fillColor": "lightgreen" },
+													"$TopLeftDigitMark"
+												]									 
+											},
+									"7":	{ 	"type": "QuadComboCell",
+												"parts": [	
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.25"], "size": 0.48, "fillColor": "red" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.25"], "size": 0.30, "fillColor": "white" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": 0.48, "fillColor": "magenta" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.75", "0.25"], "size": 0.24, "fillColor": "black" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": 0.48, "fillColor": "black" },
+													{ 	"type": "circle", "drawColor": "none",
+														"position": ["0.25", "0.75"], "size": "0.30", "fillColor": "yellow" },
+													"$BottomRightDigitMark"
+												]
+											}
+								}							
+}

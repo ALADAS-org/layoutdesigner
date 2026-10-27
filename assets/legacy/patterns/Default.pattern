@@ -1,0 +1,81 @@
+{
+	"Name"                  : "Default",
+	"Description"           : "Initial demo pattern for Silverquote",
+	"Note"                  : "Bug: préprocesseur non utilisé pour le pattern par défaut au lancement de l'App",            
+    "CellSize"              : "25",
+	"MaxCellValue"          : "7",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "#b9b9b9",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["5", "5"] }												 
+	                          },
+	
+	"Shapes"				: { "0":	{   "type": "ComboShape",
+											"parts": [	
+												{ "type": "circle", "size": 22,
+												  "position": "center", "fillColor": "#d0d0a0" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [
+												{ "type": "circle",
+												  "position": "center", "size": 10, "fillColor": "#a0a0d0" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [
+												{ "type": "circle", "size": 18,
+												  "position": "center", "fillColor": "white" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "line", "start": "NW", "end": "SE" },
+												{ "type": "square", "size": 10,
+												  "position": "center", "fillColor": "black" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"parts": [
+												{ "type": "circle", "size": 17, "position": "SE",
+											      "drawColor": "yellow", "fillColor": "red" },
+												{ "type": "square", "size": "10",
+												  "position": "center", "size": "10",
+											      "drawColor": "red", "fillColor": "yellow" },
+												{ "type": "line", "start": "center", "end": "NE" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										},
+								"5":	{	"type": "ComboShape", 
+											"parts": [
+												{ "type": "circle", "size": 8,
+												  "position": "NW", "fillColor": "black" },
+												{ "type": "line", "start": "SW", "end": "NE" },
+												{ "type": "circle", "size": "11", "position": "SE",
+											      "drawColor": "black", "fillColor": "yellow" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										},
+								"6":	{	"type": "ComboShape",
+											"parts": [
+												{ "type": "line", "start": "center", "end": "NE" },
+												{ "type": "diamond", "size": 9,
+												  "position": "SE", "fillColor": "yellow" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										},
+								"7":	{	"type": "ComboShape",
+											"parts": [
+												{ "type": "line", "start": "center", "end": "SE" },
+												{ "type": "diamond", "size": 9, "position": "NW",
+											      "drawColor": "white", "fillColor": "black" },
+												{ "type": "digit_mark", "position": ["5", "5"] }
+											]
+										}
+								}							
+}

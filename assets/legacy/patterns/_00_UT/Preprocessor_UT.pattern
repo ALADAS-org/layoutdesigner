@@ -1,0 +1,53 @@
+{
+	"Name"                  : "Preprocessor_UT",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "4",
+	"GridColor"             : "orange",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "percent",
+    "BackgroundColor"       : "#808080",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "drawColor": "cyan", "fillColor": "black",
+	                                           "drawThickness": 6, "position": ["0.15", "0.15"] },
+											   
+								"CellBlock(color)":  
+								             { "type": "square", "size": 0.4, 
+											   "fillColor": "$color", "drawColor": "none" },
+											   
+	                            "ColoredDigitMark(draw_color)": 
+								             { "type": "digit_mark", "drawColor": "$draw_color", "fillColor": "black",
+	                                           "drawThickness": 6, "position": ["0.15", "0.15"] }												  
+	                          },
+							  
+	"Shapes"				: { "0":	{   "type": "ComboShape",
+											"parts": [ 
+											    "$CellBlock('white')",
+												"$ColoredDigitMark('white')" 
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [ 
+											    "$CellBlock('pink')",
+												"$ColoredDigitMark('pink')" 
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [ 
+											    "$CellBlock('yellow')",
+												"$ColoredDigitMark('yellow')" 
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [ 
+											    "$CellBlock('lightblue')",
+												"$ColoredDigitMark('lightblue')" 
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"parts": [ 
+											    "$CellBlock('lightgreen')",
+												"$ColoredDigitMark('lightgreen')" 
+											]
+										}									
+								}							
+}

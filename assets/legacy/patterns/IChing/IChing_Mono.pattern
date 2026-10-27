@@ -1,0 +1,121 @@
+{
+	"Name"                  : "IChing_Mono",
+	"Reference"				: "https://en.wikipedia.org/wiki/Bagua",
+	"Description"		    : "IChing Monochrom (8 different trigrams)",
+	"Tags"                  : "IChing, Trigram, Black & White",
+	"ColorPaletteReference"	: "https://en.wikipedia.org/wiki/Color_in_Chinese_culture",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "7",
+	"GridColor"             : "orange",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "percent",
+    "BackgroundColor"       : "#808080",
+	
+	"Variables"             : { "DigitMark":        { "type": "digit_mark", "drawColor": "cyan", "fillColor": "black",
+	                                                      "drawThickness": 6, "position": ["0.15", "0.15"] },
+                                
+								"CellBackground(color)":  
+								                    { "type": "square", "size": 0.93, 
+												      "fillColor": "$color", "drawColor": "none" },
+														  
+								"TopBar(color)":    { "type": "rectangle",
+												          "position": ["0.1", "0.18"], "size": ["0.8", "0.12"], 
+												          "fillColor": "$color", "drawColor": "none" },		
+								
+								"TopBrokenBar(color)":     
+								                        [  { "type": "rectangle",
+												             "position": ["0.1", "0.18"], "size": ["0.29", "0.12"], 
+												             "fillColor": "$color", "drawColor": "none" },
+														 
+													       { "type": "rectangle",
+												             "position": ["0.6", "0.18"], "size": ["0.29", "0.12"], 
+												             "fillColor": "$color", "drawColor": "none" }
+                                                        ],											  												 												
+														
+                                "MiddleBar(color)":     { "type": "rectangle",
+												          "position": ["0.1", "0.43"], "size": ["0.8", "0.12"], 
+												          "fillColor": "$color", "drawColor": "none" },
+                                
+								"MiddleBrokenBar(color)": 
+														[ { "type": "rectangle",
+												            "position": ["0.1", "0.43"], "size": ["0.29", "0.12"], 
+												            "fillColor": "$color", "drawColor": "none" },  
+															
+								                          { "type": "rectangle",
+												            "position": ["0.6", "0.43"], "size": ["0.29", "0.12"], 
+												            "fillColor": "$color", "drawColor": "none" }
+														],
+														
+                                "BottomBar(color)":     { "type": "rectangle",
+												          "position": ["0.1", "0.68"], "size": ["0.8", "0.12"], 
+												          "fillColor": "$color", "drawColor": "none" },
+                                
+								"BottomBrokenBar(color)": 
+								                        [ { "type": "rectangle",
+												            "position": ["0.1", "0.68"], "size": ["0.29", "0.12"], 
+												            "fillColor": "$color", "drawColor": "none" },
+    
+								                          { "type": "rectangle",
+												            "position": ["0.6", "0.68"], "size": ["0.29", "0.12"], 
+												            "fillColor": "$color", "drawColor": "none" }
+														]														  
+	                          },
+							  
+	"Shapes"				: { "0":	{   "type": "ComboShape",
+											"description": { "name": "qián", "comment": "|||" }, 
+											"parts": [	"$CellBackground('black')",
+												        "$TopBar('white')",
+												        "$MiddleBar('white')",
+												        "$BottomBar('white')", "$DigitMark" ]
+										},
+								"1":	{	"type": "ComboShape",
+											"description": { "name": "duì", "comment": "¦||" },
+											"parts": [	"$CellBackground('black')",
+												        "$TopBrokenBar('white')",											  
+												        "$MiddleBar('white')",
+												        "$BottomBar('white')", "$DigitMark" ]
+										},
+								"2":	{	"type": "ComboShape",
+								            "description": { "name": "lí", "comment": "|¦|" },
+											"parts": [  "$CellBackground('black')",	
+												        "$TopBar('white')",
+												        "$MiddleBrokenBar('white')",
+												        "$BottomBar('white')", "$DigitMark" ]
+										},		
+								"3":	{	"type": "ComboShape",
+								            "description": { "name": "zhèn", "comment": "¦¦|" },
+											"parts": [ 	"$CellBackground('black')",
+												        "$TopBrokenBar('white')",
+												        "$MiddleBrokenBar('white')",
+												        "$BottomBar('white')", "$DigitMark" ]
+										},
+								"4":	{	"type": "ComboShape",
+											"description": { "name": "xùn", "comment": "||¦" },
+											"parts": [	"$CellBackground('white')", 
+                                                        "$TopBar('black')",										
+												        "$MiddleBar('black')",
+												        "$BottomBrokenBar('black')", "$DigitMark" ]
+										},
+								"5":	{	"type": "ComboShape",
+											"description": { "name": "kǎn", "comment": "¦|¦" },
+											"parts": [  "$CellBackground('white')", 
+												        "$TopBrokenBar('black')",							  
+												        "$MiddleBar('black')", 											
+                                                        "$BottomBrokenBar('black')", "$DigitMark" ]
+										},
+								"6":	{	"type": "ComboShape",
+											"description": { "name": "kūn", "comment": "|¦¦" },
+											"parts": [ 	"$CellBackground('white')", 
+												        "$TopBar('black')",
+												        "$MiddleBrokenBar('black')",
+												        "$BottomBrokenBar('black')", "$DigitMark" ]
+										},
+								"7":	{	"type": "ComboShape",
+								            "description": { "name": "gèn", "comment": "¦¦¦" },
+											"parts": [ 	"$CellBackground('white')", 
+                                                        "$TopBrokenBar('black')",
+												        "$MiddleBrokenBar('black')",
+												        "$BottomBrokenBar('black')", "$DigitMark" ]
+										}	
+								}							
+}

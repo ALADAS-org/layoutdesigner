@@ -1,0 +1,104 @@
+{
+	"Name"                  : "SquareMoire",
+	"Description"           : "Demo Moire pattern with squares",
+	"Reference"             : "https://en.wikipedia.org/wiki/Moir%C3%A9_pattern",
+	"Tags"                  : "Moire",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "7",
+	"GridColor"             : "orange",
+    "CellValueMode"         : "Random",
+    "BackgroundColor"       : "black",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "drawColor": "cyan", 
+	                                           "fillColor": "black",
+	                                           "drawThickness": 6, "position": ["3.5", "4"] },
+								"StrokeThickness_01": 0.3,
+								"StrokeThickness_2":  0.35,
+								"StrokeThickness_3":  0.22,
+								"StrokeThickness_4":  0.18,
+								"StrokeThickness_5":  0.2,
+								"StrokeThickness_67": 0.4
+							  },
+							  
+	"Shapes"				: { "0":	{   "type": "ComboShape",
+											"parts": [
+                                                { "type": "square", "instanceCount": 5,
+												  "position": "center",
+												  "size": {"start": 5, "step": 8}, 
+												  "drawThickness": "$StrokeThickness_01",
+												  "drawColor": "white", "fillColor": "none" },
+												"$DigitMark"  
+											]
+										},
+								"1":	{	"type": "ComboShape",
+  											"parts": [
+                                                { "type": "square", "instanceCount": 7,
+												  "position": "center",
+												  "size": {"start": 5, "step": 7}, 
+												  "drawThickness": "$StrokeThickness_01",
+												  "drawColor": "white", "fillColor": "none" },
+                                                "$DigitMark"												  
+                                            ]
+										},
+								"2":	{	"type": "ComboShape",
+  											"parts": [
+                                                { "type": "square", "instanceCount": 6,
+												  "position": "center",
+												  "size": {"start": 5, "step": 7}, 
+												  "drawThickness": "$StrokeThickness_2",
+												  "drawColor": "#C2AEFB", "fillColor": "none" },
+												"$DigitMark"							
+                                            ]
+										},
+								"3":	{	"type": "ComboShape",
+  											"parts": [
+                                                { "type": "square", "instanceCount": 8,
+												  "position": "center",
+												  "size": {"start": 5, "step": 7}, 
+												  "drawThickness": "$StrokeThickness_3",
+												  "drawColor": "#DFEFEF", "fillColor": "none" },
+                                                "$DigitMark"												  
+                                            ]
+										},
+								"4":	{	"type": "ComboShape",
+  											"parts": [
+                                                { "type": "square", "instanceCount": 7,
+												  "position": "center",
+												  "size": {"start": 12, "step": 5}, 
+												  "drawThickness": "$StrokeThickness_4",
+												  "drawColor": "#d5e0db", "fillColor": "none" },
+                                                "$DigitMark"																						  
+                                            ]
+										},
+								"5":	{	"type": "ComboShape",
+  											"parts": [
+                                                { "type": "square", "instanceCount": 10,
+												  "position": "center",
+												  "size": {"start": 5, "step": 5}, 
+												  "drawThickness": "$StrokeThickness_5",
+												  "drawColor": "#D3F3F5", "fillColor": "none" },
+                                                "$DigitMark"																							  
+                                            ]
+										},
+								"6":	{	"type": "ComboShape",
+  											"parts": [
+                                                { "type": "square", "instanceCount": 5,
+												  "position": "center",
+												  "size": {"start": 5, "step": 7}, 
+												  "drawThickness": "$StrokeThickness_67",
+												  "drawColor": "#BFDFBF", "fillColor": "none" },
+                                                "$DigitMark"																							  
+                                            ]
+										},
+								"7":	{	"type": "ComboShape",
+  											"parts": [
+                                                { "type": "square", "instanceCount": 6,
+												  "position": "center",
+												  "size": {"start": 4, "step": 5}, 
+												  "drawThickness": "$StrokeThickness_67",
+												  "drawColor": "#DFBFDF", "fillColor": "none" },
+                                                "$DigitMark"																							  
+                                            ]
+										}										
+								}							
+}

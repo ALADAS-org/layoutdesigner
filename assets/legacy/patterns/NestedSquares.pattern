@@ -1,0 +1,124 @@
+{
+	"Name"                  : "NestedSquares",
+	"Reference"				: "Computer Graphics and Art Nov. 1976 page 28",
+	"Description"		    : "Nested Squares",
+	"Tags"		            : "Geometric, Procedural",
+    "CellSize"              : "50",
+	"MaxCellValue"          : "4",
+	"GridColor"             : "cyan",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "black",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["18", "18"], 
+	                                           "drawColor": "yellow", "drawThickness": 0.3
+											 }		
+							  },
+	
+	"Shapes"				: { "0":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["46", "46"] },										  
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["35", "35"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["24", "24"]  },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["15", "15"]  },
+												  
+												"$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["46", "46"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["18", "18"], "size": ["35", "35"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["22", "22"], "size": ["24", "24"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["25", "25"], "size": ["15", "15"] },
+												  
+												"$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["46", "46"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["22", "22"], "size": ["35", "35"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["30", "30"], "size": ["24", "24"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["35", "35"], "size": ["15", "15"] },
+												  
+												"$DigitMark"
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["46", "46"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["18", "22"], "size": ["35", "35"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["22", "30"], "size": ["24", "24"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["25", "35"], "size": ["15", "15"] },
+												  
+												"$DigitMark"
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"parts": [	
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": "center", "size": ["46", "46"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["22", "18"], "size": ["35", "35"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["30", "22"], "size": ["24", "24"] },
+												  
+												{ "type": "rectangle", "drawThickness": 0.5, 
+												  "drawColor": "white", "fillColor": "black", 
+												  "position": ["35", "25"], "size": ["15", "15"] },
+												  
+												"$DigitMark"
+											]
+										}
+								}							
+}

@@ -1,0 +1,47 @@
+{
+	"Name"                  : "Nuts",
+    "CellSize"              : "25",
+	"MaxCellValue"          : "2",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "#b9b9b9",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["5", "5"]
+											 }			
+							  },
+							  
+	"Shapes"				: { "0":	{	"type": "ComboCell",
+											"parts": [
+												{ "type": "polygram",
+												  "vertex_count": "6", "Z": "min",
+												  "position": "center", "size": 14, "fillColor": "yellow" },
+												{ "type": "circle", "drawThickness": 1, "Z": 1,
+												  "position": "center", "size": 5, "fillColor": "red" },
+												"$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboCell",
+								            "visible": false,
+											"parts": [
+												{ "type": "polygram",
+												  "vertex_count": "6", "Z": "min",
+												  "position": "center", "size": 20, "fillColor": "white" },
+												{ "type": "circle", "drawThickness": 1,
+												  "drawThickness": 0,
+												  "position": "center", "size": 5, "fillColor": "black" },
+												"$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboCell",
+								            "visible": false,
+											"parts": [
+												{ "type": "polygram",
+												  "vertex_count": "6", "Z": "min",
+												  "position": "center", "size": 25, "fillColor": "white" },
+												{ "type": "circle", "drawThickness": 1, "Z": "max",
+												  "position": "center", "size": 10, "fillColor": "black" },
+												"$DigitMark"
+											]
+										}
+								}							
+}

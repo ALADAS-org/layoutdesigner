@@ -1,0 +1,84 @@
+{
+	"Name"                  : "Galaga Bee",
+	"Tags"                  : "Icon, Pictogram, Galaga, Bee, Retrogaming",
+	"Description"           : "Galaga pixel art from 'RETROGAME DECONSTRUCTION ZONE",
+	"Reference"             : "https://www.retrogamedeconstructionzone.com/2020/02/animative-blogging-part-3-advanced.html", 
+    "CellSize"              : "32",
+	"MaxCellValue"          : "7",
+	"GridColor"             : "cyan",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "white",
+	"BaseURL"               : "http://127.0.0.1:3000/img/tilesets/Galaga/",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["7", "7"], 
+	                                           "drawColor": "red", "drawThickness": 0.3
+											 }		
+							  },
+	  
+	"Shapes"				: { "0":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "icon", 
+												  "icon_url": "galaga_bee_frame_0.png"
+												},					  
+												"$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "galaga_bee_frame_1.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "galaga_bee_frame_2.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "galaga_bee_frame_3.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "galaga_bee_frame_4.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"5":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "galaga_bee_frame_5.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"6":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "galaga_bee_frame_6.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"7":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "galaga_bee_frame_7.png"												
+												}, 
+												"$DigitMark"
+											]
+										}										
+							  }							
+}

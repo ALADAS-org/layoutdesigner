@@ -1,0 +1,216 @@
+{
+	"Name"                  : "Truchet_Polychrom",
+	"Description"			: "https://www.youtube.com/watch?v=99Hr8lpWWSg timecode: 9:21",
+	"Reference"		        : "https://christophercarlson.com/portfolio/multi-scale-truchet-patterns/",
+    "Tags"                  : "Truchet, Procedural, Polychrom",
+	"CellSize"              : "25",
+	"MaxCellValue"          : "7",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "black",
+	"Variables"             : { "DigitMark": { "type": "digit_mark", 
+	                                           "drawColor": "cyan", "fillColor": "black",
+	                                           "drawThickness": 6, "position": ["3.7", "3.7"] }
+	                          }, 
+	"Shapes"				: {  "0":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "red", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["-5", "-5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "yellow", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "12.5"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["20", "20"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										},
+                                 "1":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["20", "-5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "cyan", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "12.5"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["-5", "20"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										},
+                                  "2":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["-5", "-5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "red", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "12.5"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["20", "20"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										},
+                                 "3":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "cyan", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["20", "-5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "white", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "12.5"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["-5", "20"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										},
+                                 "4":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "red", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["-5", "-5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "white", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "12.5"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["20", "20"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										},
+                                 "5":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["20", "-5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "cyan", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "12.5"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": "10", "capStyle": "round",
+												  "position": ["-5", "20"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										},
+                                 "6":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["-5", "-5"], "rotation": 0,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "red", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "12.5"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["20", "20"], "rotation": 180,
+												  "startAngle": 0, "endAngle": 90,
+												  "drawColor": "white", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										},
+                                 "7":	{   "type": "ComboShape",
+											"parts": [												  
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["12.5", "-12.5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "cyan", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": "10", "capStyle": "round",
+												  "position": ["20", "-5"], "rotation": 0,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "yellow", "drawThickness": 3.5 },	
+
+												{ "type": "arc", "size": 25, "capStyle": "round",
+												  "position": ["-12.5", "12.5"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												{ "type": "arc", "size": 10, "capStyle": "round",
+												  "position": ["-5", "20"], "rotation": 180,
+												  "startAngle": 90, "endAngle": 180,
+												  "drawColor": "yellow", "drawThickness": 3.5 },
+												  
+												"$DigitMark"
+											]
+										}
+								}								
+}									  											  												  

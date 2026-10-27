@@ -1,0 +1,82 @@
+{
+	"Name"                  : "Icons",
+	"Tags"                  : "Icon, Pictogram",
+    "CellSize"              : "32",
+	"MaxCellValue"          : "7",
+	"GridColor"             : "cyan",
+    "CellValueMode"         : "Random",
+	"NumberFormat"			: "absolute",
+    "BackgroundColor"       : "white",
+	"BaseURL"               : "http://127.0.0.1:3000/img/icons/",
+	
+	"Variables"             : { "DigitMark": { "type": "digit_mark", "position": ["7", "7"], 
+	                                           "drawColor": "red", "drawThickness": 0.3
+											 }		
+							  },
+	  
+	"Shapes"				: { "0":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "icon", 
+												  "icon_url": "digits_icn.png"
+												},					  
+												"$DigitMark"
+											]
+										},
+								"1":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "grid_icn.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"2":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "pattern_icn.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"3":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "regenerate_icn.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"4":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "wrench_icn.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"5":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "zoomIn_icn.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"6":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "zoomOut_icn.png"												
+												}, 
+												"$DigitMark"
+											]
+										},
+								"7":	{	"type": "ComboShape",
+											"parts": [	
+                                                { "type": "icon",
+												  "icon_url": "zoomReset_icn.png"												
+												}, 
+												"$DigitMark"
+											]
+										}										
+							  }							
+}

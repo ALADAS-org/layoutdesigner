@@ -1,0 +1,19 @@
+{
+	"Name"                  : "Text_UserInput_UT",
+	"Description"		    : "Text entered by user in a Dialog Box",
+	"Family"		        : "text",
+	"ContentInfo"           : { "type": "UserInput" },
+	"FontInfo"              : { "family": "sans-serif", "size": 21 },
+    "CellSize"              : "25",
+	"MaxCellValue"          : "*",
+    "ShowGrid"              : "false",
+    "CellValueMode"         : "Sequence",
+    "BackgroundColor"       : "#787676",
+	"Shapes"				: { "*":	{   "type": "ComboShape", 
+											"parts": [	
+												{ "type": "letter", "size": 1, "fillColor": "#e5e6dd", 
+												  "drawColor": "black", "drawThickness": 2 }									
+											]
+										}
+							  }							
+}
