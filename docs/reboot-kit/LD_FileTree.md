@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (603 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (613 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **assets/**
   - **legacy/**
@@ -47,7 +47,6 @@
         - Text_FlipFlop.pattern
       - **Truchet/**
         - CircleQuarter.pattern
-        - CircleQuarter_GreySepia.json
         - CircleQuarter_GreySepia.pattern
         - CircleQuarter_GreyTones.pattern
         - Labyrinth_C64.pattern
@@ -55,12 +54,10 @@
         - Truchet_2.pattern
         - Truchet_Polychrom.pattern
       - Default.pattern
-      - HalfCircles.json
       - HalfCircles.pattern
       - NestedSquares.pattern
       - Nuts.pattern
       - PI.pattern
-      - Polygram.json
       - Polygram.pattern
     - **tilesets/**
       - **496_RPG_icons/**
@@ -599,6 +596,7 @@
     - index.js
 - **cli_tools/**
   - ld_generate_filetree.py
+  - pattern_validate.cjs
 - **docs/**
   - **reboot-kit/**
     - LD_FileTree.md
@@ -608,8 +606,21 @@
     - LD_Workflow.md
   - LayoutDesigner_ARCHITECTURE.md ★
 - **schemas/**
-  - .gitkeep
+  - LEGACY_PATTERNS_REPORT.md
+  - pattern.schema.json
+  - pattern.spec.md
 - **screenshots/**
+  - **legacy/**
+    - arcs.png
+    - default.png
+    - iching.png
+    - moire.png
+    - polygram.png
+    - quad-square.png
+    - quad-triangle.png
+    - rectangles.png
+    - text.png
+    - truchet.png
   - preview_banknote.png
   - preview_stamp.png
   - preview_symmetry.png

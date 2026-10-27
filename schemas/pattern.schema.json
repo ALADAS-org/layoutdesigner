@@ -1,0 +1,636 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tscg/pattern.schema.json",
+  "title": "TSCG .pattern DSL",
+  "description": "Schema extrait empiriquement de 30 patterns couvrant 3 familles (default, text, quad). Tolerant par design; incoherences historiques documentees dans la spec.",
+  "type": "object",
+  "required": [
+    "Name",
+    "CellSize",
+    "MaxCellValue",
+    "CellValueMode",
+    "BackgroundColor",
+    "Shapes"
+  ],
+  "properties": {
+    "Name": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "string"
+    },
+    "Tags": {
+      "type": "string"
+    },
+    "Reference": {
+      "type": "string"
+    },
+    "ColorPaletteReference": {
+      "type": "string"
+    },
+    "Schema": {
+      "type": "string"
+    },
+    "Family": {
+      "type": "string",
+      "description": "INCOHERENCE: 'quad' utilise 'PatternFamily'."
+    },
+    "PatternFamily": {
+      "type": "string"
+    },
+    "BaseURL": {
+      "type": "string",
+      "description": "ATTENTION: casse le partage si local (127.0.0.1)."
+    },
+    "CellSize": {
+      "$ref": "#/$defs/numberLike"
+    },
+    "MaxCellValue": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/numberLike"
+        },
+        {
+          "const": "*"
+        }
+      ]
+    },
+    "CellValueMode": {
+      "type": "string",
+      "examples": [
+        "Random",
+        "Sequence"
+      ]
+    },
+    "NumberFormat": {
+      "type": "string",
+      "examples": [
+        "absolute",
+        "percent"
+      ]
+    },
+    "GridColor": {
+      "$ref": "#/$defs/colorValue"
+    },
+    "BackgroundColor": {
+      "$ref": "#/$defs/colorValue"
+    },
+    "CoordMode": {
+      "type": "string",
+      "enum": [
+        "normalized",
+        "absolute"
+      ],
+      "description": "PROPOSE (RFC)."
+    },
+    "FontInfo": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "ContentInfo": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "TextFlipFlop": {
+      "$ref": "#/$defs/boolLike"
+    },
+    "Variables": {
+      "$ref": "#/$defs/variables"
+    },
+    "Shapes": {
+      "$ref": "#/$defs/shapes"
+    },
+    "Grid": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "square",
+            "hex_pointy",
+            "hex_flat"
+          ]
+        }
+      },
+      "additionalProperties": true,
+      "description": "Topologie de pavage. Absent = square (comportement historique)."
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "numberLike": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "string",
+          "pattern": "^-?[0-9]*\\.?[0-9]+$"
+        }
+      ]
+    },
+    "boolLike": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "true",
+            "false",
+            "True",
+            "False"
+          ]
+        }
+      ]
+    },
+    "refString": {
+      "type": "string",
+      "pattern": "^\\$[A-Za-z_][A-Za-z0-9_]*(\\([^)]*\\))?$"
+    },
+    "colorValue": {
+      "type": "string"
+    },
+    "colorPair": {
+      "type": "string",
+      "pattern": "^[^+|]+\\+[^+|]+$"
+    },
+    "colorPairChoices": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/colorPair"
+          }
+        },
+        {
+          "type": "string",
+          "pattern": "^[^|]+(\\|[^|]+)*$"
+        }
+      ]
+    },
+    "generator": {
+      "type": "object",
+      "required": [
+        "start",
+        "step"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "step": {
+          "$ref": "#/$defs/numberLike"
+        }
+      },
+      "additionalProperties": false
+    },
+    "pointKeyword": {
+      "type": "string",
+      "enum": [
+        "center",
+        "N",
+        "S",
+        "E",
+        "W",
+        "NE",
+        "NW",
+        "SE",
+        "SW"
+      ]
+    },
+    "pointValue": {
+      "description": "Position/extremite: paire [x,y], mot-clef (center/cardinaux), ou reference.",
+      "anyOf": [
+        {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/numberLike"
+          }
+        },
+        {
+          "$ref": "#/$defs/pointKeyword"
+        },
+        {
+          "$ref": "#/$defs/refString"
+        }
+      ]
+    },
+    "sizeValue": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/numberLike"
+        },
+        {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/numberLike"
+          }
+        },
+        {
+          "$ref": "#/$defs/generator"
+        },
+        {
+          "$ref": "#/$defs/refString"
+        }
+      ]
+    },
+    "thicknessValue": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/numberLike"
+        },
+        {
+          "$ref": "#/$defs/refString"
+        }
+      ]
+    },
+    "zValue": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/numberLike"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "min",
+            "max"
+          ]
+        }
+      ]
+    },
+    "variables": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*(\\([A-Za-z0-9_, ]*\\))?$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/variableValue"
+      }
+    },
+    "variableValue": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/numberLike"
+        },
+        {
+          "$ref": "#/$defs/colorValue"
+        },
+        {
+          "$ref": "#/$defs/shapeObject"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/part"
+          }
+        }
+      ]
+    },
+    "shapes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^([0-9A-Za-z]+|\\*)$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/shapeObject"
+      }
+    },
+    "part": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/refString"
+        },
+        {
+          "$ref": "#/$defs/shapeObject"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/part"
+          }
+        }
+      ]
+    },
+    "shapeObject": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ComboShape",
+            "ComboCell",
+            "QuadComboCell",
+            "SquareQuadCell",
+            "TriangleQuadCell",
+            "rectangle",
+            "square",
+            "arc",
+            "circle",
+            "losange",
+            "diamond",
+            "concave_diamond",
+            "polygram",
+            "line",
+            "digit_mark",
+            "letter",
+            "icon",
+            "diagonal",
+            "cardinal_line",
+            "guilloche",
+            "HexTruchet",
+            "HexRhombusCell",
+            "HexTriangleCell"
+          ]
+        },
+        "position": {
+          "$ref": "#/$defs/pointValue"
+        },
+        "size": {
+          "$ref": "#/$defs/sizeValue"
+        },
+        "fillColor": {
+          "$ref": "#/$defs/colorValue"
+        },
+        "drawColor": {
+          "$ref": "#/$defs/colorValue"
+        },
+        "drawThickness": {
+          "$ref": "#/$defs/thicknessValue"
+        },
+        "fillStyle": {
+          "type": "string",
+          "examples": [
+            "PIE"
+          ]
+        },
+        "capStyle": {
+          "type": "string",
+          "examples": [
+            "round"
+          ]
+        },
+        "rotation": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "startAngle": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "endAngle": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "instanceCount": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "vertex_count": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "is_star": {
+          "$ref": "#/$defs/boolLike"
+        },
+        "visible": {
+          "$ref": "#/$defs/boolLike"
+        },
+        "colorPairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/colorPair"
+          }
+        },
+        "colorPairChoices": {
+          "$ref": "#/$defs/colorPairChoices"
+        },
+        "decoration": {
+          "type": "string"
+        },
+        "decorationColorChoices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/colorValue"
+          }
+        },
+        "start": {
+          "$ref": "#/$defs/pointValue"
+        },
+        "end": {
+          "$ref": "#/$defs/pointValue"
+        },
+        "icon_url": {
+          "type": "string"
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/part"
+          }
+        },
+        "description": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "Z": {
+          "$ref": "#/$defs/zValue"
+        },
+        "curve": {
+          "type": "string",
+          "enum": [
+            "hypotrochoid",
+            "epitrochoid",
+            "rose",
+            "spiral",
+            "lissajous",
+            "sine_band"
+          ]
+        },
+        "R": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "r": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "d": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "revolutions": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "a": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "b": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "A": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "B": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "petals": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "turns": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "spacing": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "amp": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "freq": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "phase": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "delta": {
+          "$ref": "#/$defs/numberLike"
+        },
+        "step": {
+          "$ref": "#/$defs/numberLike"
+        }
+      },
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "ComboShape",
+                  "ComboCell",
+                  "QuadComboCell"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "parts"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "SquareQuadCell",
+                  "TriangleQuadCell"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "colorPairs"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "arc"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "position",
+              "size",
+              "startAngle",
+              "endAngle"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "icon"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "icon_url"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "polygram"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "vertex_count"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "rectangle"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "position",
+              "size"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "guilloche"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "curve"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "HexRhombusCell",
+                  "HexTriangleCell"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "colorPairs"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
