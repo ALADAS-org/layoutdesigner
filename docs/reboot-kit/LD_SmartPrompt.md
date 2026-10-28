@@ -1,45 +1,37 @@
 # Layout Designer — Smart Prompt (session loader)
 
 > Fetched and followed at the very start of every conversation in the Layout Designer
-> Claude project (see the custom-instructions directive in `LD_ReferenceCorpus_Bootstrap.md`,
-> §A). Keep this file current on HEAD; the project only stores a one-line fetch directive.
+> Claude project (see `LD_ReferenceCorpus_Bootstrap.md`, §A). Keep this file current on
+> HEAD; the project only stores a one-line fetch directive.
 
 ## On session start, do this — silently, before the first reply
 
 1. **Adopt the authority rule.** HEAD is the only authority for code and structure.
-   Read framework facts from HEAD or the resident corpus — **never from memory**. A
-   verifiable fact (a file's contents, an export's signature, a build-order status)
-   comes from HEAD, not recollection. If memory and a live file disagree, the live
-   file wins.
+   A verifiable fact (a file's contents, a signature, a step's status) comes from HEAD,
+   not recollection. If memory and a live file disagree, the live file wins.
 
-2. **Confirm the resident corpus is in context** (loaded once into Project Knowledge):
-   - `LD_ReferenceCorpus_Bootstrap.md` — invariants (façade-only drawing, mm, Command,
-     the three formats `.lydoc`/`.lygrid`/`.lypart`, Electron security).
-   - `LD_ReferenceCorpus.md` — the HEAD router (where each contract lives).
-   - `LD_Workflow.md` — the development workflow (setup + per-task loop).
-   - `LD_FileTree.md` — the repo path map (★ marks authority files).
-   If any is missing, say so in one line and continue.
+2. **Load the governance skills** `ld-maslow-pyramid-workflow` and
+   `ld-complexity-governance`. If they are not available, say so in one line and follow
+   the essentials in `LD_ReferenceCorpus_Bootstrap.md`.
 
-3. **Read from HEAD on demand, not upfront.** Do not pull the whole repo. When a task
-   needs a specific file, resolve its path from `LD_FileTree.md` / the router, then read
-   it from the raw CDN:
+3. **Confirm the resident corpus is in context** (Project Knowledge):
+   `LD_ReferenceCorpus_Bootstrap.md`, `LD_ReferenceCorpus.md`, `LD_Workflow.md`,
+   `LD_FileTree.md`. If any is missing, say so in one line and continue.
+
+4. **Read the current status** from `docs/ROADMAP.md` on HEAD before proposing work.
+   Other files are read on demand (path from `LD_FileTree.md` / the router):
    `https://raw.githubusercontent.com/ALADAS-org/layoutdesigner/main/<path>`
-   For design questions, read the relevant § of `docs/LayoutDesigner_ARCHITECTURE.md`.
-
-4. **Respect the invariants when writing code.** Draw only through the `gfx` façade
-   (never raw canvas/P5); keep the model in millimetres; route every mutation through a
-   Command in `src/core/commands.js`; keep plugins domain-specific and the core
-   domain-free; ES modules; English code, French conversation.
 
 ## Working rules
 
-- Confirm scope before a large multi-file change; deliver runnable slices.
-- When adding a print-domain feature, prefer a **new plugin** (LayerType / Primitive /
-  preset) over editing the core.
-- When you change repo structure, remind the owner to regenerate `LD_FileTree.md`
-  (`python cli_tools/ld_generate_filetree.py` from the repo root) and reload it into the
-  project.
-- Don't claim a deferred piece exists (`files.js`, `SvgTarget`, `.lypart` export,
-  WYSIWYG editor, `postmark`/`ink-stamp`): check the §15 status table first.
+- Locate every request in the pyramid; build only the current step.
+- Fix the reference target and the acceptance criteria before coding; when something is
+  unclear, ask one precise question.
+- Suggestions are welcome but go to *Proposals (not built)*.
+- Deliver git patches (`git am`) with the delivery report of `ld-complexity-governance`.
+- After structural changes, remind the owner to regenerate `LD_FileTree.md`
+  (`python cli_tools/ld_generate_filetree.py`) and reload it into the project.
+- Nothing from the abandoned prototype (tag `proto-improvise-2026-10`) is assumed to
+  exist or to be valid.
 
 *Companion files: `LD_ReferenceCorpus_Bootstrap.md`, `LD_ReferenceCorpus.md`.*

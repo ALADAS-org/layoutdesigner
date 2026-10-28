@@ -165,8 +165,14 @@ Script Python/JS complétant le schéma pour les points 5 : résolution des `$re
 
 ## Rendering rules (fidelity to Silverquote)
 
-Verified cell-for-cell against Silverquote (using an exported value grid). The live
-engine (§15.4 `layer-pattern`) MUST implement these, or renders diverge:
+> **Status: HYPOTHESES, to be re-verified in N1** (see `docs/ROADMAP.md`). These rules
+> were derived by the abandoned improvised prototype (tag `proto-improvise-2026-10`),
+> whose renders drifted from Silverquote. They are kept as starting hypotheses only;
+> the authority is Silverquote itself — the screenshots in
+> `assets/legacy/screenshots/silverquote/` and the Product Owner's Design gate.
+> `cellBleedPx` below is an implementation trick of that prototype, not a Silverquote rule.
+
+Candidate rules:
 
 1. **`position: [x, y]` is relative to the cell CENTRE**, not the top-left corner.
    With `NumberFormat: "absolute"` the offsets are pixels (e.g. `["0","-12.5"]` places

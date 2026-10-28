@@ -1,16 +1,8 @@
 {
   "name": "layout-designer",
-  "version": "0.1.0-proto",
-  "description": "Layout Designer — premier prototype (noyau + façade gfx + plugins). ElectronJS + modules ES.",
-  "type": "module",
-  "main": "src/main/main.js",
-  "scripts": {
-    "start": "electron .",
-    "check": "node --check src/renderer/app.js"
-  },
+  "version": "0.0.0",
+  "private": true,
+  "description": "Layout Designer — ElectronJS tool for composing print-style artifacts from generative calques. Restarting at N0 (see docs/ROADMAP.md).",
   "author": "Echopraxium (Michel) with Claude AI",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": ">=30.0.0"
-  }
+  "license": "MIT"
 }

@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (623 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (core contract or architecture spec — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (585 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **assets/**
   - **legacy/**
@@ -59,7 +59,13 @@
       - Nuts.pattern
       - PI.pattern
       - Polygram.pattern
-      - Screenshot_Default.png
+    - **screenshots/**
+      - **silverquote/**
+        - README.md
+        - Silverquote_Default_44x26.png
+        - Silverquote_HalfCircles_44x26.png
+        - Silverquote_NestedSquares_22x13.png
+        - Silverquote_Polygram_44x26.png
     - **tilesets/**
       - **496_RPG_icons/**
         - A_Armor04.png
@@ -581,85 +587,26 @@
         - S_Sword21.png
       - OpenGameArt.org.url
       - ProjectUtumno_full.png
-  - iching.lygrid.js
-  - lyparts.js
-- **builtin-plugins/**
-  - **formats-print/**
-    - index.js
-  - **layer-component/**
-    - index.js
-  - **layer-fill/**
-    - index.js
-  - **layer-guilloche/**
-    - index.js
-  - **layer-pattern/**
-    - index.js
-  - **layer-perforation/**
-    - index.js
-  - **layer-text/**
-    - index.js
 - **cli_tools/**
   - ld_generate_filetree.py
   - pattern_validate.cjs
 - **docs/**
-  - **Handovers/**
-    - 2026_10_27_22h-19_LD_Handover.md
   - **reboot-kit/**
     - LD_FileTree.md
     - LD_ReferenceCorpus.md
     - LD_ReferenceCorpus_Bootstrap.md
     - LD_SmartPrompt.md
     - LD_Workflow.md
-  - LayoutDesigner_ARCHITECTURE.md ★
+  - ROADMAP.md ★
+  - TECH_DEBT.md ★
 - **schemas/**
-  - LEGACY_PATTERNS_REPORT.md
-  - pattern.schema.json
-  - pattern.spec.md
-- **screenshots/**
-  - **legacy/**
-    - arcs.png
-    - default.png
-    - Default_fullpage.png
-    - HalfCircles_fullpage.png
-    - iching.png
-    - moire.png
-    - NestedSquares_fullpage.png
-    - polygram.png
-    - Polygram_fullpage.png
-    - quad-square.png
-    - quad-triangle.png
-    - rectangles.png
-    - text.png
-    - truchet.png
-  - preview_banknote.png
-  - preview_stamp.png
-  - preview_symmetry.png
-- **src/**
-  - **core/**
-    - **geometry/**
-      - grid_layout.js
-      - guilloche.js
-    - **render/**
-      - compositor.js ★
-      - facade.js ★
-    - commands.js ★
-    - document.js ★
-    - i18n.js
-    - registry.js ★
-    - session.js
-    - undo.js ★
-  - **main/**
-    - main.js
-    - preload.cjs
-  - **renderer/**
-    - app.js
+  - pattern.schema.json ★
+  - pattern.spec.md ★
 - .gitattributes
 - .gitignore
 - _00_open_cmd_window.bat
 - _run_LayoutDesigner_W.bat
 - _run_LayoutDesigner_X.sh
-- demo.html
 - LICENSE
 - package.json
 - README.md
-- README_PROTOTYPE.md

@@ -1,62 +1,33 @@
 # Layout Designer
 
-An **ElectronJS** tool for composing **fixed-format print artifacts** — postcards,
-stamps, fantasy/"Monopoly" banknotes, ID-1 (credit-card format) cards, ATC/ARC,
-playing and tarot cards.
+An **ElectronJS** tool for composing print-style artifacts (postcards, stamps, fantasy
+banknotes, ATC…) from generative calques — built step by step, starting from what
+**Silverquote** did (pattern generation on a grid of cells from a JSON description),
+without its crypto-wallet part.
 
-> Status: **first prototype** — a runnable vertical slice of the v0.4 architecture
-> (`docs/LayoutDesigner_ARCHITECTURE.md`). See `README_PROTOTYPE.md` for the file map and
-> what is built vs deferred.
+> **Status:** restarting from a clean base (2026-10-28). No application code yet — the
+> next step is **N0 — Scaffolding**. The earlier improvised prototype is archived under
+> the git tag `proto-improvise-2026-10`.
 
-![Composed stamp](screenshots/preview_stamp.png)
+## How the project is driven
 
-## Design in one breath
+- **Roadmap:** `docs/ROADMAP.md` — a Maslow pyramid (N0 Scaffolding → N5), each level
+  validated by the Product Owner before the next one starts.
+- **Technical debt:** `docs/TECH_DEBT.md`.
+- **Working with Claude:** `docs/reboot-kit/LD_Workflow.md`.
 
-- **Domain-free core + plugins.** The core knows documents, layers, regions, commands
-  and a rendering façade — nothing about stamps. Every print-domain notion (formats,
-  fill, pattern, guilloche, text, perforation…) is a **plugin**.
-- **One drawing surface: the `gfx` façade.** No layer or primitive touches a raw canvas.
-  Everything draws **in millimetres**, in one frame, with normalized anchors. P5's
-  anchor quirks are absorbed in one place; `CanvasTarget` today, `SvgTarget` (export)
-  next, same contract.
-- **Three file formats (live/frozen axis):** `.lydoc` (document), `.lygrid` (pattern
-  grid-DSL), `.lypart` (frozen SVG component).
-- **Every mutation is an undoable Command.**
-
-## Run
-
-```bash
-# Electron (target)
-npm install
-npm start
-
-# Browser (fast preview, needs a static server — ES modules don't load from file://)
-npx serve .      # then open http://localhost:3000/demo.html
-```
-
-## Repository layout
+## What the repository holds today
 
 ```
-src/core/            model, undo, commands, session, registry, i18n
-src/core/render/     gfx façade (facade.js) + compositor
-src/core/geometry/   grid layout, guilloche math
-builtin-plugins/     formats-print, layer-{fill,pattern,guilloche,text,perforation}
-src/renderer/app.js  app wiring + DOM UI      · demo.html  browser host
-src/main/main.js, preload.cjs  Electron shell
-assets/              iching.lygrid.js (mini-language reference sample)
-docs/                architecture spec + reboot-kit (Claude lazy-loading corpus)
-cli_tools/           ld_generate_filetree.py
+assets/legacy/patterns/                 Silverquote .pattern corpus (N1 input)
+assets/legacy/icons/, tilesets/         assets of the Icons/* pattern family
+assets/legacy/screenshots/silverquote/  Silverquote reference renders (N1 target)
+schemas/                                .pattern grammar: JSON Schema + spec
+cli_tools/pattern_validate.cjs          semantic validator for .pattern files
+cli_tools/ld_generate_filetree.py       regenerates docs/reboot-kit/LD_FileTree.md
+docs/                                   roadmap, debt register, reboot-kit
 ```
-
-## Working with Claude on this repo
-
-`docs/reboot-kit/` holds a **lazy-loading corpus** so a Claude project can work on this
-repo without loading the whole thing each conversation: a router
-(`LD_ReferenceCorpus.md`), invariants (`LD_ReferenceCorpus_Bootstrap.md`), a generated
-path map (`LD_FileTree.md`), and a session loader (`LD_SmartPrompt.md`). Set-up is in the
-Bootstrap file, §A. Regenerate the file tree after structural changes:
-`python cli_tools/ld_generate_filetree.py` (from the repo root).
 
 ## License
 
-BSD 3-Clause (see `LICENSE`). Author: Echopraxium (Michel), with Claude AI.
+MIT — see `LICENSE`. Author: Echopraxium (Michel) with Claude AI.

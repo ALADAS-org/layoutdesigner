@@ -39,18 +39,15 @@ COLLAPSED_DIRS = {
     "node_modules", "dist", "out", "release", "__pycache__", ".pytest_cache",
 }
 
-# Fichiers d'AUTORITÉ (★) : les contrats de conception à lire sur HEAD, jamais de
-# mémoire — le modèle de données, la pile Command, la façade gfx, le compositor,
-# le registre de plugins, et la spec d'architecture. Correspond aux ★ ontologies
-# canoniques de TSCG, transposé aux contrats du Layout Designer.
+# Fichiers d'AUTORITÉ (★) : à lire sur HEAD, jamais de mémoire. Au démarrage de N0
+# il n'y a plus de code applicatif : l'autorité est la roadmap, le registre de dette
+# et la grammaire du corpus Silverquote. À compléter quand N0 crée ses contrats
+# (registres Action/Command, API de plugins, historique EditTransaction, calques).
 AUTHORITY_FILES = {
-    "docs/LayoutDesigner_ARCHITECTURE.md",
-    "src/core/document.js",
-    "src/core/undo.js",
-    "src/core/commands.js",
-    "src/core/registry.js",
-    "src/core/render/facade.js",
-    "src/core/render/compositor.js",
+    "docs/ROADMAP.md",
+    "docs/TECH_DEBT.md",
+    "schemas/pattern.schema.json",
+    "schemas/pattern.spec.md",
 }
 
 
@@ -128,7 +125,7 @@ def write_tree(paths, outfile=TREE_OUTPUT):
         "# Layout Designer — Repository File Tree\n\n"
         f"*Generated from `git ls-files` ({len(kept)} tracked files). Directory-level map; "
         "`node_modules` / build / cache folders are collapsed to a count. "
-        "★ = live authority file (core contract or architecture spec — read it from HEAD, "
+        "★ = live authority file (governance doc, grammar or core contract — read it from HEAD, "
         "never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after "
         "structural changes, then reload it into Project Knowledge.*\n\n"
     )
