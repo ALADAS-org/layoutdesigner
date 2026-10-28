@@ -11,8 +11,9 @@
    not recollection. If memory and a live file disagree, the live file wins.
 
 2. **Load the governance skills** `ld-maslow-pyramid-workflow` and
-   `ld-complexity-governance`. If they are not available, say so in one line and follow
-   the essentials in `LD_ReferenceCorpus_Bootstrap.md`.
+   `ld-complexity-governance`. If they are not available as skills, read them from HEAD
+   (`.claude/skills/<name>/SKILL.md` — the repo copy is the reference), say so in one
+   line, and follow them.
 
 3. **Confirm the resident corpus is in context** (Project Knowledge):
    `LD_ReferenceCorpus_Bootstrap.md`, `LD_ReferenceCorpus.md`, `LD_Workflow.md`,

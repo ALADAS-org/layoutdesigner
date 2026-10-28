@@ -34,8 +34,10 @@ opaque result. An opaque result is not a result.
 2. **Claude project:** create the project, put the fetch directive in its custom
    instructions, load the four resident files and enable web fetch — exact content in
    `LD_ReferenceCorpus_Bootstrap.md` (*Minimal project corpus*).
-3. **Skills:** make sure `ld-maslow-pyramid-workflow` and `ld-complexity-governance`
-   are available to the project.
+3. **Skills:** `ld-maslow-pyramid-workflow` and `ld-complexity-governance` are versioned
+   in the repo under `.claude/skills/` (the reference; Claude Code loads them
+   automatically there). Save the same versions as skills on the claude.ai account so
+   conversations load them too; when a skill changes, update both.
 
 ---
 
