@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **next** — not started |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 next |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -28,15 +28,22 @@ the git tag `proto-improvise-2026-10`. Nothing from it is assumed to be valid.
 *Updated at the end of each session — the first thing a new conversation reads after
 the status table.*
 
-**Next action (2026-10-29): open N0.** Agree with the Product Owner, before any code:
-1. the **sub-steps of N0** and their order;
-2. for each sub-step, its **reference target** and **acceptance criteria** (both gates);
-3. the **complexity budget**, starting with a short **written design of the public
-   contracts** — Action / Command registries and aliasing, plugin API, calque and
-   object model, EditTransaction history — validated before implementation.
+**Next action (2026-10-29): N0.2.** First write the **Action / Command contract**
+(short written design, validated by the Product Owner), then implement the registries,
+the aliasing and the command palette.
+
+**Decisions (2026-10-29, Product Owner):**
+- N0 sub-steps and their order: see *N0 sub-steps* below.
+- Public contracts are written **just before the sub-step that uses them**, not all
+  upfront — each still validated before its code.
+- Module systems: Electron main in **CJS**, renderer in **ESM**.
+- Dev dependencies: `electron`, `jest`, `@playwright/test`.
+- Electron's default native menu stays until N0.3, which replaces it with the HTML
+  menu bar (it keeps reload / DevTools shortcuts available until then).
 
 **Open points** (decided when their level comes, not before):
-- N0 — order of the sub-steps (proposal to be made by Claude, decided by the Product Owner).
+- N0.3 — reference for the HTML menu bar: is the `menubar` viewlet of
+  electron-boilerplate-cjs the Product Owner's HTML-menu prototype, or is there another?
 - N1 — which patterns form the reference sample (one per primitive family).
 - N1 — deterministic value grid for cell-by-cell comparison with Silverquote: what
   Silverquote can export (an `.xlsx`?) and whether export and screenshot come from the
@@ -73,6 +80,20 @@ the API.
 References (read from their HEAD): electron-boilerplate-cjs (HTML menus, viewlets,
 Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 (vizjets, L10n, tests). Details in `ld-maslow-pyramid-workflow` §4.
+
+#### N0 sub-steps (order validated 2026-10-29)
+
+| # | Sub-step | Contract written first | State |
+|---|---|---|---|
+| N0.1 | Electron shell (secure empty window) + Jest / Playwright harness | — | ✅ 2026-10-29 |
+| N0.2 | Action / Command registries, aliasing, command palette | Action / Command | ⏳ next |
+| N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | — | — |
+| N0.4 | Localisation (JSON, en / fr) | — | — |
+| N0.5 | Server and renderer plugins (dummy ones) | Plugin API | — |
+| N0.6 | Document + calques + undo / redo (every mutation is an EditTransaction) | Calque / object model, EditTransaction | — |
+| N0.7 | Selection + copy / paste | — | — |
+| N0.8 | *Object → Transformation* | — | — |
+| N0.9 | Zoom (loupe) + panning | — | — |
 
 ### N1 — Base
 Redo Silverquote, without the crypto-wallet part: open a JSON `.pattern` file,
