@@ -4,5 +4,17 @@
   "private": true,
   "description": "Layout Designer — ElectronJS tool for composing print-style artifacts from generative calques. Restarting at N0 (see docs/ROADMAP.md).",
   "author": "Echopraxium (Michel) with Claude AI",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "./www/src/server/electron_main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "npm run test:jest && npm run test:playwright",
+    "test:jest": "jest --config=jest.config.js",
+    "test:playwright": "playwright test --config=tests/playwright/playwright.config.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "electron": "^45.1.0",
+    "jest": "^30.5.2"
+  }
 }

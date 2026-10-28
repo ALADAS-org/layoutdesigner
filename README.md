@@ -5,9 +5,18 @@ banknotes, ATC…) from generative calques — built step by step, starting from
 **Silverquote** did (pattern generation on a grid of cells from a JSON description),
 without its crypto-wallet part.
 
-> **Status:** restarting from a clean base (2026-10-28). No application code yet — the
-> next step is **N0 — Scaffolding**. The earlier improvised prototype is archived under
-> the git tag `proto-improvise-2026-10`.
+> **Status:** **N0 — Scaffolding** in progress (see `docs/ROADMAP.md`). The earlier
+> improvised prototype is archived under the git tag `proto-improvise-2026-10`.
+
+## Run and test
+
+```
+npm install
+npm start                  # opens the application
+npm test                   # unit (Jest) then end-to-end (Playwright) tests
+npm run test:jest          # unit tests only
+npm run test:playwright    # end-to-end tests only
+```
 
 ## How the project is driven
 
@@ -19,6 +28,8 @@ without its crypto-wallet part.
 ## What the repository holds today
 
 ```
+www/                                    the application (Electron main: www/src/server/)
+tests/jest/, tests/playwright/          unit and end-to-end tests
 assets/legacy/patterns/                 Silverquote .pattern corpus (N1 input)
 assets/legacy/icons/, tilesets/         assets of the Icons/* pattern family
 assets/legacy/screenshots/silverquote/  Silverquote reference renders (N1 target)
