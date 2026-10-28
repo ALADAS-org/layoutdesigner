@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (595 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (610 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -597,6 +597,8 @@
   - ld_generate_filetree.py
   - pattern_validate.cjs
 - **docs/**
+  - **contracts/**
+    - ACTION_COMMAND.md
   - **reboot-kit/**
     - LD_FileTree.md
     - LD_ReferenceCorpus.md
@@ -611,16 +613,32 @@
 - **tests/**
   - **jest/**
     - **unit/**
+      - **renderer/**
+        - action_registry.test.mjs
+        - command_palette.test.mjs
+        - shortcuts.test.mjs
       - **server/**
+        - command_registry.test.js
         - window_options.test.js
   - **playwright/**
     - **e2e/**
       - app_launch.spec.js
+      - command_palette.spec.js
     - playwright.config.js
 - **www/**
   - **src/**
+    - **renderer/**
+      - action_registry.js
+      - command_palette.css
+      - command_palette.js
+      - main.js
+      - package.json
+      - shortcuts.js
     - **server/**
+      - app_commands.js
+      - command_registry.js
       - electron_main.js
+      - preload.js
       - window_options.js
   - index.html
 - .gitattributes
