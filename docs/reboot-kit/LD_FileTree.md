@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (587 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (595 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -608,11 +608,28 @@
 - **schemas/**
   - pattern.schema.json ★
   - pattern.spec.md ★
+- **tests/**
+  - **jest/**
+    - **unit/**
+      - **server/**
+        - window_options.test.js
+  - **playwright/**
+    - **e2e/**
+      - app_launch.spec.js
+    - playwright.config.js
+- **www/**
+  - **src/**
+    - **server/**
+      - electron_main.js
+      - window_options.js
+  - index.html
 - .gitattributes
 - .gitignore
 - _00_open_cmd_window.bat
 - _run_LayoutDesigner_W.bat
 - _run_LayoutDesigner_X.sh
+- jest.config.js
 - LICENSE
+- package-lock.json
 - package.json
 - README.md
