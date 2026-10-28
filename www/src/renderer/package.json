@@ -1,0 +1,4 @@
+{
+  "//": "Marks the renderer's .js files as ES modules for Node / Jest. The browser ignores this file.",
+  "type": "module"
+}

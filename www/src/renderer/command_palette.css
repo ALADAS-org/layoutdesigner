@@ -1,0 +1,51 @@
+/* Command palette — minimal styling. Its look belongs to the N0.3 theming. */
+
+.CommandPalette {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 15vh;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.CommandPalette[hidden] {
+  display: none;
+}
+
+.CommandPalettePanel {
+  width: min(560px, 90vw);
+  background: #fff;
+  border: 1px solid #888;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  font: 14px sans-serif;
+}
+
+.CommandPaletteInput {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font: inherit;
+  outline: none;
+}
+
+.CommandPaletteList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.CommandPaletteItem {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.CommandPaletteItem[aria-selected="true"] {
+  background: #0a64d6;
+  color: #fff;
+}

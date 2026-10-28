@@ -9,7 +9,7 @@
   "scripts": {
     "start": "electron .",
     "test": "npm run test:jest && npm run test:playwright",
-    "test:jest": "jest --config=jest.config.js",
+    "test:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js",
     "test:playwright": "playwright test --config=tests/playwright/playwright.config.js"
   },
   "devDependencies": {

@@ -7,12 +7,15 @@
 // Security invariants (LD_ReferenceCorpus_Bootstrap.md, "Conventions"):
 //   - contextIsolation: true
 //   - nodeIntegration : false
-// Main-process powers will reach the renderer only through declared IPC in a preload
-// bridge; no preload exists yet (it arrives with the Action / Command step, N0.2).
+// Main-process powers reach the renderer only through declared IPC in the preload
+// bridge (preload.js).
 // =====================================================================================
 'use strict';
 
+const path = require('path');
+
 const APP_TITLE = 'Layout Designer';
+const PRELOAD_PATH = path.join(__dirname, 'preload.js');
 
 function buildMainWindowOptions() {
   return {
@@ -21,9 +24,10 @@ function buildMainWindowOptions() {
     height: 800,
     webPreferences: {
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      preload: PRELOAD_PATH
     }
   };
 }
 
-module.exports = { APP_TITLE, buildMainWindowOptions };
+module.exports = { APP_TITLE, PRELOAD_PATH, buildMainWindowOptions };
