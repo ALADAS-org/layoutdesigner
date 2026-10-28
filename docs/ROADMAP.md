@@ -28,9 +28,9 @@ the git tag `proto-improvise-2026-10`. Nothing from it is assumed to be valid.
 *Updated at the end of each session — the first thing a new conversation reads after
 the status table.*
 
-**Next action (2026-10-29): N0.2.** First write the **Action / Command contract**
-(short written design, validated by the Product Owner), then implement the registries,
-the aliasing and the command palette.
+**Next action (2026-10-29): N0.2 implementation.** The Action / Command contract is
+validated (`docs/contracts/ACTION_COMMAND.md`); implement the registries, the aliasing,
+the shortcuts and the command palette on its witness case.
 
 **Decisions (2026-10-29, Product Owner):**
 - N0 sub-steps and their order: see *N0 sub-steps* below.
@@ -38,6 +38,8 @@ the aliasing and the command palette.
   upfront — each still validated before its code.
 - Module systems: Electron main in **CJS**, renderer in **ESM**.
 - Dev dependencies: `electron`, `jest`, `@playwright/test`.
+- **Illustrator is the reference application** for editing conventions and shortcuts,
+  and later for the calques user interface.
 - Electron's default native menu stays until N0.3, which replaces it with the HTML
   menu bar (it keeps reload / DevTools shortcuts available until then).
 
@@ -71,7 +73,7 @@ the API.
 - **Calques**: add, remove, reorder, show/hide, active calque.
 - Editing: undo/redo (EditTransactions), selection, copy/paste, *Object →
   Transformation* (translation, scale, height/width ratio, rotation; mirror as a
-  special case), zoom (loupe), panning — Illustrator / Inkscape basic toolkit.
+  special case), zoom (loupe), panning — Illustrator basic toolkit (reference application).
 - GUI **entirely in HTML, menus included**: menu bar, toolbar, status bar, dialog
   boxes; themable.
 - Localisation of labels with JSON files.
@@ -86,7 +88,7 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | # | Sub-step | Contract written first | State |
 |---|---|---|---|
 | N0.1 | Electron shell (secure empty window) + Jest / Playwright harness | — | ✅ 2026-10-29 |
-| N0.2 | Action / Command registries, aliasing, command palette | Action / Command | ⏳ next |
+| N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ⏳ next |
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | — | — |
 | N0.4 | Localisation (JSON, en / fr) | — | — |
 | N0.5 | Server and renderer plugins (dummy ones) | Plugin API | — |
