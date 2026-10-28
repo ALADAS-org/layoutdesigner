@@ -45,7 +45,7 @@ opaque result. An opaque result is not a result.
 
 1. **Locate** the request in the pyramid (`docs/ROADMAP.md`). Later level or backlog →
    it is recorded there, not built.
-2. **Fix the reference target** (Silverquote screenshot, Illustrator/Inkscape behaviour,
+2. **Fix the reference target** (Silverquote screenshot, Illustrator behaviour,
    a prototype of the Product Owner…) and the **acceptance criteria**.
 3. **Declare the complexity budget** (files, concepts, dependencies).
 4. **Implement the minimum**, with its tests.

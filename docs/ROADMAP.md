@@ -44,8 +44,6 @@ the shortcuts and the command palette on its witness case.
   menu bar (it keeps reload / DevTools shortcuts available until then).
 
 **Open points** (decided when their level comes, not before):
-- N0.3 — reference for the HTML menu bar: is the `menubar` viewlet of
-  electron-boilerplate-cjs the Product Owner's HTML-menu prototype, or is there another?
 - N1 — which patterns form the reference sample (one per primitive family).
 - N1 — deterministic value grid for cell-by-cell comparison with Silverquote: what
   Silverquote can export (an `.xlsx`?) and whether export and screenshot come from the

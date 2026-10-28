@@ -36,8 +36,8 @@ Essentials, in case the skills are not loaded:
   (image, file, behaviour) before coding; when unclear, ask.
 - **Two gates** close a step: automated **anti-regression** (unit + e2e tests, Jest +
   Playwright) and the Product Owner's **Design gate**.
-- **Don't reinvent the wheel:** Illustrator / Inkscape conventions for editing (basic
-  toolkit only); the Product Owner's prototypes for GUI, plugins, L10n and tests.
+- **Don't reinvent the wheel:** Illustrator conventions for editing — the reference
+  application (basic toolkit only); the Product Owner's prototypes for GUI, plugins, L10n and tests.
 
 ---
 
