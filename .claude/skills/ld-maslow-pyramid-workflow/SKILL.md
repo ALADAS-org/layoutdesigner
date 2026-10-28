@@ -22,10 +22,11 @@ spirograph screens and rosettes); first pattern renders that drifted from
 Silverquote and were caught only by the Product Owner's eye.
 
 **Don't reinvent the wheel.** For editing behaviour, follow the conventions of the
-vector-drawing classics, **Illustrator and Inkscape** (names, menus, shortcuts,
-selection and transformation behaviour) — inspire from them, even copy them.
-Scope is their **basic toolkit** only (selection, copy/paste, transformation,
-zoom/pan, calques…), not their exhaustive feature set, until the Product Owner
+vector-drawing classic **Illustrator**, the reference application (Product Owner
+decision, 2026-10-29) — names, menus, shortcuts, selection and transformation
+behaviour, and later the calques user interface. Inspire from it, even copy it.
+Scope is its **basic toolkit** only (selection, copy/paste, transformation,
+zoom/pan, calques…), not its exhaustive feature set, until the Product Owner
 decides otherwise. Likewise reuse the Product Owner's own prior work (§4).
 
 ## 1. Vocabulary (agreed)
@@ -72,7 +73,7 @@ step, with its reference target.
 
 | Brick | Reference to follow |
 |---|---|
-| Editing behaviour, calques, menu content | **Illustrator / Inkscape** conventions (basic toolkit only). |
+| Editing behaviour, calques (including their user interface), menu content, shortcuts | **Illustrator** conventions — the reference application (basic toolkit only). |
 | HTML menu bar, toolbar, viewlets, Commands / Actions, command palette | **electron-boilerplate-cjs** (ALADAS-org, Product Owner's prototype): `www/src/view/viewlets/{menubar,main_toolbar,command_palette}/`, `www/src/view/viewlet_loader.js`, `www/src/controller/command_registry.js` + `commands/`, `www/src/view/action_registry.js` + `actions/`, `www/css/custom_menu.css`. Menu entries are declarative (`labelKey` for L10n + a key of what they trigger). **Adapt, do not copy blindly**: (a) menu entries trigger **Actions only**; an Action may be an alias redirecting to a server Command over IPC; (b) **lighter form** than the prototype's singleton-per-class (≈30 lines per unit) — one unit = a small registered object, ES modules — without turning the Electron plumbing into a *gas factory*; (c) add what the prototype lacks: keyboard shortcuts, keyboard navigation, enabled/disabled state, separators, check items, submenus, command-palette filter. jQuery and iziToast are accepted. |
 | GUI components (dialogs, status bar) | Cryptocalc `www/vizjets/<component>/` (`.html` + `.css` + `.js`, inserted with `w3-include-html`); driver code in `www/js/view/`. |
 | Localisation | Cryptocalc `www/js/L10n/` and electron-boilerplate-cjs `www/L10n/` (`gui-msg-en.json`, `gui-msg-fr.json`). |
@@ -95,7 +96,7 @@ Every delivery states its effect on these five axes:
 1. **Locate** the request in the pyramid. If it belongs to a later level or to the
    backlog, say so and propose where it goes — do not build it.
 2. **Fix the reference target before coding**: an image, a file, a behaviour (for
-   N1: Silverquote renders; for N0: the rectangle witness, the Illustrator/Inkscape
+   N1: Silverquote renders; for N0: the rectangle witness, the Illustrator
    behaviour, and the references of §4). No reference → ask; never guess the need.
 3. **Agree the acceptance criteria** — two gates, both required:
    - **Anti-regression gate** (automated): unit, end-to-end and visual tests green.
@@ -113,7 +114,7 @@ Every delivery states its effect on these five axes:
 - Extra ideas go to *Proposals (not built)*; the Product Owner accepts or rejects.
 - Never call a step done before both gates pass.
 - Anticipate in the model, do not implement (e.g. multiple Trame / Scene calques).
-- Prefer an established Illustrator / Inkscape convention, or the Product Owner's
+- Prefer an established Illustrator convention, or the Product Owner's
   prior prototypes, over an invented one; when departing from them, say why.
 - When something is unclear, ask one precise question instead of filling the gap
   with an invented choice.

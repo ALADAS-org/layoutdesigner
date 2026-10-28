@@ -24,8 +24,8 @@ reporting them honestly; the Product Owner decides what to accept.
    transformation / undo / zoom / pan, **dummy client and server plugins** for the
    API — and covered by tests. Infrastructure without a witness case is speculative
    and is not delivered.
-4. **Don't reinvent the wheel.** Reuse established conventions (Illustrator /
-   Inkscape for editing; Cryptocalc and TscgOntologyExplorer for GUI, i18n, tests
+4. **Don't reinvent the wheel.** Reuse established conventions (Illustrator
+   for editing; Cryptocalc and TscgOntologyExplorer for GUI, i18n, tests
    and plugins) before designing anything new. Invented behaviour is complexity the
    user has to learn.
 5. **Debt is allowed only when it is known, written down and accepted.** An
