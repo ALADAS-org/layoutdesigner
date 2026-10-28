@@ -23,6 +23,25 @@
 The improvised first prototype was abandoned on 2026-10-28; it remains readable under
 the git tag `proto-improvise-2026-10`. Nothing from it is assumed to be valid.
 
+## Next action & open points
+
+*Updated at the end of each session — the first thing a new conversation reads after
+the status table.*
+
+**Next action (2026-10-29): open N0.** Agree with the Product Owner, before any code:
+1. the **sub-steps of N0** and their order;
+2. for each sub-step, its **reference target** and **acceptance criteria** (both gates);
+3. the **complexity budget**, starting with a short **written design of the public
+   contracts** — Action / Command registries and aliasing, plugin API, calque and
+   object model, EditTransaction history — validated before implementation.
+
+**Open points** (decided when their level comes, not before):
+- N0 — order of the sub-steps (proposal to be made by Claude, decided by the Product Owner).
+- N1 — which patterns form the reference sample (one per primitive family).
+- N1 — deterministic value grid for cell-by-cell comparison with Silverquote: what
+  Silverquote can export (an `.xlsx`?) and whether export and screenshot come from the
+  same draw.
+
 ## Vocabulary
 
 | Term | Meaning |
