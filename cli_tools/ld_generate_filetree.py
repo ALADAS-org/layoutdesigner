@@ -48,6 +48,8 @@ AUTHORITY_FILES = {
     "docs/TECH_DEBT.md",
     "schemas/pattern.schema.json",
     "schemas/pattern.spec.md",
+    ".claude/skills/ld-maslow-pyramid-workflow/SKILL.md",
+    ".claude/skills/ld-complexity-governance/SKILL.md",
 }
 
 

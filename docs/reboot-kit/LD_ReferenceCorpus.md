@@ -18,7 +18,7 @@
 | Roadmap — pyramid N0 → N5, current status, backlog | `docs/ROADMAP.md` ★ |
 | Technical debt register | `docs/TECH_DEBT.md` ★ |
 | Workflow (setup + per-step loop, human-facing) | `docs/reboot-kit/LD_Workflow.md` |
-| Skills: priorities / complexity | `ld-maslow-pyramid-workflow`, `ld-complexity-governance` (Claude project skills) |
+| Skills: priorities / complexity (repo copy = reference; keep the claude.ai account skills identical) | `.claude/skills/ld-maslow-pyramid-workflow/SKILL.md` ★, `.claude/skills/ld-complexity-governance/SKILL.md` ★ |
 
 ## N1 reference material (Silverquote)
 
