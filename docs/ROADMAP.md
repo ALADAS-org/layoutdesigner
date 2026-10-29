@@ -34,8 +34,10 @@ Design gate: menus (mouse and keyboard), toolbar icons and tooltips, light and d
 themes, About dialog, status bar, French labels (system locale, or
 `npx electron . --lang=fr`). Details: `docs/contracts/ACTION_COMMAND.md` §13.
 Settled on 2026-10-29: `jquery-ui` approved; theme colours approved; the palette
-icon was replaced by a VS Code-like **command center** in the toolbar — the last item
-awaiting the Product Owner's check.
+icon was replaced by a VS Code-like **command center** in the toolbar; **dark theme by
+default**; *Help › About* also on **F1** and as the palette entry « Help: About… »
+(palette entries read « Category: Label », as in VS Code) — awaiting the Product
+Owner's check.
 
 After validation: N0.5 — plugins (write the Plugin API contract first).
 

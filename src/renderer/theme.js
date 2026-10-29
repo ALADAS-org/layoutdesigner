@@ -1,12 +1,13 @@
 // =====================================================================================
 // theme.js — predefined themes (renderer, ESM)
 // =====================================================================================
-// Two predefined themes, 'light' and 'dark' (Product Owner decision, N0.3). A theme is
+// Two predefined themes, 'light' and 'dark' — dark by default (Product Owner
+// decisions, N0.3). A theme is
 // the value of <html data-theme="…">; theme.css maps it to the --ld-* colour tokens.
 // =====================================================================================
 
 export const THEMES = Object.freeze(['light', 'dark']);
-export const DEFAULT_THEME = 'light';
+export const DEFAULT_THEME = 'dark';
 
 export function nextTheme(current) {
   return current === 'dark' ? 'light' : 'dark';

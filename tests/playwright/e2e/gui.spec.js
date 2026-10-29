@@ -125,17 +125,17 @@ test.describe('themes', () => {
   const menubarColor = () =>
     win.evaluate(() => getComputedStyle(document.querySelector('.Menubar')).backgroundColor);
 
-  test('starts light; View › Light / Dark Theme switches to dark and back', async () => {
+  test('starts dark; View › Light / Dark Theme switches to light and back', async () => {
+    expect(await theme()).toBe('dark');
+    const dark = await menubarColor();
+    await win.locator('.MenubarTitle', { hasText: 'View' }).click();
+    await win.locator('.MenubarItem[data-action="view.toggleTheme"]').click();
     expect(await theme()).toBe('light');
-    const light = await menubarColor();
+    expect(await menubarColor()).not.toBe(dark);
     await win.locator('.MenubarTitle', { hasText: 'View' }).click();
     await win.locator('.MenubarItem[data-action="view.toggleTheme"]').click();
     expect(await theme()).toBe('dark');
-    expect(await menubarColor()).not.toBe(light);
-    await win.locator('.MenubarTitle', { hasText: 'View' }).click();
-    await win.locator('.MenubarItem[data-action="view.toggleTheme"]').click();
-    expect(await theme()).toBe('light');
-    expect(await menubarColor()).toBe(light);
+    expect(await menubarColor()).toBe(dark);
   });
 });
 
@@ -166,6 +166,24 @@ test.describe('About dialog', () => {
 
   test('OK closes it', async () => {
     await dialog().getByRole('button', { name: 'OK' }).click();
+    await expect(dialog()).toBeHidden();
+  });
+
+  test('F1 opens it, and the menu entry shows F1', async () => {
+    await expect(win.locator('.MenubarItem[data-action="help.about"] .MenubarItemShortcut')).toHaveText('F1');
+    await win.keyboard.press('F1');
+    await expect(dialog()).toBeVisible();
+    await dialog().getByRole('button', { name: 'OK' }).click();
+    await expect(dialog()).toBeHidden();
+  });
+
+  test('the palette entry "Help: About Layout Designer…" opens it', async () => {
+    await win.keyboard.press('Control+Shift+P');
+    await win.locator('.CommandPaletteInput').fill('help: about');
+    await expect(win.locator('.CommandPaletteItem')).toHaveText(['Help: About Layout Designer…']);
+    await win.keyboard.press('Enter');
+    await expect(dialog()).toBeVisible();
+    await win.keyboard.press('Escape');
     await expect(dialog()).toBeHidden();
   });
 

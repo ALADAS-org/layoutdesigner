@@ -148,3 +148,16 @@ describe('ActionRegistry.trigger / onFailure (N0.3)', () => {
     expect(() => new ActionRegistry({ invokeCommand: okBridge() }).onFailure('x')).toThrow(TypeError);
   });
 });
+
+describe('ActionRegistry categoryKey', () => {
+  test('is optional and kept on the descriptor', () => {
+    const reg = new ActionRegistry({ invokeCommand: okBridge() });
+    reg.register({ id: 'help.about', label: 'About', categoryKey: 'Help', run: async () => {} });
+    expect(reg.get('help.about').categoryKey).toBe('Help');
+  });
+
+  test.each([[''], [7]])('rejects an invalid categoryKey %p', (categoryKey) => {
+    const reg = new ActionRegistry({ invokeCommand: okBridge() });
+    expect(() => reg.register({ id: 'help.about', label: 'About', categoryKey, run: async () => {} })).toThrow(TypeError);
+  });
+});

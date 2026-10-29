@@ -188,7 +188,7 @@ inserts the (static, script-free) HTML, then each vizjet's `.js` wires it.
 | `menubar` | *File* › Quit · *View* › Command Palette, Light / Dark Theme, Show / Hide Developer Tools · *Help* › About Layout Designer… — *Help* aligned right (PO decision). |
 | `main_toolbar` | Wrench button (developer tools) · **command center** in the middle, as in VS Code: a search-box-like control (« Search actions », shortcut shown) that opens the command palette right over it (PO decision). Tooltip = `label (shortcut)`. |
 | `status_bar` | Message area; shows the message of a failed Action / Command, styled as an error. |
-| `about_dialog` | Modal **jQuery UI** dialog (as in Cryptocalc): name, version (from `package.json`), authors « © JeanArt & Echopraxium » (PO decision), licence; OK / Esc close. |
+| `about_dialog` | Reached by *Help › About*, **F1** and the palette entry *Help: About…* — one Action, `help.about` (PO decision). Modal **jQuery UI** dialog (as in Cryptocalc): name, version (from `package.json`), authors « © JeanArt & Echopraxium » (PO decision), licence; OK / Esc close. |
 
 Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
 
@@ -207,6 +207,10 @@ Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
 
 - `labelKey` (optional, non-empty string): key of the label in the label files; `label`
   stays the English fallback.
+- `categoryKey` (optional, non-empty string): label key of the Action's category — the
+  menu it belongs to (`"File"`, `"View"`, `"Help"`). The palette shows
+  `"Category: Label"` (key `Palette/Entry`, French `"Catégorie : Libellé"`), as in VS
+  Code; menus show the label only.
 - `trigger(id, args)`: what every UI trigger calls (menu, toolbar, shortcut, palette).
   Never rejects; an unknown id, an exception or an `ok: false` reply is passed to the
   listeners registered with `onFailure(listener(message, id))` — the status bar is one.
@@ -222,7 +226,8 @@ Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
 
 Two predefined themes, `light` and `dark` (PO decision): `<html data-theme="…">`;
 `renderer/theme.css` maps it to `--ld-*` colour tokens; components use tokens only.
-Witness: client Action `view.toggleTheme`. Light at start-up (not persisted).
+Witness: client Action `view.toggleTheme`. **Dark at start-up** (PO decision; not
+persisted).
 
 ### 13.6 Localisation
 

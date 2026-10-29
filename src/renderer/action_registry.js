@@ -4,10 +4,12 @@
 // Contract: docs/contracts/ACTION_COMMAND.md §3.
 // An Action is the only thing a menu item, toolbar button, shortcut or palette entry
 // triggers. Two kinds:
-//   - client Action: { id, label, labelKey?, shortcut?, run: async (args) => result }
-//   - alias Action : { id, label, labelKey?, shortcut?, command: '<Command id>' } —
+//   - client Action: { id, label, labelKey?, categoryKey?, shortcut?, run: async (args) => result }
+//   - alias Action : { id, label, labelKey?, categoryKey?, shortcut?, command: '<Command id>' } —
 //                    forwarded to main through the bridge's invokeCommand(id, args).
-// `label` is the English fallback; `labelKey` is its key in the LD_Labels_xx.json files
+// `label` is the English fallback; `labelKey` is its key in the LD_Labels_xx.json files;
+// `categoryKey` names its category (the menu it belongs to), shown in the palette as
+// "Category: Label", as in VS Code.
 // (contract §13). UI triggers call trigger(), which reports failures to listeners
 // (the status bar) and never rejects.
 // =====================================================================================
@@ -34,7 +36,7 @@ export class ActionRegistry {
     if (descriptor === null || typeof descriptor !== 'object') {
       throw new TypeError('Action descriptor must be an object');
     }
-    const { id, label, labelKey, shortcut, command, run } = descriptor;
+    const { id, label, labelKey, categoryKey, shortcut, command, run } = descriptor;
     if (typeof id !== 'string' || !ID_PATTERN.test(id)) {
       throw new TypeError(`Invalid Action id: '${id}' (expected '<domain>.<name>')`);
     }
@@ -43,6 +45,9 @@ export class ActionRegistry {
     }
     if (labelKey !== undefined && (typeof labelKey !== 'string' || labelKey.trim() === '')) {
       throw new TypeError(`Action '${id}': 'labelKey' must be a non-empty string`);
+    }
+    if (categoryKey !== undefined && (typeof categoryKey !== 'string' || categoryKey.trim() === '')) {
+      throw new TypeError(`Action '${id}': 'categoryKey' must be a non-empty string`);
     }
     const isAlias = command !== undefined;
     const isClient = run !== undefined;
@@ -67,7 +72,7 @@ export class ActionRegistry {
       }
     }
 
-    const action = Object.freeze({ id, label, labelKey, shortcut, command, run });
+    const action = Object.freeze({ id, label, labelKey, categoryKey, shortcut, command, run });
     this.#actions.set(id, action);
     if (normalized !== undefined) this.#shortcuts.set(normalized, id);
   }

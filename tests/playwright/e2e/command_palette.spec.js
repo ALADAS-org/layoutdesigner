@@ -5,7 +5,13 @@
 const { test, expect } = require('@playwright/test');
 const { launch, exitCode } = require('./launch.js');
 
-const ALL_BUT_PALETTE = ['Quit', 'Light / Dark Theme', 'Show / Hide Developer Tools', 'About Layout Designer…'];
+// Palette entries read "Category: Label", as in VS Code.
+const ALL_BUT_PALETTE = [
+  'File: Quit',
+  'View: Light / Dark Theme',
+  'View: Show / Hide Developer Tools',
+  'Help: About Layout Designer…'
+];
 
 test.describe('command palette', () => {
   let app;
@@ -38,7 +44,7 @@ test.describe('command palette', () => {
     await input().fill('zzz');
     await expect(items()).toHaveCount(0);
     await input().fill('QUI');
-    await expect(items()).toHaveText(['Quit']);
+    await expect(items()).toHaveText(['File: Quit']);
     await expect(items().first()).toHaveAttribute('aria-selected', 'true');
   });
 
@@ -69,7 +75,7 @@ test.describe('alias Action app.quit', () => {
     const exited = exitCode(app);
     await win.keyboard.press('Control+Shift+P');
     await win.locator('.CommandPaletteInput').fill('quit');
-    await expect(win.locator('.CommandPaletteItem')).toHaveText(['Quit']);
+    await expect(win.locator('.CommandPaletteItem')).toHaveText(['File: Quit']);
     // The application may close before Playwright finishes the key press: ignore that.
     win.keyboard.press('Enter').catch(() => {});
     expect(await exited).toBe(0);

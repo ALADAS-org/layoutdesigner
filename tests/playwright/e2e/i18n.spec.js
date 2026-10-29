@@ -29,7 +29,7 @@ test.describe('French (--lang=fr)', () => {
   test('the palette lists and filters the French labels', async () => {
     await win.keyboard.press('Control+Shift+P');
     await win.locator('.CommandPaletteInput').fill('quit');
-    await expect(win.locator('.CommandPaletteItem')).toHaveText(['Quitter']);
+    await expect(win.locator('.CommandPaletteItem')).toHaveText(['Fichier : Quitter']);
     await win.keyboard.press('Escape');
   });
 

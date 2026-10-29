@@ -4,9 +4,9 @@ import { THEMES, DEFAULT_THEME, nextTheme, applyTheme, currentTheme } from '../.
 const fakeDoc = () => ({ documentElement: { dataset: {} } });
 
 describe('themes', () => {
-  test('two predefined themes, light by default', () => {
+  test('two predefined themes, dark by default', () => {
     expect(THEMES).toEqual(['light', 'dark']);
-    expect(DEFAULT_THEME).toBe('light');
+    expect(DEFAULT_THEME).toBe('dark');
   });
 
   test('nextTheme alternates', () => {
@@ -16,10 +16,10 @@ describe('themes', () => {
 
   test('applyTheme sets <html data-theme>, currentTheme reads it', () => {
     const doc = fakeDoc();
-    expect(currentTheme(doc)).toBe('light');
-    applyTheme(doc, 'dark');
-    expect(doc.documentElement.dataset.theme).toBe('dark');
     expect(currentTheme(doc)).toBe('dark');
+    applyTheme(doc, 'light');
+    expect(doc.documentElement.dataset.theme).toBe('light');
+    expect(currentTheme(doc)).toBe('light');
   });
 
   test('applyTheme rejects an unknown theme', () => {

@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-  SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, pickLanguage, labelsUrl, createTranslator, loadLabels, localizeTree
+  SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, pickLanguage, labelsUrl, createTranslator, loadLabels, localizeTree, format
 } from '../../../../src/renderer/i18n.js';
 
 const SRC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../src');
@@ -110,7 +110,7 @@ describe('LD_Labels_<xx>.json files', () => {
     const used = new Set();
     const patterns = [
       /data-(?:aria-)?label-key="([^"]+)"/g, // markup
-      /labelKey:\s*'([^']+)'/g,              // Action descriptors
+      /(?:labelKey|categoryKey):\s*'([^']+)'/g, // Action descriptors
       /\bt\('([^']+)'/g                       // direct lookups
     ];
     for (const file of files) {
@@ -120,5 +120,13 @@ describe('LD_Labels_<xx>.json files', () => {
     expect(used.size).toBeGreaterThan(10);
     const english = readLabels('en');
     expect([...used].filter((key) => !Object.hasOwn(english, key))).toEqual([]);
+  });
+});
+
+describe('format', () => {
+  test('fills {name} placeholders, leaves unknown ones', () => {
+    expect(format('{category}: {label}', { category: 'Help', label: 'About' })).toBe('Help: About');
+    expect(format('{category} : {label}', { category: 'Aide', label: 'À propos' })).toBe('Aide : À propos');
+    expect(format('{a} {b}', { a: 1 })).toBe('1 {b}');
   });
 });

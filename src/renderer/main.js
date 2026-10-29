@@ -7,13 +7,14 @@
 //   - app.quit             alias   Ctrl+Q (as in Illustrator)
 //   - view.toggleTheme     client  light ↔ dark
 //   - dev.toggleDevTools   alias   Ctrl+Shift+I
-//   - help.about           client  opens the About dialog
+//   - help.about           client  F1 — opens the About dialog
+// Each Action has a category (its menu); the palette shows "Category: Label".
 // =====================================================================================
 
 import { ActionRegistry } from './action_registry.js';
 import { installShortcuts } from './shortcuts.js';
 import { createCommandPalette, PALETTE_ACTION_ID } from './command_palette.js';
-import { pickLanguage, loadLabels, createTranslator, localizeTree } from './i18n.js';
+import { pickLanguage, loadLabels, createTranslator, localizeTree, format } from './i18n.js';
 import { applyTheme, currentTheme, nextTheme, DEFAULT_THEME } from './theme.js';
 import { loadVizjets } from './vizjet_loader.js';
 import { createMenubar } from '../vizjets/menubar/menubar.js';
@@ -39,12 +40,16 @@ const actions = new ActionRegistry({
   invokeCommand: (id, args) => window.ld.invokeCommand(id, args)
 });
 const labelOf = (action) => t(action.labelKey, action.label);
+const paletteLabelOf = (action) =>
+  action.categoryKey === undefined
+    ? labelOf(action)
+    : format(t('Palette/Entry', '{category}: {label}'), { category: t(action.categoryKey), label: labelOf(action) });
 
 const statusBar = createStatusBar(byId('status_bar'));
 actions.onFailure((message) => statusBar.showError(message));
 
 const palette = createCommandPalette(actions, document, {
-  labelOf,
+  labelOf: paletteLabelOf,
   ariaLabel: t('Aria/CommandPalette'),
   placeholder: t('Toolbar/SearchActions'),
   anchor: () => document.querySelector('.CommandCenter')
@@ -56,6 +61,7 @@ actions.register({
   id: PALETTE_ACTION_ID,
   label: 'Command Palette',
   labelKey: 'View/CommandPalette',
+  categoryKey: 'View',
   shortcut: 'Ctrl+Shift+P',
   run: async () => palette.toggle()
 });
@@ -63,6 +69,7 @@ actions.register({
   id: 'app.quit',
   label: 'Quit',
   labelKey: 'File/Quit',
+  categoryKey: 'File',
   shortcut: 'Ctrl+Q',
   command: 'app.quit'
 });
@@ -70,12 +77,14 @@ actions.register({
   id: 'view.toggleTheme',
   label: 'Light / Dark Theme',
   labelKey: 'View/ToggleTheme',
+  categoryKey: 'View',
   run: async () => applyTheme(document, nextTheme(currentTheme(document)))
 });
 actions.register({
   id: 'dev.toggleDevTools',
   label: 'Show / Hide Developer Tools',
   labelKey: 'View/ToggleDevTools',
+  categoryKey: 'View',
   shortcut: 'Ctrl+Shift+I',
   command: 'dev.toggleDevTools'
 });
@@ -83,6 +92,8 @@ actions.register({
   id: 'help.about',
   label: 'About Layout Designer…',
   labelKey: 'Help/About',
+  categoryKey: 'Help',
+  shortcut: 'F1',
   run: async () => aboutDialog.open()
 });
 

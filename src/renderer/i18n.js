@@ -55,3 +55,8 @@ export function localizeTree(root, t) {
     el.setAttribute('aria-label', t(el.dataset.ariaLabelKey, el.getAttribute('aria-label') || undefined));
   }
 }
+
+// Fills {name} placeholders: format('{category}: {label}', { category, label }).
+export function format(template, values) {
+  return template.replace(/\{(\w+)\}/g, (match, name) => (Object.hasOwn(values, name) ? values[name] : match));
+}
