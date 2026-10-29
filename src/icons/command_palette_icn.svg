@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <!-- Placeholder icon (N0.3): a prompt in a window — to be validated or replaced. -->
-  <rect x="3" y="5" width="26" height="22" rx="2" fill="none" stroke="#000" stroke-width="2"/>
-  <polyline points="9,12 14,16 9,20" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="16" y1="21" x2="23" y2="21" stroke="#000" stroke-width="2" stroke-linecap="round"/>
-</svg>

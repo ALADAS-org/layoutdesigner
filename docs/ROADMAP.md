@@ -33,10 +33,9 @@ localisation, merged into one step). Run `npm test`, then `npm start` and check 
 Design gate: menus (mouse and keyboard), toolbar icons and tooltips, light and dark
 themes, About dialog, status bar, French labels (system locale, or
 `npx electron . --lang=fr`). Details: `docs/contracts/ACTION_COMMAND.md` §13.
-To settle at validation:
-- `jquery-ui` as a runtime dependency (the Cryptocalc dialog model);
-- the placeholder icon of the command-palette button (`src/icons/command_palette_icn.svg`);
-- the colour values of the two themes (`src/renderer/theme.css`).
+Settled on 2026-10-29: `jquery-ui` approved; theme colours approved; the palette
+icon was replaced by a VS Code-like **command center** in the toolbar — the last item
+awaiting the Product Owner's check.
 
 After validation: N0.5 — plugins (write the Plugin API contract first).
 

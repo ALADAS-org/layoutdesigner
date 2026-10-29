@@ -52,3 +52,15 @@
   background: var(--ld-highlight-bg);
   color: var(--ld-highlight-fg);
 }
+
+/* Opened over the toolbar's command center (positioned by command_palette.js). */
+.CommandPalette.is-anchored {
+  padding-top: 0;
+}
+
+.CommandPalette.is-anchored .CommandPalettePanel {
+  position: absolute;
+  transform: translateX(-50%);
+  border-radius: 6px;
+  overflow: hidden;
+}

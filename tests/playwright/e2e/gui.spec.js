@@ -194,16 +194,35 @@ test.describe('toolbar and status bar', () => {
   const devToolsOpen = () =>
     app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].webContents.isDevToolsOpened());
 
-  test('two buttons, with "label (shortcut)" tooltips', async () => {
-    await expect(win.locator('.ToolbarButton')).toHaveCount(2);
-    await expect(button('view.commandPalette')).toHaveAttribute('title', 'Command Palette (Ctrl+Shift+P)');
+  const commandCenter = () => win.locator('.CommandCenter');
+
+  test('a wrench button and a command center, with "label (shortcut)" tooltips', async () => {
+    await expect(win.locator('.ToolbarButton')).toHaveCount(1);
     await expect(button('dev.toggleDevTools')).toHaveAttribute('title', 'Show / Hide Developer Tools (Ctrl+Shift+I)');
+    await expect(commandCenter()).toHaveAttribute('data-action', 'view.commandPalette');
+    await expect(commandCenter()).toHaveAttribute('title', 'Command Palette (Ctrl+Shift+P)');
+    await expect(commandCenter().locator('.CommandCenterText')).toHaveText('Search actions');
+    await expect(commandCenter().locator('.CommandCenterShortcut')).toHaveText('Ctrl+Shift+P');
   });
 
-  test('the palette button opens the command palette', async () => {
-    await button('view.commandPalette').click();
+  test('the command center sits in the middle of the toolbar', async () => {
+    const box = await commandCenter().boundingBox();
+    const width = await win.evaluate(() => document.documentElement.clientWidth);
+    expect(Math.abs(box.x + box.width / 2 - width / 2)).toBeLessThan(4);
+  });
+
+  test('clicking the command center opens the palette right over it', async () => {
+    const center = await commandCenter().boundingBox();
+    await commandCenter().click();
     await expect(win.locator('#command-palette')).toBeVisible();
+    await expect(win.locator('.CommandPaletteInput')).toBeFocused();
+    await expect(win.locator('.CommandPaletteInput')).toHaveAttribute('placeholder', 'Search actions');
+    const panel = await win.locator('.CommandPalettePanel').boundingBox();
+    expect(Math.abs(panel.y - center.y)).toBeLessThan(2);
+    expect(Math.abs(panel.x + panel.width / 2 - (center.x + center.width / 2))).toBeLessThan(2);
+    expect(panel.width).toBeGreaterThanOrEqual(center.width - 1);
     await win.keyboard.press('Escape');
+    await expect(win.locator('#command-palette')).toBeHidden();
   });
 
   test('the wrench button shows and hides the developer tools', async () => {

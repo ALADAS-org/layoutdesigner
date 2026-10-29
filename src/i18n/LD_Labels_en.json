@@ -11,6 +11,7 @@
   "About/Version":       "Version",
   "About/License":       "MIT License",
   "Dialog/OK":           "OK",
+  "Toolbar/SearchActions": "Search actions",
   "Aria/Menubar":        "Main menu",
   "Aria/Toolbar":        "Toolbar",
   "Aria/CommandPalette": "Command palette"

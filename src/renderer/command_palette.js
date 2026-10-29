@@ -19,8 +19,14 @@ export function filterActions(actions, query, excludeId, labelOf = englishLabel)
   return actions.filter((a) => a.id !== excludeId && labelOf(a).toLowerCase().includes(q));
 }
 
-// options: { labelOf(action) → displayed label, ariaLabel }
-export function createCommandPalette(registry, doc, { labelOf = englishLabel, ariaLabel = 'Command palette' } = {}) {
+// options: { labelOf(action) → displayed label, ariaLabel, placeholder,
+//            anchor: () => element — when visible, the panel opens right over it
+//            (the toolbar's command center, as in VS Code) }
+export function createCommandPalette(
+  registry,
+  doc,
+  { labelOf = englishLabel, ariaLabel = 'Command palette', placeholder = '', anchor = () => null } = {}
+) {
   const overlay = doc.createElement('div');
   overlay.id = 'command-palette';
   overlay.className = 'CommandPalette';
@@ -33,6 +39,7 @@ export function createCommandPalette(registry, doc, { labelOf = englishLabel, ar
   input.type = 'text';
   input.className = 'CommandPaletteInput';
   input.setAttribute('aria-label', ariaLabel);
+  input.placeholder = placeholder;
   input.autocomplete = 'off';
   input.spellcheck = false;
 
@@ -68,7 +75,20 @@ export function createCommandPalette(registry, doc, { labelOf = englishLabel, ar
     render();
   }
 
+  // Over the anchor when it is visible; otherwise the CSS default (centred, near the top).
+  function place() {
+    const el = anchor();
+    const rect = el && el.getClientRects().length > 0 ? el.getBoundingClientRect() : null;
+    overlay.classList.toggle('is-anchored', rect !== null);
+    if (rect === null) return;
+    const width = Math.min(Math.max(rect.width, 480), doc.documentElement.clientWidth - 16);
+    panel.style.top = `${rect.top}px`;
+    panel.style.left = `${rect.left + rect.width / 2}px`;
+    panel.style.width = `${width}px`;
+  }
+
   function open() {
+    place();
     overlay.hidden = false;
     input.value = '';
     refresh();

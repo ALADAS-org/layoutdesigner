@@ -43,7 +43,12 @@ const labelOf = (action) => t(action.labelKey, action.label);
 const statusBar = createStatusBar(byId('status_bar'));
 actions.onFailure((message) => statusBar.showError(message));
 
-const palette = createCommandPalette(actions, document, { labelOf, ariaLabel: t('Aria/CommandPalette') });
+const palette = createCommandPalette(actions, document, {
+  labelOf,
+  ariaLabel: t('Aria/CommandPalette'),
+  placeholder: t('Toolbar/SearchActions'),
+  anchor: () => document.querySelector('.CommandCenter')
+});
 const { version } = await (await fetch('../package.json')).json();
 const aboutDialog = createAboutDialog(byId('about_dialog'), { t, version });
 

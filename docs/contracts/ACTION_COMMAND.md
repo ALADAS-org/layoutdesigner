@@ -186,7 +186,7 @@ inserts the (static, script-free) HTML, then each vizjet's `.js` wires it.
 | Vizjet | Content in N0.3 |
 |---|---|
 | `menubar` | *File* › Quit · *View* › Command Palette, Light / Dark Theme, Show / Hide Developer Tools · *Help* › About Layout Designer… — *Help* aligned right (PO decision). |
-| `main_toolbar` | Command palette button · wrench button (developer tools). Tooltip = `label (shortcut)`. |
+| `main_toolbar` | Wrench button (developer tools) · **command center** in the middle, as in VS Code: a search-box-like control (« Search actions », shortcut shown) that opens the command palette right over it (PO decision). Tooltip = `label (shortcut)`. |
 | `status_bar` | Message area; shows the message of a failed Action / Command, styled as an error. |
 | `about_dialog` | Modal **jQuery UI** dialog (as in Cryptocalc): name, version (from `package.json`), authors « © JeanArt & Echopraxium » (PO decision), licence; OK / Esc close. |
 
@@ -237,6 +237,5 @@ Witness: client Action `view.toggleTheme`. Light at start-up (not persisted).
 
 ### 13.7 Dependencies
 
-`jquery` (approved by the PO on 2026-10-29) and `jquery-ui` (the dialog widget of the
-Cryptocalc model — to be confirmed at validation): runtime dependencies, loaded from
-`node_modules/` as classic scripts.
+`jquery` and `jquery-ui` (the dialog widget of the Cryptocalc model), approved by the
+PO on 2026-10-29: runtime dependencies, loaded from `node_modules/` as classic scripts.

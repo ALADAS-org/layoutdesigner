@@ -1,8 +1,9 @@
 /* Main toolbar (N0.3) — colours from theme.css. */
 
 .Toolbar {
-  display: flex;
-  gap: 2px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   padding: 3px 6px;
   background: var(--ld-chrome-bg);
   border-bottom: 1px solid var(--ld-border);
@@ -32,4 +33,43 @@
   height: 22px;
   filter: var(--ld-icon-filter);
   pointer-events: none;
+}
+
+.ToolbarGroup {
+  display: flex;
+  gap: 2px;
+}
+
+/* Command center (VS Code): a search-box-like control that opens the palette. */
+.CommandCenter {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(480px, 50vw);
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--ld-border);
+  border-radius: 6px;
+  background: var(--ld-input-bg);
+  color: var(--ld-muted-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.CommandCenter:hover,
+.CommandCenter:focus-visible {
+  border-color: var(--ld-highlight-bg);
+  outline: none;
+}
+
+.CommandCenterIcon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.CommandCenterText {
+  flex: 1;
+  text-align: left;
 }

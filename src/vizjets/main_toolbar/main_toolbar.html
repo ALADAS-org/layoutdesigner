@@ -1,10 +1,18 @@
-<!-- Main toolbar (N0.3). Each button names an Action (data-action); its tooltip is the
-     Action's label and shortcut. -->
+<!-- Main toolbar (N0.3). Each control names an Action (data-action); its tooltip is the
+     Action's label and shortcut. The command center (centre), as in VS Code, opens the
+     command palette right over it. -->
 <div class="Toolbar" role="toolbar" aria-label="Toolbar" data-aria-label-key="Aria/Toolbar">
-  <button class="ToolbarButton" data-action="view.commandPalette">
-    <img class="ToolbarIcon" src="icons/command_palette_icn.svg" alt="">
-  </button>
-  <button class="ToolbarButton" data-action="dev.toggleDevTools">
-    <img class="ToolbarIcon" src="icons/wrench_icn.png" alt="">
+  <div class="ToolbarGroup">
+    <button class="ToolbarButton" data-action="dev.toggleDevTools">
+      <img class="ToolbarIcon" src="icons/wrench_icn.png" alt="">
+    </button>
+  </div>
+  <button class="CommandCenter" data-action="view.commandPalette">
+    <svg class="CommandCenterIcon" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span class="CommandCenterText" data-label-key="Toolbar/SearchActions">Search actions</span>
+    <span class="CommandCenterShortcut"></span>
   </button>
 </div>
