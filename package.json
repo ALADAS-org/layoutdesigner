@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Layout Designer — ElectronJS tool for composing print-style artifacts from generative calques. Restarting at N0 (see docs/ROADMAP.md).",
-  "author": "Echopraxium (Michel) with Claude AI",
+  "author": "JeanArt & Echopraxium",
   "license": "MIT",
   "main": "./src/server/electron_main.js",
   "scripts": {

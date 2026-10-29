@@ -1,6 +1,6 @@
 # Layout Designer — Reference Corpus (Router)
 
-**Author**: Echopraxium (Michel) with Claude AI
+**Authors**: JeanArt & Echopraxium (Michel), with collaboration of Claude AI
 
 > **A router, not a content store.** It maps *where authority lives* so that live facts
 > are read from HEAD, never recited. Companion: **`LD_ReferenceCorpus_Bootstrap.md`**.

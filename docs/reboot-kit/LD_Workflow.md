@@ -1,6 +1,6 @@
 # Layout Designer — Project Workflow
 
-**Author:** Echopraxium (Michel), with Claude AI
+**Authors:** JeanArt & Echopraxium (Michel), with collaboration of Claude AI
 **What this guide is:** how to run the Claude project that develops Layout Designer —
 the one-time setup, then the per-step loop. Priorities live in `docs/ROADMAP.md`; the
 governing rules in the skills `ld-maslow-pyramid-workflow` and

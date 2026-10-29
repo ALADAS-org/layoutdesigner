@@ -42,4 +42,4 @@ docs/                                   roadmap, debt register, reboot-kit
 
 ## License
 
-MIT — see `LICENSE`. Author: Echopraxium (Michel) with Claude AI.
+MIT — see `LICENSE`. Authors: JeanArt & Echopraxium, with collaboration of Claude AI.

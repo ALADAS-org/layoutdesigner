@@ -2,7 +2,7 @@
 
 **Status:** §1–§12 validated by the Product Owner on 2026-10-29 (decisions in §12).
 §13 (N0.3 + N0.4 addendum) delivered 2026-10-29, **awaiting Product Owner validation**.
-**Author:** Echopraxium (Michel) with Claude AI · 2026-10-29
+**Authors:** JeanArt & Echopraxium (Michel), with collaboration of Claude AI · 2026-10-29
 
 This contract fixes how a user intention travels from the GUI to the code that carries
 it out. Everything later in N0 builds on it: the HTML menu bar and toolbar (N0.3), the
