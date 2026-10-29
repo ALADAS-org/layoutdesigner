@@ -1,6 +1,7 @@
 # Contract — Actions and Commands (N0.2)
 
-**Status:** validated by the Product Owner on 2026-10-29 (decisions in §12).
+**Status:** §1–§12 validated by the Product Owner on 2026-10-29 (decisions in §12).
+§13 (N0.3 + N0.4 addendum) delivered 2026-10-29, **awaiting Product Owner validation**.
 **Author:** Echopraxium (Michel) with Claude AI · 2026-10-29
 
 This contract fixes how a user intention travels from the GUI to the code that carries
@@ -94,7 +95,8 @@ menu / shortcut / palette ──► Action (renderer)
 A small renderer-side dispatcher listens to `keydown` and runs the Action whose
 `shortcut` matches. Two Actions declaring the same shortcut is a registration error.
 Electron's native menu stays until N0.3 (ROADMAP decision); our shortcuts must not
-reuse its accelerators (Ctrl+R, Ctrl+Shift+I, …).
+reuse its accelerators (Ctrl+R, Ctrl+Shift+I, …). *Since N0.3 the native menu is gone
+(§13), so this restriction no longer applies.*
 
 ## 7. Command palette
 
@@ -168,3 +170,73 @@ Witnesses: one **client Action** (`view.commandPalette`) and one **alias Action*
 
 **Open, for the N0.6 contract:** where the document model lives (renderer or main). It
 decides whether editing operations are client Actions or alias Actions.
+
+## 13. Addendum — N0.3 HTML GUI and N0.4 localisation (2026-10-29)
+
+N0.4 (localisation) was merged into N0.3 by the Product Owner: the GUI's labels are
+localised from the start.
+
+### 13.1 GUI components (vizjets)
+
+One folder per component, `src/vizjets/<name>/` (`.html` + `.css` + `.js`), after
+Cryptocalc. `src/index.html` holds one host per vizjet
+(`<div id="…" data-vizjet="vizjets/<name>/<name>.html">`); `renderer/vizjet_loader.js`
+inserts the (static, script-free) HTML, then each vizjet's `.js` wires it.
+
+| Vizjet | Content in N0.3 |
+|---|---|
+| `menubar` | *File* › Quit · *View* › Command Palette, Light / Dark Theme, Show / Hide Developer Tools · *Help* › About Layout Designer… — *Help* aligned right (PO decision). |
+| `main_toolbar` | Command palette button · wrench button (developer tools). Tooltip = `label (shortcut)`. |
+| `status_bar` | Message area; shows the message of a failed Action / Command, styled as an error. |
+| `about_dialog` | Modal **jQuery UI** dialog (as in Cryptocalc): name, version (from `package.json`), author, licence; OK / Esc close. |
+
+Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
+
+### 13.2 Menu and toolbar entries reference Actions
+
+- An entry is markup with `data-action="<Action id>"`; label and shortcut are read from
+  the ActionRegistry, never written in the markup. An entry naming an unknown Action is
+  a start-up error.
+- Menu behaviour (Illustrator / Windows): click opens; hover switches while a menu is
+  open; click outside closes; **F10** or **Alt alone** focuses the bar; ←/→ between
+  menus, ↓ / Enter / Space open, ↑/↓ between entries, Enter / Space run, Esc closes then
+  leaves.
+- Not in N0.3 (no witness yet): enable / disable (`isEnabled()`), check items, submenus.
+
+### 13.3 Additions to the Action descriptor and registry
+
+- `labelKey` (optional, non-empty string): key of the label in the label files; `label`
+  stays the English fallback.
+- `trigger(id, args)`: what every UI trigger calls (menu, toolbar, shortcut, palette).
+  Never rejects; an unknown id, an exception or an `ok: false` reply is passed to the
+  listeners registered with `onFailure(listener(message, id))` — the status bar is one.
+  `run()` is unchanged (it still rejects / returns the reply, for programmatic callers).
+
+### 13.4 Commands
+
+- `dev.toggleDevTools` — shows / hides the developer tools of the sender window
+  (alias Action of the same id, `Ctrl+Shift+I`, wrench button).
+- The Command context now also carries `webContents` — the sender of the request.
+
+### 13.5 Themes
+
+Two predefined themes, `light` and `dark` (PO decision): `<html data-theme="…">`;
+`renderer/theme.css` maps it to `--ld-*` colour tokens; components use tokens only.
+Witness: client Action `view.toggleTheme`. Light at start-up (not persisted).
+
+### 13.6 Localisation
+
+- One flat JSON file per language: `src/i18n/LD_Labels_<xx>.json`, `xx` = `en`, `fr`.
+  Keys in the electron-boilerplate-cjs style: `"File"`, `"File/Quit"`, `"About/Title"`.
+- Language = system locale (`navigator.language`, overridden by Electron's `--lang`
+  switch, used by the end-to-end tests); unsupported → English.
+- Lookup: chosen language → English → caller's fallback → key.
+- Markup: `data-label-key` (text) and `data-aria-label-key` (`aria-label`).
+- Tests guarantee that every language has exactly the English keys and that every key
+  used by the GUI exists.
+
+### 13.7 Dependencies
+
+`jquery` (approved by the PO on 2026-10-29) and `jquery-ui` (the dialog widget of the
+Cryptocalc model — to be confirmed at validation): runtime dependencies, loaded from
+`node_modules/` as classic scripts.

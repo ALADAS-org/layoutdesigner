@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (610 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (639 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -611,19 +611,48 @@
   - pattern.schema.json ★
   - pattern.spec.md ★
 - **src/**
+  - **i18n/**
+    - LD_Labels_en.json
+    - LD_Labels_fr.json
+  - **icons/**
+    - command_palette_icn.svg
+    - wrench_icn.png
   - **renderer/**
     - action_registry.js
+    - app.css
     - command_palette.css
     - command_palette.js
+    - i18n.js
     - main.js
     - package.json
     - shortcuts.js
+    - theme.css
+    - theme.js
+    - vizjet_loader.js
   - **server/**
     - app_commands.js
     - command_registry.js
     - electron_main.js
     - preload.js
     - window_options.js
+  - **vizjets/**
+    - **about_dialog/**
+      - about_dialog.css
+      - about_dialog.html
+      - about_dialog.js
+    - **main_toolbar/**
+      - main_toolbar.css
+      - main_toolbar.html
+      - main_toolbar.js
+    - **menubar/**
+      - menubar.css
+      - menubar.html
+      - menubar.js
+    - **status_bar/**
+      - status_bar.css
+      - status_bar.html
+      - status_bar.js
+    - package.json
   - index.html
 - **tests/**
   - **jest/**
@@ -631,14 +660,22 @@
       - **renderer/**
         - action_registry.test.mjs
         - command_palette.test.mjs
+        - i18n.test.mjs
         - shortcuts.test.mjs
+        - theme.test.mjs
+        - vizjet_loader.test.mjs
       - **server/**
         - command_registry.test.js
         - window_options.test.js
+      - **vizjets/**
+        - gui_helpers.test.mjs
   - **playwright/**
     - **e2e/**
       - app_launch.spec.js
       - command_palette.spec.js
+      - gui.spec.js
+      - i18n.spec.js
+      - launch.js
     - playwright.config.js
 - .gitattributes
 - .gitignore

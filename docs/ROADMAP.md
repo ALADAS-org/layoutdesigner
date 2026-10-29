@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 next |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 delivered, awaiting validation |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -28,24 +28,17 @@ the git tag `proto-improvise-2026-10`. Nothing from it is assumed to be valid.
 *Updated at the end of each session — the first thing a new conversation reads after
 the status table.*
 
-**Next action (2026-10-29): open N0.3 — HTML GUI.** Menu bar, toolbar, status bar, one
-dialog, themable; the HTML menu bar replaces Electron's native menu. Before any code,
-agree with the Product Owner on the reference target and acceptance criteria:
-- references (skill `ld-maslow-pyramid-workflow` §4): electron-boilerplate-cjs (the
-  Product Owner's HTML-menu prototype — adapt, do not copy) for menu bar, toolbar and
-  viewlets; Cryptocalc vizjets for status bar and dialogs; **Illustrator** for menu
-  content and shortcuts;
-- every menu / toolbar entry triggers an **Action** (`docs/contracts/ACTION_COMMAND.md`);
-- which menus and entries appear in N0.3 (only Actions that exist: no empty
-  placeholders without Product Owner agreement);
-- complexity budget, including any dependency (jQuery and iziToast are accepted by the
-  skill, but each still needs explicit approval).
+**Next action (2026-10-29): Product Owner validation of N0.3 + N0.4** (HTML GUI and
+localisation, merged into one step). Run `npm test`, then `npm start` and check the
+Design gate: menus (mouse and keyboard), toolbar icons and tooltips, light and dark
+themes, About dialog, status bar, French labels (system locale, or
+`npx electron . --lang=fr`). Details: `docs/contracts/ACTION_COMMAND.md` §13.
+To settle at validation:
+- `jquery-ui` as a runtime dependency (the Cryptocalc dialog model);
+- the placeholder icon of the command-palette button (`src/icons/command_palette_icn.svg`);
+- the colour values of the two themes (`src/renderer/theme.css`).
 
-To carry into N0.3:
-- once the native menu is gone, add the end-to-end test of `Ctrl+Q` (not testable while
-  the native menu intercepts it on Linux);
-- proposal from N0.2, not yet accepted: show a failed Command's message in the status
-  bar (today it only goes to the console).
+After validation: N0.5 — plugins (write the Plugin API contract first).
 
 **Decisions (2026-10-29, Product Owner):**
 - N0 sub-steps and their order: see *N0 sub-steps* below.
@@ -57,6 +50,12 @@ To carry into N0.3:
   and later for the calques user interface.
 - Electron's default native menu stays until N0.3, which replaces it with the HTML
   menu bar (it keeps reload / DevTools shortcuts available until then).
+- N0.3 answers: *Help* menu aligned right; toolbar = command palette + developer tools
+  (wrench icon); two predefined themes, light and dark; failed Command message in the
+  status bar; first dialog = *Help › About*, a jQuery dialog as in Cryptocalc.
+- **N0.4 merged into N0.3**: labels localised from the start, one file per language
+  `src/i18n/LD_Labels_<xx>.json` (`en`, `fr`).
+- The `www/` folder was a vestige: the application lives in `src/` at the repo root.
 
 **Open points** (decided when their level comes, not before):
 - N1 — which patterns form the reference sample (one per primitive family).
@@ -102,8 +101,8 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 |---|---|---|---|
 | N0.1 | Electron shell (secure empty window) + Jest / Playwright harness | — | ✅ 2026-10-29 |
 | N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ✅ 2026-10-29 |
-| N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | — | ⏳ next |
-| N0.4 | Localisation (JSON, en / fr) | — | — |
+| N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | 🔍 delivered, awaiting validation |
+| N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | 🔍 delivered with N0.3 |
 | N0.5 | Server and renderer plugins (dummy ones) | Plugin API | — |
 | N0.6 | Document + calques + undo / redo (every mutation is an EditTransaction) | Calque / object model, EditTransaction | — |
 | N0.7 | Selection + copy / paste | — | — |
