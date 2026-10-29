@@ -82,12 +82,15 @@ test('the --lang switch wins over the preferences file', async () => {
   }
 });
 
-test('a broken preferences file does not prevent start-up', async () => {
+test('a broken preferences file does not prevent start-up (system language used)', async () => {
   const prefsFile = tempPreferencesPath();
   fs.writeFileSync(prefsFile, '{ not json');
   const { app, win } = await launch({ lang: null, prefsFile });
   try {
-    await expect(win.locator('.MenubarTitle')).toHaveText(['File', 'View', 'Help']);
+    // No --lang switch: the expected labels follow the locale of the test machine.
+    const locale = await app.evaluate(({ app: electronApp }) => electronApp.getLocale());
+    const expected = locale.toLowerCase().startsWith('fr') ? ['Fichier', 'Affichage', 'Aide'] : ['File', 'View', 'Help'];
+    await expect(win.locator('.MenubarTitle')).toHaveText(expected);
   } finally {
     await app.close();
   }
