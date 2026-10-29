@@ -23,3 +23,14 @@ describe('filterActions', () => {
     expect(filterActions(actions, 'zzz', PALETTE_ACTION_ID)).toEqual([]);
   });
 });
+
+describe('filterActions with localised labels', () => {
+  const fr = { 'app.quit': 'Quitter', 'test.quick': 'Aperçu rapide' };
+  const labelOf = (a) => fr[a.id] || a.label;
+
+  test('filters on the displayed label, not the English one', () => {
+    expect(filterActions(actions, 'quitter', PALETTE_ACTION_ID, labelOf).map((a) => a.id)).toEqual(['app.quit']);
+    expect(filterActions(actions, 'look', PALETTE_ACTION_ID, labelOf)).toEqual([]);
+    expect(filterActions(actions, 'APERÇU', PALETTE_ACTION_ID, labelOf).map((a) => a.id)).toEqual(['test.quick']);
+  });
+});

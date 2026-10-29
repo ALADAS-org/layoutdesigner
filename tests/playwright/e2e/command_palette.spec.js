@@ -2,17 +2,10 @@
 // (docs/contracts/ACTION_COMMAND.md §7, §10).
 'use strict';
 
-const path = require('path');
-const { test, expect, _electron: electron } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
+const { launch, exitCode } = require('./launch.js');
 
-const ROOT = path.join(__dirname, '..', '..', '..');
-
-async function launch() {
-  const app = await electron.launch({ args: ['.'], cwd: ROOT });
-  const win = await app.firstWindow();
-  await win.waitForLoadState('load');
-  return { app, win };
-}
+const ALL_BUT_PALETTE = ['Quit', 'Light / Dark Theme', 'Show / Hide Developer Tools', 'About Layout Designer…'];
 
 test.describe('command palette', () => {
   let app;
@@ -38,7 +31,7 @@ test.describe('command palette', () => {
     await win.keyboard.press('Control+Shift+P');
     await expect(palette()).toBeVisible();
     await expect(input()).toBeFocused();
-    await expect(items()).toHaveText(['Quit']);
+    await expect(items()).toHaveText(ALL_BUT_PALETTE);
   });
 
   test('typing filters the list', async () => {
@@ -73,7 +66,7 @@ test.describe('command palette', () => {
 test.describe('alias Action app.quit', () => {
   test('choosing Quit in the palette closes the application', async () => {
     const { app, win } = await launch();
-    const exited = new Promise((resolve) => app.process().once('exit', (code) => resolve(code)));
+    const exited = exitCode(app);
     await win.keyboard.press('Control+Shift+P');
     await win.locator('.CommandPaletteInput').fill('quit');
     await expect(win.locator('.CommandPaletteItem')).toHaveText(['Quit']);

@@ -54,6 +54,6 @@ export function installShortcuts(registry, target) {
     const action = registry.list().find((a) => a.shortcut && matchesShortcut(a.shortcut, event));
     if (!action) return;
     event.preventDefault();
-    registry.run(action.id).catch((err) => console.error(err));
+    registry.trigger(action.id);
   });
 }

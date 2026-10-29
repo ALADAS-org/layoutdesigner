@@ -1,0 +1,30 @@
+<!-- Menu bar (N0.3). Every entry names an Action (data-action); its label and shortcut
+     are filled from the Action registry. Help is pushed to the right (PO decision). -->
+<nav class="Menubar" role="menubar" aria-label="Main menu" data-aria-label-key="Aria/Menubar">
+  <div class="MenubarMenu">
+    <button class="MenubarTitle" role="menuitem" aria-haspopup="true" aria-expanded="false"
+            data-label-key="File">File</button>
+    <div class="MenubarDropdown" role="menu" hidden>
+      <button class="MenubarItem" role="menuitem" data-action="app.quit"></button>
+    </div>
+  </div>
+
+  <div class="MenubarMenu">
+    <button class="MenubarTitle" role="menuitem" aria-haspopup="true" aria-expanded="false"
+            data-label-key="View">View</button>
+    <div class="MenubarDropdown" role="menu" hidden>
+      <button class="MenubarItem" role="menuitem" data-action="view.commandPalette"></button>
+      <button class="MenubarItem" role="menuitem" data-action="view.toggleTheme"></button>
+      <div class="MenubarSeparator" role="separator"></div>
+      <button class="MenubarItem" role="menuitem" data-action="dev.toggleDevTools"></button>
+    </div>
+  </div>
+
+  <div class="MenubarMenu MenubarMenu--right">
+    <button class="MenubarTitle" role="menuitem" aria-haspopup="true" aria-expanded="false"
+            data-label-key="Help">Help</button>
+    <div class="MenubarDropdown MenubarDropdown--right" role="menu" hidden>
+      <button class="MenubarItem" role="menuitem" data-action="help.about"></button>
+    </div>
+  </div>
+</nav>

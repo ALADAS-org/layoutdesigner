@@ -1,0 +1,23 @@
+/* Status bar (N0.3) — colours from theme.css. */
+
+.StatusBar {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  background: var(--ld-chrome-bg);
+  color: var(--ld-chrome-fg);
+  border-top: 1px solid var(--ld-border);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.StatusBarMessage {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.StatusBarMessage.is-error {
+  color: var(--ld-error-fg);
+}

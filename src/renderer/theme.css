@@ -1,0 +1,46 @@
+/* =====================================================================================
+   theme.css — colour tokens of the two predefined themes (N0.3)
+   =====================================================================================
+   Every GUI colour is a --ld-* token; components never hard-code colours.
+   Values are a starting point modelled on Illustrator's light and dark interfaces —
+   subject to the Product Owner's Design gate.
+   ===================================================================================== */
+
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --ld-chrome-bg:     #eeeeee; /* menu bar, toolbar, status bar */
+  --ld-chrome-fg:     #1e1e1e;
+  --ld-border:        #c6c6c6;
+  --ld-menu-bg:       #ffffff; /* drop-downs, palette, dialogs */
+  --ld-menu-fg:       #1e1e1e;
+  --ld-muted-fg:      #6e6e6e; /* shortcuts, secondary text */
+  --ld-highlight-bg:  #1473e6;
+  --ld-highlight-fg:  #ffffff;
+  --ld-hover-bg:      #dcdcdc;
+  --ld-workspace-bg:  #d4d4d4; /* area around the future document */
+  --ld-input-bg:      #ffffff;
+  --ld-error-fg:      #c9252d;
+  --ld-shadow:        rgba(0, 0, 0, 0.25);
+  --ld-backdrop:      rgba(0, 0, 0, 0.25);
+  --ld-icon-filter:   none;    /* toolbar icons are drawn black */
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ld-chrome-bg:     #323232;
+  --ld-chrome-fg:     #e6e6e6;
+  --ld-border:        #1f1f1f;
+  --ld-menu-bg:       #3c3c3c;
+  --ld-menu-fg:       #e6e6e6;
+  --ld-muted-fg:      #a0a0a0;
+  --ld-highlight-bg:  #1473e6;
+  --ld-highlight-fg:  #ffffff;
+  --ld-hover-bg:      #4a4a4a;
+  --ld-workspace-bg:  #535353;
+  --ld-input-bg:      #2b2b2b;
+  --ld-error-fg:      #ff7b7b;
+  --ld-shadow:        rgba(0, 0, 0, 0.6);
+  --ld-backdrop:      rgba(0, 0, 0, 0.45);
+  --ld-icon-filter:   invert(1);
+}

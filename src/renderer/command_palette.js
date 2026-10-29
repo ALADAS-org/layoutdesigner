@@ -4,18 +4,23 @@
 // Contract: docs/contracts/ACTION_COMMAND.md §7.
 // Lists Actions (never Commands) by label, filters as the user types; Enter or click
 // runs the highlighted entry, arrows move, Esc (or a click outside) closes.
-// Minimal styling (command_palette.css); its look belongs to the N0.3 theming.
+// Labels are localised through `labelOf` (contract §13); colours come from the theme
+// tokens (theme.css).
 // =====================================================================================
 
 export const PALETTE_ACTION_ID = 'view.commandPalette';
 
-// Pure: Actions whose label contains `query` (case-insensitive), minus `excludeId`.
-export function filterActions(actions, query, excludeId) {
+const englishLabel = (action) => action.label;
+
+// Pure: Actions whose (displayed) label contains `query`, case-insensitive, minus
+// `excludeId`.
+export function filterActions(actions, query, excludeId, labelOf = englishLabel) {
   const q = (query || '').trim().toLowerCase();
-  return actions.filter((a) => a.id !== excludeId && a.label.toLowerCase().includes(q));
+  return actions.filter((a) => a.id !== excludeId && labelOf(a).toLowerCase().includes(q));
 }
 
-export function createCommandPalette(registry, doc) {
+// options: { labelOf(action) → displayed label, ariaLabel }
+export function createCommandPalette(registry, doc, { labelOf = englishLabel, ariaLabel = 'Command palette' } = {}) {
   const overlay = doc.createElement('div');
   overlay.id = 'command-palette';
   overlay.className = 'CommandPalette';
@@ -27,7 +32,7 @@ export function createCommandPalette(registry, doc) {
   const input = doc.createElement('input');
   input.type = 'text';
   input.className = 'CommandPaletteInput';
-  input.setAttribute('aria-label', 'Command palette');
+  input.setAttribute('aria-label', ariaLabel);
   input.autocomplete = 'off';
   input.spellcheck = false;
 
@@ -50,7 +55,7 @@ export function createCommandPalette(registry, doc) {
         item.setAttribute('role', 'option');
         item.setAttribute('aria-selected', String(i === selected));
         item.dataset.actionId = action.id;
-        item.textContent = action.label;
+        item.textContent = labelOf(action);
         item.addEventListener('click', () => runEntry(i));
         return item;
       })
@@ -58,7 +63,7 @@ export function createCommandPalette(registry, doc) {
   }
 
   function refresh() {
-    entries = filterActions(registry.list(), input.value, PALETTE_ACTION_ID);
+    entries = filterActions(registry.list(), input.value, PALETTE_ACTION_ID, labelOf);
     selected = 0;
     render();
   }
@@ -82,12 +87,7 @@ export function createCommandPalette(registry, doc) {
     const action = entries[i];
     if (!action) return;
     close();
-    registry
-      .run(action.id)
-      .then((reply) => {
-        if (reply && reply.ok === false) console.error(reply.error.message);
-      })
-      .catch((err) => console.error(err));
+    registry.trigger(action.id);
   }
 
   input.addEventListener('input', refresh);

@@ -12,7 +12,8 @@ without its crypto-wallet part.
 
 ```
 npm install
-npm start                  # opens the application
+npm start                  # opens the application (language = system locale)
+npx electron . --lang=fr   # opens it in a given language (en, fr)
 npm test                   # unit (Jest) then end-to-end (Playwright) tests
 npm run test:jest          # unit tests only
 npm run test:playwright    # end-to-end tests only

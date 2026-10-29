@@ -1,0 +1,17 @@
+{
+  "File":                "File",
+  "File/Quit":           "Quit",
+  "View":                "View",
+  "View/CommandPalette": "Command Palette",
+  "View/ToggleTheme":    "Light / Dark Theme",
+  "View/ToggleDevTools": "Show / Hide Developer Tools",
+  "Help":                "Help",
+  "Help/About":          "About Layout Designer…",
+  "About/Title":         "About Layout Designer",
+  "About/Version":       "Version",
+  "About/License":       "MIT License",
+  "Dialog/OK":           "OK",
+  "Aria/Menubar":        "Main menu",
+  "Aria/Toolbar":        "Toolbar",
+  "Aria/CommandPalette": "Command palette"
+}

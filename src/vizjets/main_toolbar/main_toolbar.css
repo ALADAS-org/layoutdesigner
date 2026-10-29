@@ -1,0 +1,35 @@
+/* Main toolbar (N0.3) — colours from theme.css. */
+
+.Toolbar {
+  display: flex;
+  gap: 2px;
+  padding: 3px 6px;
+  background: var(--ld-chrome-bg);
+  border-bottom: 1px solid var(--ld-border);
+}
+
+.ToolbarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+}
+
+.ToolbarButton:hover,
+.ToolbarButton:focus-visible {
+  background: var(--ld-hover-bg);
+  border-color: var(--ld-border);
+  outline: none;
+}
+
+.ToolbarIcon {
+  width: 22px;
+  height: 22px;
+  filter: var(--ld-icon-filter);
+  pointer-events: none;
+}

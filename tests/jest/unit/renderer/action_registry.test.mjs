@@ -83,3 +83,68 @@ describe('ActionRegistry.run', () => {
     await expect(reg.run('nope.nothing')).rejects.toThrow(/Unknown Action 'nope.nothing'/);
   });
 });
+
+describe('ActionRegistry labelKey (N0.3 / N0.4)', () => {
+  test('is optional and kept on the descriptor', () => {
+    const reg = new ActionRegistry({ invokeCommand: okBridge() });
+    reg.register({ id: 'app.quit', label: 'Quit', labelKey: 'File/Quit', command: 'app.quit' });
+    reg.register({ id: 'test.plain', label: 'Plain', run: async () => {} });
+    expect(reg.get('app.quit').labelKey).toBe('File/Quit');
+    expect(reg.get('test.plain').labelKey).toBeUndefined();
+  });
+
+  test.each([[''], ['  '], [42]])('rejects an invalid labelKey %p', (labelKey) => {
+    const reg = new ActionRegistry({ invokeCommand: okBridge() });
+    expect(() => reg.register({ id: 'app.quit', label: 'Quit', labelKey, command: 'app.quit' })).toThrow(TypeError);
+  });
+});
+
+describe('ActionRegistry.trigger / onFailure (N0.3)', () => {
+  const silence = () => jest.spyOn(console, 'error').mockImplementation(() => {});
+  afterEach(() => jest.restoreAllMocks());
+
+  function setup(invokeCommand) {
+    const reg = new ActionRegistry({ invokeCommand });
+    const failures = [];
+    reg.onFailure((message, id) => failures.push([message, id]));
+    return { reg, failures };
+  }
+
+  test('a successful Action reports nothing', async () => {
+    const { reg, failures } = setup(okBridge());
+    reg.register({ id: 'app.quit', label: 'Quit', command: 'app.quit' });
+    reg.register({ id: 'test.ok', label: 'Ok', run: async () => 1 });
+    await expect(reg.trigger('app.quit')).resolves.toBeUndefined();
+    await expect(reg.trigger('test.ok')).resolves.toBeUndefined();
+    expect(failures).toEqual([]);
+  });
+
+  test('an ok: false Command reply goes to the listeners', async () => {
+    silence();
+    const { reg, failures } = setup(async () => ({ ok: false, error: { message: 'Disk full' } }));
+    reg.register({ id: 'file.save', label: 'Save', command: 'file.save' });
+    await expect(reg.trigger('file.save')).resolves.toBeUndefined();
+    expect(failures).toEqual([['Disk full', 'file.save']]);
+  });
+
+  test('an ok: false reply without message still reports', async () => {
+    silence();
+    const { reg, failures } = setup(async () => ({ ok: false }));
+    reg.register({ id: 'file.save', label: 'Save', command: 'file.save' });
+    await reg.trigger('file.save');
+    expect(failures).toEqual([["Action 'file.save' failed", 'file.save']]);
+  });
+
+  test('a throwing client Action and an unknown id are reported, never rejected', async () => {
+    silence();
+    const { reg, failures } = setup(okBridge());
+    reg.register({ id: 'test.boom', label: 'Boom', run: async () => { throw new Error('boom'); } });
+    await expect(reg.trigger('test.boom')).resolves.toBeUndefined();
+    await expect(reg.trigger('nope.nothing')).resolves.toBeUndefined();
+    expect(failures).toEqual([['boom', 'test.boom'], ["Unknown Action 'nope.nothing'", 'nope.nothing']]);
+  });
+
+  test('onFailure needs a function', () => {
+    expect(() => new ActionRegistry({ invokeCommand: okBridge() }).onFailure('x')).toThrow(TypeError);
+  });
+});

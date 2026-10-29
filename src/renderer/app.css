@@ -1,0 +1,64 @@
+/* =====================================================================================
+   app.css — layout of the application window and the shared dialog skin (N0.3)
+   =====================================================================================
+   Rows, top to bottom: menu bar · toolbar · workspace · status bar.
+   ===================================================================================== */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font: 13px system-ui, sans-serif;
+  background: var(--ld-workspace-bg);
+  color: var(--ld-chrome-fg);
+}
+
+#workspace {
+  flex: 1;
+  min-height: 0;
+}
+
+/* jQuery UI dialogs, skinned with the theme tokens (classes: { 'ui-dialog': 'LdDialog' }). */
+.ui-dialog.LdDialog {
+  padding: 0;
+  background: var(--ld-menu-bg);
+  color: var(--ld-menu-fg);
+  border: 1px solid var(--ld-border);
+  box-shadow: 0 6px 20px var(--ld-shadow);
+  font: 13px system-ui, sans-serif;
+}
+
+.LdDialog .ui-dialog-titlebar {
+  border: none;
+  border-radius: 0;
+  background: var(--ld-chrome-bg);
+  color: var(--ld-chrome-fg);
+}
+
+.LdDialog .ui-dialog-content {
+  color: inherit;
+}
+
+.LdDialog .ui-dialog-buttonpane {
+  margin: 0;
+  background: transparent;
+  border-color: var(--ld-border);
+}
+
+.LdDialog .ui-dialog-buttonpane .ui-button {
+  min-width: 72px;
+  background: var(--ld-highlight-bg);
+  color: var(--ld-highlight-fg);
+  border: none;
+}
+
+.ui-widget-overlay {
+  background: var(--ld-backdrop);
+  opacity: 1;
+}

@@ -2,16 +2,13 @@
 // preload bridge (docs/contracts/ACTION_COMMAND.md §5).
 'use strict';
 
-const path = require('path');
-const { test, expect, _electron: electron } = require('@playwright/test');
-
-const ROOT = path.join(__dirname, '..', '..', '..');
+const { test, expect } = require('@playwright/test');
+const { launch } = require('./launch.js');
 
 let app;
 
 test.beforeAll(async () => {
-  // '.' starts Electron on package.json "main" — the same entry as `npm start`.
-  app = await electron.launch({ args: ['.'], cwd: ROOT });
+  ({ app } = await launch());
 });
 
 test.afterAll(async () => {

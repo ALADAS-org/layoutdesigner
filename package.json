@@ -16,5 +16,9 @@
     "@playwright/test": "^1.64.1",
     "electron": "^45.1.0",
     "jest": "^30.5.2"
+  },
+  "dependencies": {
+    "jquery": "^4.0.0",
+    "jquery-ui": "^1.14.2"
   }
 }

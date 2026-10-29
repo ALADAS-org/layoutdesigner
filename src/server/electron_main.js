@@ -2,12 +2,13 @@
 // electron_main.js — Electron main-process entry point (CJS)
 // =====================================================================================
 // Opens one secure main window and serves Commands to the renderer over a single IPC
-// channel (docs/contracts/ACTION_COMMAND.md §5).
+// channel (docs/contracts/ACTION_COMMAND.md §5). No native menu: the menu bar is HTML
+// (N0.3, contract §13).
 // =====================================================================================
 'use strict';
 
 const path = require('path');
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const { buildMainWindowOptions } = require('./window_options.js');
 const { CommandRegistry } = require('./command_registry.js');
 const { registerAppCommands } = require('./app_commands.js');
@@ -27,10 +28,13 @@ function createMainWindow() {
 }
 
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
+
   // Reply is always { ok, value } or { ok: false, error } — never a thrown IPC error.
-  ipcMain.handle(COMMAND_INVOKE_CHANNEL, (_event, request) => {
+  // Context: the app, and the webContents of the window that sent the request.
+  ipcMain.handle(COMMAND_INVOKE_CHANNEL, (event, request) => {
     const { id, args } = request || {};
-    return commands.run(id, args, { app });
+    return commands.run(id, args, { app, webContents: event.sender });
   });
 
   createMainWindow();

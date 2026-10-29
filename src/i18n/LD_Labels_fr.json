@@ -1,0 +1,17 @@
+{
+  "File":                "Fichier",
+  "File/Quit":           "Quitter",
+  "View":                "Affichage",
+  "View/CommandPalette": "Palette de commandes",
+  "View/ToggleTheme":    "Thème clair / sombre",
+  "View/ToggleDevTools": "Afficher / masquer les outils de développement",
+  "Help":                "Aide",
+  "Help/About":          "À propos de Layout Designer…",
+  "About/Title":         "À propos de Layout Designer",
+  "About/Version":       "Version",
+  "About/License":       "Licence MIT",
+  "Dialog/OK":           "OK",
+  "Aria/Menubar":        "Menu principal",
+  "Aria/Toolbar":        "Barre d'outils",
+  "Aria/CommandPalette": "Palette de commandes"
+}

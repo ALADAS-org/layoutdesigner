@@ -57,4 +57,12 @@ describe('app commands', () => {
     await expect(reg.run('app.quit', undefined, { app })).resolves.toEqual({ ok: true, value: undefined });
     expect(app.quit).toHaveBeenCalledTimes(1);
   });
+
+  test("'dev.toggleDevTools' toggles the developer tools of the sender window", async () => {
+    const reg = new CommandRegistry();
+    registerAppCommands(reg);
+    const webContents = { toggleDevTools: jest.fn() };
+    await expect(reg.run('dev.toggleDevTools', undefined, { webContents })).resolves.toEqual({ ok: true, value: undefined });
+    expect(webContents.toggleDevTools).toHaveBeenCalledTimes(1);
+  });
 });

@@ -1,15 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <!-- Only local resources; no inline scripts. -->
+  <!-- Only local resources; no inline scripts or styles. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
   <title>Layout Designer</title>
+
+  <!-- Third-party: jQuery + jQuery UI (dialogs, as in Cryptocalc) -->
+  <link rel="stylesheet" href="../node_modules/jquery-ui/dist/themes/base/jquery-ui.min.css">
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
+
+  <!-- Theme tokens, window layout, components -->
+  <link rel="stylesheet" href="renderer/theme.css">
+  <link rel="stylesheet" href="renderer/app.css">
+  <link rel="stylesheet" href="vizjets/menubar/menubar.css">
+  <link rel="stylesheet" href="vizjets/main_toolbar/main_toolbar.css">
+  <link rel="stylesheet" href="vizjets/status_bar/status_bar.css">
+  <link rel="stylesheet" href="vizjets/about_dialog/about_dialog.css">
   <link rel="stylesheet" href="renderer/command_palette.css">
+
   <script type="module" src="renderer/main.js"></script>
 </head>
 <body>
-  <!-- The HTML GUI (menu bar, toolbar, status bar) arrives in N0.3.
-       Ctrl+Shift+P opens the command palette. -->
+  <!-- Vizjets: one host per GUI component; vizjet_loader.js inserts their HTML. -->
+  <div id="menubar"      data-vizjet="vizjets/menubar/menubar.html"></div>
+  <div id="main_toolbar" data-vizjet="vizjets/main_toolbar/main_toolbar.html"></div>
+  <main id="workspace"></main>
+  <div id="status_bar"   data-vizjet="vizjets/status_bar/status_bar.html"></div>
+  <div id="about_dialog" data-vizjet="vizjets/about_dialog/about_dialog.html" hidden></div>
 </body>
 </html>

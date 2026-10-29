@@ -1,0 +1,14 @@
+/* About dialog (N0.3) — the dialog frame is skinned in app.css (.LdDialog). */
+
+.AboutDialog {
+  text-align: center;
+}
+
+.AboutDialog p {
+  margin: 6px 0;
+}
+
+.AboutName {
+  font-size: 18px;
+  font-weight: 600;
+}

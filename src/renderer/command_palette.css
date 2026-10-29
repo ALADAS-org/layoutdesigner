@@ -1,4 +1,4 @@
-/* Command palette — minimal styling. Its look belongs to the N0.3 theming. */
+/* Command palette — colours from the theme tokens (theme.css). */
 
 .CommandPalette {
   position: fixed;
@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: flex-start;
   padding-top: 15vh;
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--ld-backdrop);
 }
 
 .CommandPalette[hidden] {
@@ -16,9 +16,10 @@
 
 .CommandPalettePanel {
   width: min(560px, 90vw);
-  background: #fff;
-  border: 1px solid #888;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  background: var(--ld-menu-bg);
+  color: var(--ld-menu-fg);
+  border: 1px solid var(--ld-border);
+  box-shadow: 0 4px 16px var(--ld-shadow);
   font: 14px sans-serif;
 }
 
@@ -27,7 +28,9 @@
   width: 100%;
   padding: 6px 8px;
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--ld-border);
+  background: var(--ld-input-bg);
+  color: inherit;
   font: inherit;
   outline: none;
 }
@@ -46,6 +49,6 @@
 }
 
 .CommandPaletteItem[aria-selected="true"] {
-  background: #0a64d6;
-  color: #fff;
+  background: var(--ld-highlight-bg);
+  color: var(--ld-highlight-fg);
 }

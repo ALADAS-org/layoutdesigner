@@ -1,0 +1,95 @@
+/* Menu bar (N0.3) — colours from theme.css. */
+
+.Menubar {
+  display: flex;
+  align-items: stretch;
+  height: 26px;
+  background: var(--ld-chrome-bg);
+  border-bottom: 1px solid var(--ld-border);
+  user-select: none;
+}
+
+.MenubarMenu {
+  position: relative;
+}
+
+.MenubarMenu--right {
+  margin-left: auto;
+}
+
+.MenubarTitle {
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  background: transparent;
+  color: var(--ld-chrome-fg);
+  font: inherit;
+  cursor: default;
+}
+
+.MenubarTitle:hover,
+.MenubarTitle:focus-visible,
+.MenubarMenu.is-open > .MenubarTitle {
+  background: var(--ld-hover-bg);
+  outline: none;
+}
+
+.MenubarDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  min-width: 220px;
+  width: max-content;
+  padding: 4px 0;
+  background: var(--ld-menu-bg);
+  color: var(--ld-menu-fg);
+  border: 1px solid var(--ld-border);
+  box-shadow: 0 4px 12px var(--ld-shadow);
+}
+
+.MenubarDropdown[hidden] {
+  display: none;
+}
+
+.MenubarDropdown--right {
+  left: auto;
+  right: 0;
+}
+
+.MenubarItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding: 4px 16px 4px 22px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.MenubarItem:hover,
+.MenubarItem:focus {
+  background: var(--ld-highlight-bg);
+  color: var(--ld-highlight-fg);
+  outline: none;
+}
+
+.MenubarItemShortcut {
+  color: var(--ld-muted-fg);
+}
+
+.MenubarItem:hover .MenubarItemShortcut,
+.MenubarItem:focus .MenubarItemShortcut {
+  color: inherit;
+}
+
+.MenubarSeparator {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--ld-border);
+}
