@@ -1,6 +1,6 @@
 # Layout Designer — Reference Corpus (Router)
 
-**Authors**: JeanArt & Echopraxium (Michel), with collaboration of Claude AI
+**Authors**: JeanArt & Echopraxium (Michel)
 
 > **A router, not a content store.** It maps *where authority lives* so that live facts
 > are read from HEAD, never recited. Companion: **`LD_ReferenceCorpus_Bootstrap.md`**.
@@ -54,3 +54,7 @@
 Everything from the abandoned improvised prototype (core, `gfx` façade, plugins,
 presets, guilloché, `.lydoc` / `.lygrid` / `.lypart` design, architecture v0.3) lives
 only under the tag `proto-improvise-2026-10`. Do not treat it as a design authority.
+
+---
+
+<sub>Prepared with the assistance of Claude AI, used as a tool under the authors' direction.</sub>

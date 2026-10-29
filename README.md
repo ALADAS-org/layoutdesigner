@@ -42,4 +42,6 @@ docs/                                   roadmap, debt register, reboot-kit
 
 ## License
 
-MIT — see `LICENSE`. Authors: JeanArt & Echopraxium, with collaboration of Claude AI.
+MIT — see `LICENSE`. Copyright © 2026 JeanArt & Echopraxium.
+
+<sub>Development assisted by Claude AI, used as a tool under the authors' direction.</sub>

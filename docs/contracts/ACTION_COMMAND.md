@@ -2,7 +2,7 @@
 
 **Status:** §1–§12 validated by the Product Owner on 2026-10-29 (decisions in §12).
 §13 (N0.3 + N0.4 addendum) delivered 2026-10-29, **awaiting Product Owner validation**.
-**Authors:** JeanArt & Echopraxium (Michel), with collaboration of Claude AI · 2026-10-29
+**Authors:** JeanArt & Echopraxium (Michel) · 2026-10-29
 
 This contract fixes how a user intention travels from the GUI to the code that carries
 it out. Everything later in N0 builds on it: the HTML menu bar and toolbar (N0.3), the
@@ -263,3 +263,7 @@ Content-Security-Policy is `default-src 'self'; img-src 'self' data:`.
   Menus, toolbar, shortcuts and palette still trigger Actions only.
 - `LD_PREFERENCES_PATH` (environment) points the preferences elsewhere — the end-to-end
   tests use a temporary file, never the developer's own preferences.
+
+---
+
+<sub>Prepared with the assistance of Claude AI, used as a tool under the authors' direction.</sub>

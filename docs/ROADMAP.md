@@ -1,6 +1,6 @@
 # Layout Designer — Roadmap (Maslow pyramid)
 
-**Product Owner:** Michel (Echopraxium) · **Implementer & advisor:** Claude AI
+**Authors:** JeanArt & Echopraxium · **Product Owner:** Michel (Echopraxium)
 **Agreed:** 2026-10-28 · **Governed by** the skills `ld-maslow-pyramid-workflow`
 (what / when) and `ld-complexity-governance` (cost, tests, debt).
 
@@ -152,3 +152,7 @@ promotes it to a step, with its reference target.
 ## Quality axes (every delivery reports on them)
 
 Reliable · Intuitive · Guiding · Evolvable · Interoperable.
+
+---
+
+<sub>Prepared with the assistance of Claude AI, used as a tool under the authors' direction.</sub>

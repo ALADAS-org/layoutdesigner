@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (638 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (646 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -627,11 +627,14 @@
     - shortcuts.js
     - theme.css
     - theme.js
+    - toast.js
     - vizjet_loader.js
   - **server/**
     - app_commands.js
     - command_registry.js
     - electron_main.js
+    - language_commands.js
+    - preferences.js
     - preload.js
     - window_options.js
   - **vizjets/**
@@ -639,6 +642,10 @@
       - about_dialog.css
       - about_dialog.html
       - about_dialog.js
+    - **language_dialog/**
+      - language_dialog.css
+      - language_dialog.html
+      - language_dialog.js
     - **main_toolbar/**
       - main_toolbar.css
       - main_toolbar.html
@@ -665,6 +672,7 @@
         - vizjet_loader.test.mjs
       - **server/**
         - command_registry.test.js
+        - language_commands.test.js
         - window_options.test.js
       - **vizjets/**
         - gui_helpers.test.mjs
@@ -674,6 +682,7 @@
       - command_palette.spec.js
       - gui.spec.js
       - i18n.spec.js
+      - language_choice.spec.js
       - launch.js
     - playwright.config.js
 - .gitattributes

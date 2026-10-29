@@ -1,6 +1,6 @@
 # Layout Designer — Project Workflow
 
-**Authors:** JeanArt & Echopraxium (Michel), with collaboration of Claude AI
+**Authors:** JeanArt & Echopraxium (Michel)
 **What this guide is:** how to run the Claude project that develops Layout Designer —
 the one-time setup, then the per-step loop. Priorities live in `docs/ROADMAP.md`; the
 governing rules in the skills `ld-maslow-pyramid-workflow` and
@@ -63,3 +63,7 @@ opaque result. An opaque result is not a result.
 Every delivery says how it affects: **Reliable** (tests) · **Intuitive** (ergonomics) ·
 **Guiding** (help for beginners) · **Evolvable** (plugins, scripting) ·
 **Interoperable** (e.g. SVG).
+
+---
+
+<sub>Prepared with the assistance of Claude AI, used as a tool under the authors' direction.</sub>

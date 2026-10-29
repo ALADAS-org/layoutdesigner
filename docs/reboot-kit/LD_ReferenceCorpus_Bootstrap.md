@@ -73,10 +73,12 @@ structural changes.
 ## Conventions
 
 - Code and docs in **English**; conversation in **French**.
-- Credits: authors `"JeanArt & Echopraxium"` (About dialog, `package.json`); in the
-  documents and README: `"JeanArt & Echopraxium, with collaboration of Claude AI"`.
-  Claude AI is never an author or a GitHub contributor: commits are authored by
-  Echopraxium, with **no** `Co-Authored-By` trailer.
+- Credits: authors and copyright holders `"JeanArt & Echopraxium"` (LICENSE, README,
+  `package.json`, About dialog, document headers). Claude AI is mentioned discreetly,
+  as a tool, in a small closing line of the README and documents ("Prepared with the
+  assistance of Claude AI, used as a tool under the authors' direction"). It is never
+  an author or a GitHub contributor: commits are authored by Echopraxium, with **no**
+  `Co-Authored-By` trailer.
 - Changes delivered as **git patches** (`git am`).
 - Electron security: `contextIsolation: true`, `nodeIntegration: false`; main-process
   powers only through declared IPC in the preload bridge.
