@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 next |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 next |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -28,9 +28,24 @@ the git tag `proto-improvise-2026-10`. Nothing from it is assumed to be valid.
 *Updated at the end of each session — the first thing a new conversation reads after
 the status table.*
 
-**Next action (2026-10-29): N0.2 implementation.** The Action / Command contract is
-validated (`docs/contracts/ACTION_COMMAND.md`); implement the registries, the aliasing,
-the shortcuts and the command palette on its witness case.
+**Next action (2026-10-29): open N0.3 — HTML GUI.** Menu bar, toolbar, status bar, one
+dialog, themable; the HTML menu bar replaces Electron's native menu. Before any code,
+agree with the Product Owner on the reference target and acceptance criteria:
+- references (skill `ld-maslow-pyramid-workflow` §4): electron-boilerplate-cjs (the
+  Product Owner's HTML-menu prototype — adapt, do not copy) for menu bar, toolbar and
+  viewlets; Cryptocalc vizjets for status bar and dialogs; **Illustrator** for menu
+  content and shortcuts;
+- every menu / toolbar entry triggers an **Action** (`docs/contracts/ACTION_COMMAND.md`);
+- which menus and entries appear in N0.3 (only Actions that exist: no empty
+  placeholders without Product Owner agreement);
+- complexity budget, including any dependency (jQuery and iziToast are accepted by the
+  skill, but each still needs explicit approval).
+
+To carry into N0.3:
+- once the native menu is gone, add the end-to-end test of `Ctrl+Q` (not testable while
+  the native menu intercepts it on Linux);
+- proposal from N0.2, not yet accepted: show a failed Command's message in the status
+  bar (today it only goes to the console).
 
 **Decisions (2026-10-29, Product Owner):**
 - N0 sub-steps and their order: see *N0 sub-steps* below.
@@ -86,8 +101,8 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | # | Sub-step | Contract written first | State |
 |---|---|---|---|
 | N0.1 | Electron shell (secure empty window) + Jest / Playwright harness | — | ✅ 2026-10-29 |
-| N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ⏳ next |
-| N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | — | — |
+| N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ✅ 2026-10-29 |
+| N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | — | ⏳ next |
 | N0.4 | Localisation (JSON, en / fr) | — | — |
 | N0.5 | Server and renderer plugins (dummy ones) | Plugin API | — |
 | N0.6 | Document + calques + undo / redo (every mutation is an EditTransaction) | Calque / object model, EditTransaction | — |
