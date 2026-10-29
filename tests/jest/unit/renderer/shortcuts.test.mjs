@@ -1,8 +1,8 @@
 // Unit tests — shortcut parsing, matching and dispatch (docs/contracts/ACTION_COMMAND.md §6).
 const { jest } = import.meta;
 import { parseShortcut, normalizeShortcut, matchesShortcut, installShortcuts }
-  from '../../../../www/src/renderer/shortcuts.js';
-import { ActionRegistry } from '../../../../www/src/renderer/action_registry.js';
+  from '../../../../src/renderer/shortcuts.js';
+import { ActionRegistry } from '../../../../src/renderer/action_registry.js';
 
 const key = (k, mods = {}) => ({ key: k, ctrlKey: false, shiftKey: false, altKey: false, metaKey: false, ...mods });
 

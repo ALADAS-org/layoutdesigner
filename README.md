@@ -28,7 +28,7 @@ npm run test:playwright    # end-to-end tests only
 ## What the repository holds today
 
 ```
-www/                                    the application (Electron main: www/src/server/)
+src/                                    the application (Electron main: src/server/, renderer: src/renderer/)
 tests/jest/, tests/playwright/          unit and end-to-end tests
 assets/legacy/patterns/                 Silverquote .pattern corpus (N1 input)
 assets/legacy/icons/, tilesets/         assets of the Icons/* pattern family

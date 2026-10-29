@@ -610,6 +610,21 @@
 - **schemas/**
   - pattern.schema.json ★
   - pattern.spec.md ★
+- **src/**
+  - **renderer/**
+    - action_registry.js
+    - command_palette.css
+    - command_palette.js
+    - main.js
+    - package.json
+    - shortcuts.js
+  - **server/**
+    - app_commands.js
+    - command_registry.js
+    - electron_main.js
+    - preload.js
+    - window_options.js
+  - index.html
 - **tests/**
   - **jest/**
     - **unit/**
@@ -625,22 +640,6 @@
       - app_launch.spec.js
       - command_palette.spec.js
     - playwright.config.js
-- **www/**
-  - **src/**
-    - **renderer/**
-      - action_registry.js
-      - command_palette.css
-      - command_palette.js
-      - main.js
-      - package.json
-      - shortcuts.js
-    - **server/**
-      - app_commands.js
-      - command_registry.js
-      - electron_main.js
-      - preload.js
-      - window_options.js
-  - index.html
 - .gitattributes
 - .gitignore
 - _00_open_cmd_window.bat

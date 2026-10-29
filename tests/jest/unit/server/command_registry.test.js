@@ -1,8 +1,8 @@
 // Unit tests — CommandRegistry (docs/contracts/ACTION_COMMAND.md §4–§5).
 'use strict';
 
-const { CommandRegistry } = require('../../../../www/src/server/command_registry.js');
-const { registerAppCommands } = require('../../../../www/src/server/app_commands.js');
+const { CommandRegistry } = require('../../../../src/server/command_registry.js');
+const { registerAppCommands } = require('../../../../src/server/app_commands.js');
 
 describe('CommandRegistry.register', () => {
   test('accepts a valid descriptor', () => {

@@ -12,7 +12,7 @@ const { buildMainWindowOptions } = require('./window_options.js');
 const { CommandRegistry } = require('./command_registry.js');
 const { registerAppCommands } = require('./app_commands.js');
 
-const INDEX_HTML = path.join(__dirname, '..', '..', 'index.html');
+const INDEX_HTML = path.join(__dirname, '..', 'index.html');
 
 // Same string as in preload.js (a sandboxed preload cannot require local modules).
 const COMMAND_INVOKE_CHANNEL = 'ld:command:invoke';

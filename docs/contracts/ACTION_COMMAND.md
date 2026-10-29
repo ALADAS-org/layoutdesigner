@@ -146,9 +146,9 @@ Witnesses: one **client Action** (`view.commandPalette`) and one **alias Action*
 
 ## 11. Complexity budget (N0.2)
 
-- **Files (≈ 6–8):** `www/src/server/command_registry.js`,
-  `www/src/server/preload.js`, IPC wiring in `electron_main.js`;
-  `www/src/renderer/action_registry.js`, `shortcuts.js`, `command_palette.js` (+ its
+- **Files (≈ 6–8):** `src/server/command_registry.js`,
+  `src/server/preload.js`, IPC wiring in `electron_main.js`;
+  `src/renderer/action_registry.js`, `shortcuts.js`, `command_palette.js` (+ its
   CSS), `main.js` (renderer entry, registers the two witness Actions); tests.
 - **Concepts:** Action / Command descriptors, the two registries, `window.ld.invokeCommand`,
   the `ld:command:invoke` channel, the `{ ok, value | error }` reply, the shortcut

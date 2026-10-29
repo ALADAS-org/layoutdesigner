@@ -1,6 +1,6 @@
 // Unit tests — command palette filtering (docs/contracts/ACTION_COMMAND.md §7).
 // The palette's DOM behaviour is covered end-to-end (tests/playwright/e2e).
-import { filterActions, PALETTE_ACTION_ID } from '../../../../www/src/renderer/command_palette.js';
+import { filterActions, PALETTE_ACTION_ID } from '../../../../src/renderer/command_palette.js';
 
 const actions = [
   { id: PALETTE_ACTION_ID, label: 'Command Palette' },

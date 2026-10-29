@@ -1,6 +1,6 @@
 // Unit tests — ActionRegistry (docs/contracts/ACTION_COMMAND.md §3, §5).
 const { jest } = import.meta;
-import { ActionRegistry } from '../../../../www/src/renderer/action_registry.js';
+import { ActionRegistry } from '../../../../src/renderer/action_registry.js';
 
 const okBridge = () => jest.fn(async (id, args) => ({ ok: true, value: { id, args } }));
 

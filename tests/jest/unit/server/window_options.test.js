@@ -3,7 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { APP_TITLE, PRELOAD_PATH, buildMainWindowOptions } = require('../../../../www/src/server/window_options.js');
+const { APP_TITLE, PRELOAD_PATH, buildMainWindowOptions } = require('../../../../src/server/window_options.js');
 
 describe('buildMainWindowOptions', () => {
   test('enables context isolation and disables Node integration', () => {
