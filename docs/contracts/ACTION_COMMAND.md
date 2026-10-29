@@ -188,7 +188,7 @@ inserts the (static, script-free) HTML, then each vizjet's `.js` wires it.
 | `menubar` | *File* › Quit · *View* › Command Palette, Light / Dark Theme, Show / Hide Developer Tools · *Help* › About Layout Designer… — *Help* aligned right (PO decision). |
 | `main_toolbar` | Command palette button · wrench button (developer tools). Tooltip = `label (shortcut)`. |
 | `status_bar` | Message area; shows the message of a failed Action / Command, styled as an error. |
-| `about_dialog` | Modal **jQuery UI** dialog (as in Cryptocalc): name, version (from `package.json`), author, licence; OK / Esc close. |
+| `about_dialog` | Modal **jQuery UI** dialog (as in Cryptocalc): name, version (from `package.json`), authors « © JeanArt & Echopraxium » (PO decision), licence; OK / Esc close. |
 
 Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
 
