@@ -186,7 +186,7 @@ inserts the (static, script-free) HTML, then each vizjet's `.js` wires it.
 | Vizjet | Content in N0.3 |
 |---|---|
 | `menubar` | *File* › Quit · *View* › Command Palette, Light / Dark Theme, Show / Hide Developer Tools · *Help* › About Layout Designer… — *Help* aligned right (PO decision). |
-| `main_toolbar` | Wrench button (developer tools) · **command center** in the middle, as in VS Code: a search-box-like control (« Search actions », shortcut shown) that opens the command palette right over it (PO decision). Tooltip = `label (shortcut)`. |
+| `main_toolbar` | Wrench button (developer tools) · **command center** in the middle, as in VS Code: a search-box-like control (« Search commands », shortcut shown) that opens the command palette right over it (PO decision). Tooltip = `label (shortcut)`. |
 | `status_bar` | Message area; shows the message of a failed Action / Command, styled as an error. |
 | `about_dialog` | Reached by *Help › About*, **F1** and the palette entry *Help: About…* — one Action, `help.about` (PO decision). Modal **jQuery UI** dialog (as in Cryptocalc): name, version (from `package.json`), authors « © JeanArt & Echopraxium » (PO decision), licence; OK / Esc close. |
 
@@ -202,6 +202,11 @@ Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
   menus, ↓ / Enter / Space open, ↑/↓ between entries, Enter / Space run, Esc closes then
   leaves.
 - Not in N0.3 (no witness yet): enable / disable (`isEnabled()`), check items, submenus.
+- Palette entries are sorted alphabetically by displayed label, in the interface
+  language (PO decision), not in registration order.
+- **User-facing wording** (PO decision): the user sees *commands* — « Command Palette »,
+  « Search commands » — as in VS Code; in the implementation each of them is an
+  **Action** (§1). Commands in the §4 sense stay internal.
 
 ### 13.3 Additions to the Action descriptor and registry
 

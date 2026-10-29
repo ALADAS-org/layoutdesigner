@@ -61,8 +61,9 @@ actions.onFailure((message) => statusBar.showError(message));
 
 const palette = createCommandPalette(actions, document, {
   labelOf: paletteLabelOf,
+  locale: lang,
   ariaLabel: t('Aria/CommandPalette'),
-  placeholder: t('Toolbar/SearchActions'),
+  placeholder: t('Toolbar/SearchCommands'),
   anchor: () => document.querySelector('.CommandCenter')
 });
 const { version } = await (await fetch('../package.json')).json();

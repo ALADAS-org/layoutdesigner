@@ -219,7 +219,7 @@ test.describe('toolbar and status bar', () => {
     await expect(button('dev.toggleDevTools')).toHaveAttribute('title', 'Show / Hide Developer Tools (Ctrl+Shift+I)');
     await expect(commandCenter()).toHaveAttribute('data-action', 'view.commandPalette');
     await expect(commandCenter()).toHaveAttribute('title', 'Command Palette (Ctrl+Shift+P)');
-    await expect(commandCenter().locator('.CommandCenterText')).toHaveText('Search actions');
+    await expect(commandCenter().locator('.CommandCenterText')).toHaveText('Search commands');
     await expect(commandCenter().locator('.CommandCenterShortcut')).toHaveText('Ctrl+Shift+P');
   });
 
@@ -234,7 +234,7 @@ test.describe('toolbar and status bar', () => {
     await commandCenter().click();
     await expect(win.locator('#command-palette')).toBeVisible();
     await expect(win.locator('.CommandPaletteInput')).toBeFocused();
-    await expect(win.locator('.CommandPaletteInput')).toHaveAttribute('placeholder', 'Search actions');
+    await expect(win.locator('.CommandPaletteInput')).toHaveAttribute('placeholder', 'Search commands');
     const panel = await win.locator('.CommandPalettePanel').boundingBox();
     expect(Math.abs(panel.y - center.y)).toBeLessThan(2);
     expect(Math.abs(panel.x + panel.width / 2 - (center.x + center.width / 2))).toBeLessThan(2);

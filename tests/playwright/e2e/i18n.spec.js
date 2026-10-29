@@ -22,12 +22,19 @@ test.describe('French (--lang=fr)', () => {
     await expect(win.locator('.MenubarTitle')).toHaveText(['Fichier', 'Affichage', 'Aide']);
     await expect(win.locator('.MenubarItem[data-action="app.quit"] .MenubarItemLabel')).toHaveText('Quitter');
     await expect(win.locator('.CommandCenter')).toHaveAttribute('title', 'Palette de commandes (Ctrl+Shift+P)');
-    await expect(win.locator('.CommandCenterText')).toHaveText('Rechercher une action');
+    await expect(win.locator('.CommandCenterText')).toHaveText('Rechercher une commande');
     await expect(win.locator('.Menubar')).toHaveAttribute('aria-label', 'Menu principal');
   });
 
-  test('the palette lists and filters the French labels', async () => {
+  test('the palette lists and filters the French labels, sorted alphabetically', async () => {
     await win.keyboard.press('Control+Shift+P');
+    await expect(win.locator('.CommandPaletteItem')).toHaveText([
+      'Affichage : Afficher / masquer les outils de développement',
+      'Affichage : Thème clair / sombre',
+      'Aide : À propos de Layout Designer…',
+      'Fichier : Quitter',
+      'Préférences : Choisir la langue…'
+    ]);
     await win.locator('.CommandPaletteInput').fill('quit');
     await expect(win.locator('.CommandPaletteItem')).toHaveText(['Fichier : Quitter']);
     await win.keyboard.press('Escape');

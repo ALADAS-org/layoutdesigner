@@ -5,13 +5,13 @@
 const { test, expect } = require('@playwright/test');
 const { launch, exitCode } = require('./launch.js');
 
-// Palette entries read "Category: Label", as in VS Code.
+// Palette entries read "Category: Label", as in VS Code, sorted alphabetically.
 const ALL_BUT_PALETTE = [
   'File: Quit',
-  'View: Light / Dark Theme',
-  'View: Show / Hide Developer Tools',
+  'Help: About Layout Designer…',
   'Preferences: Choose Language…',
-  'Help: About Layout Designer…'
+  'View: Light / Dark Theme',
+  'View: Show / Hide Developer Tools'
 ];
 
 test.describe('command palette', () => {

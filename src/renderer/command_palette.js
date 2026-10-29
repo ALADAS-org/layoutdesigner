@@ -12,6 +12,13 @@ export const PALETTE_ACTION_ID = 'view.commandPalette';
 
 const englishLabel = (action) => action.label;
 
+// Pure: the Actions sorted by displayed label, alphabetically for `locale`
+// (PO decision: no fixed order that puts « Quit » first).
+export function sortByLabel(actions, labelOf = englishLabel, locale = 'en') {
+  const collator = new Intl.Collator(locale, { sensitivity: 'base' });
+  return [...actions].sort((a, b) => collator.compare(labelOf(a), labelOf(b)));
+}
+
 // Pure: Actions whose (displayed) label contains `query`, case-insensitive, minus
 // `excludeId`.
 export function filterActions(actions, query, excludeId, labelOf = englishLabel) {
@@ -19,13 +26,13 @@ export function filterActions(actions, query, excludeId, labelOf = englishLabel)
   return actions.filter((a) => a.id !== excludeId && labelOf(a).toLowerCase().includes(q));
 }
 
-// options: { labelOf(action) → displayed label, ariaLabel, placeholder,
+// options: { labelOf(action) → displayed label, locale (sort order), ariaLabel, placeholder,
 //            anchor: () => element — when visible, the panel opens right over it
 //            (the toolbar's command center, as in VS Code) }
 export function createCommandPalette(
   registry,
   doc,
-  { labelOf = englishLabel, ariaLabel = 'Command palette', placeholder = '', anchor = () => null } = {}
+  { labelOf = englishLabel, locale = 'en', ariaLabel = 'Command palette', placeholder = '', anchor = () => null } = {}
 ) {
   const overlay = doc.createElement('div');
   overlay.id = 'command-palette';
@@ -70,7 +77,7 @@ export function createCommandPalette(
   }
 
   function refresh() {
-    entries = filterActions(registry.list(), input.value, PALETTE_ACTION_ID, labelOf);
+    entries = sortByLabel(filterActions(registry.list(), input.value, PALETTE_ACTION_ID, labelOf), labelOf, locale);
     selected = 0;
     render();
   }

@@ -71,7 +71,7 @@ After validation: N0.5 — plugins (write the Plugin API contract first).
 | Term | Meaning |
 |---|---|
 | **Calque** | A layer of the document (`layer` in English code identifiers). |
-| **Action** | Client-side unit of functionality. The only thing a menu, toolbar or command-palette entry triggers. |
+| **Action** | Client-side unit of functionality. The only thing a menu, toolbar or command-palette entry triggers. *The user sees it as a « command » (Command Palette, « Search commands »), as in VS Code.* |
 | **Command** | Server-side unit of functionality (Electron main). Reached from the UI only through an Action that redirects to it (an alias). |
 | **EditTransaction** | The undoable unit of document modification (undo/redo history). |
 
