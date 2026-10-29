@@ -36,7 +36,7 @@ test.describe('French (--lang=fr)', () => {
   test('the About dialog is in French', async () => {
     await win.locator('.MenubarTitle', { hasText: 'Aide' }).click();
     await win.locator('.MenubarItem[data-action="help.about"]').click();
-    const dialog = win.locator('.ui-dialog.LdDialog');
+    const dialog = win.locator('.ui-dialog.LdDialog', { has: win.locator('.AboutDialog') });
     await expect(dialog.locator('.ui-dialog-title')).toHaveText('À propos de Layout Designer');
     await expect(dialog).toContainText('Licence MIT');
     await win.keyboard.press('Escape');

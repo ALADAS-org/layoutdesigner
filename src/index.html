@@ -2,14 +2,17 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <!-- Only local resources; no inline scripts or styles. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  <!-- Only local resources; no inline scripts or styles. Images may also be data: URIs
+       (iziToast embeds its icons in its CSS). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:">
   <title>Layout Designer</title>
 
-  <!-- Third-party: jQuery + jQuery UI (dialogs, as in Cryptocalc) -->
+  <!-- Third-party: jQuery + jQuery UI (dialogs, as in Cryptocalc), iziToast (notifications) -->
   <link rel="stylesheet" href="../node_modules/jquery-ui/dist/themes/base/jquery-ui.min.css">
+  <link rel="stylesheet" href="../node_modules/izitoast/dist/css/iziToast.min.css">
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
+  <script src="../node_modules/izitoast/dist/js/iziToast.min.js"></script>
 
   <!-- Theme tokens, window layout, components -->
   <link rel="stylesheet" href="renderer/theme.css">
@@ -18,6 +21,7 @@
   <link rel="stylesheet" href="vizjets/main_toolbar/main_toolbar.css">
   <link rel="stylesheet" href="vizjets/status_bar/status_bar.css">
   <link rel="stylesheet" href="vizjets/about_dialog/about_dialog.css">
+  <link rel="stylesheet" href="vizjets/language_dialog/language_dialog.css">
   <link rel="stylesheet" href="renderer/command_palette.css">
 
   <script type="module" src="renderer/main.js"></script>
@@ -29,5 +33,6 @@
   <main id="workspace"></main>
   <div id="status_bar"   data-vizjet="vizjets/status_bar/status_bar.html"></div>
   <div id="about_dialog" data-vizjet="vizjets/about_dialog/about_dialog.html" hidden></div>
+  <div id="language_dialog" data-vizjet="vizjets/language_dialog/language_dialog.html" hidden></div>
 </body>
 </html>

@@ -38,3 +38,6 @@ Thumbs.db
 
 # Patch files delivered into the repo folder (never commit them)
 *.patch
+
+# User preferences, written at run time (src/server/preferences.js)
+src/config/preferences.json

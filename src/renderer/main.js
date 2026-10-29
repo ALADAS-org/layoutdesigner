@@ -7,6 +7,7 @@
 //   - app.quit             alias   Ctrl+Q (as in Illustrator)
 //   - view.toggleTheme     client  light ↔ dark
 //   - dev.toggleDevTools   alias   Ctrl+Shift+I
+//   - prefs.chooseLanguage client  language dialog → Command prefs.setLanguage → toast
 //   - help.about           client  F1 — opens the About dialog
 // Each Action has a category (its menu); the palette shows "Category: Label".
 // =====================================================================================
@@ -21,11 +22,21 @@ import { createMenubar } from '../vizjets/menubar/menubar.js';
 import { createToolbar } from '../vizjets/main_toolbar/main_toolbar.js';
 import { createStatusBar } from '../vizjets/status_bar/status_bar.js';
 import { createAboutDialog } from '../vizjets/about_dialog/about_dialog.js';
+import { createLanguageDialog } from '../vizjets/language_dialog/language_dialog.js';
+import { createToaster } from './toast.js';
 
 const byId = (id) => document.getElementById(id);
 
+// Start-up reads one Command directly (no UI trigger involved — contract §13.8).
+async function command(id, args) {
+  const reply = await window.ld.invokeCommand(id, args);
+  if (!reply.ok) throw new Error(reply.error.message);
+  return reply.value;
+}
+
 // ---- language and labels
-const lang = pickLanguage(navigator.language);
+const { locale, languages } = await command('i18n.startupInfo');
+const lang = pickLanguage(locale, languages.map((l) => l.code));
 const { labels, englishLabels } = await loadLabels(lang);
 const t = createTranslator(labels, englishLabels);
 document.documentElement.lang = lang;
@@ -56,6 +67,8 @@ const palette = createCommandPalette(actions, document, {
 });
 const { version } = await (await fetch('../package.json')).json();
 const aboutDialog = createAboutDialog(byId('about_dialog'), { t, version });
+const languageDialog = createLanguageDialog(byId('language_dialog'), { t });
+const toaster = createToaster();
 
 actions.register({
   id: PALETTE_ACTION_ID,
@@ -87,6 +100,19 @@ actions.register({
   categoryKey: 'View',
   shortcut: 'Ctrl+Shift+I',
   command: 'dev.toggleDevTools'
+});
+actions.register({
+  id: 'prefs.chooseLanguage',
+  label: 'Choose Language…',
+  labelKey: 'Language/Choose',
+  categoryKey: 'Preferences',
+  // Saved in the preferences; the new language applies at the next start.
+  run: async () => {
+    const choice = await languageDialog.choose(languages, lang);
+    if (choice === null) return;
+    await command('prefs.setLanguage', { language: choice });
+    if (choice !== lang) toaster.warning(t('Language/RestartTitle'), t('Language/RestartMessage'));
+  }
 });
 actions.register({
   id: 'help.about',

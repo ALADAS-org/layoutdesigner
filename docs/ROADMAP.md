@@ -36,8 +36,10 @@ themes, About dialog, status bar, French labels (system locale, or
 Settled on 2026-10-29: `jquery-ui` approved; theme colours approved; the palette
 icon was replaced by a VS Code-like **command center** in the toolbar; **dark theme by
 default**; *Help › About* also on **F1** and as the palette entry « Help: About… »
-(palette entries read « Category: Label », as in VS Code) — awaiting the Product
-Owner's check.
+(palette entries read « Category: Label », as in VS Code); **interactive language
+choice** promoted from the backlog into N0.3 (palette entry *Preferences: Choose
+Language…*, jQuery dialog, iziToast restart warning, `src/config/preferences.json`;
+contract §13.8) — awaiting the Product Owner's check.
 
 After validation: N0.5 — plugins (write the Plugin API contract first).
 
@@ -146,13 +148,6 @@ promotes it to a step, with its reference target.
 - Multiple Trame / Scene calques in practice
 - Scripting language
 - Composition templates, predefined patterns, tutorials (guiding)
-- **Interactive language choice** (noted 2026-10-29, Product Owner): the language is
-  changed in the GUI and **applied at restart**, with a **warning notification via
-  iziToast** saying so; the choice is remembered. Placement proposed: *Edit ›
-  Preferences… (Ctrl+K) › Language*, as in Inkscape (Illustrator has none) — to
-  confirm. Implies a preferences store (also useful for the theme) and the iziToast
-  dependency (accepted by the skill, to approve explicitly). Until then:
-  `npx electron . --lang=fr`.
 
 ## Quality axes (every delivery reports on them)
 

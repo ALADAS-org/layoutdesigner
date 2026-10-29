@@ -62,3 +62,13 @@ body {
   background: var(--ld-backdrop);
   opacity: 1;
 }
+
+.LdDialog .ui-dialog-buttonpane .ui-button.LdSecondary {
+  background: var(--ld-hover-bg);
+  color: var(--ld-menu-fg);
+}
+
+/* iziToast notifications use the application font. */
+.iziToast.LdToast {
+  font-family: system-ui, sans-serif;
+}

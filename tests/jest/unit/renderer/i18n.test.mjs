@@ -4,10 +4,13 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-  SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, pickLanguage, labelsUrl, createTranslator, loadLabels, localizeTree, format
+  DEFAULT_LANGUAGE, pickLanguage, labelsUrl, createTranslator, loadLabels, localizeTree, format
 } from '../../../../src/renderer/i18n.js';
 
 const SRC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../src');
+// The label files present in src/i18n — the available languages.
+const LANGUAGES = fs.readdirSync(path.join(SRC, 'i18n'))
+  .map((f) => /^LD_Labels_([a-z]{2,3})\.json$/.exec(f)).filter(Boolean).map((m) => m[1]).sort();
 const readLabels = (lang) => JSON.parse(fs.readFileSync(path.join(SRC, labelsUrl(lang)), 'utf8'));
 
 describe('pickLanguage', () => {
@@ -15,8 +18,13 @@ describe('pickLanguage', () => {
     ['fr', 'fr'], ['fr-BE', 'fr'], ['fr_FR', 'fr'], ['FR-fr', 'fr'],
     ['en-US', 'en'], ['de-DE', 'en'], ['', 'en'], [undefined, 'en']
   ])('%p → %p', (locale, lang) => {
-    expect(pickLanguage(locale)).toBe(lang);
+    expect(pickLanguage(locale, ['en', 'fr'])).toBe(lang);
   });
+});
+
+test('pickLanguage only picks an available language', () => {
+  expect(pickLanguage('fr-FR', ['en'])).toBe('en');
+  expect(pickLanguage('de', ['de', 'en'])).toBe('de');
 });
 
 describe('createTranslator', () => {
@@ -77,17 +85,19 @@ describe('localizeTree', () => {
 });
 
 describe('LD_Labels_<xx>.json files', () => {
-  test('one file per supported language, English being the default', () => {
-    expect(SUPPORTED_LANGUAGES).toEqual(['en', 'fr']);
+  test('English (the default) and French are present', () => {
     expect(DEFAULT_LANGUAGE).toBe('en');
-    for (const lang of SUPPORTED_LANGUAGES) {
-      expect(fs.existsSync(path.join(SRC, 'i18n', `LD_Labels_${lang}.json`))).toBe(true);
-    }
+    expect(LANGUAGES).toEqual(['en', 'fr']);
+  });
+
+  test('each file names its language', () => {
+    expect(readLabels('en')['Language/Name']).toBe('English');
+    expect(readLabels('fr')['Language/Name']).toBe('Français');
   });
 
   test('every language has exactly the English keys, with non-empty strings', () => {
     const englishKeys = Object.keys(readLabels('en')).sort();
-    for (const lang of SUPPORTED_LANGUAGES) {
+    for (const lang of LANGUAGES) {
       const labels = readLabels(lang);
       expect(Object.keys(labels).sort()).toEqual(englishKeys);
       for (const value of Object.values(labels)) {

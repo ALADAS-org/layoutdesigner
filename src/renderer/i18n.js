@@ -3,18 +3,18 @@
 // =====================================================================================
 // One flat JSON file per language: src/i18n/LD_Labels_<xx>.json (xx = 'en', 'fr').
 // Keys follow the electron-boilerplate-cjs / Cryptocalc style: "File", "File/Quit".
-// The language comes from the system locale (navigator.language, which Electron's
-// --lang switch overrides); anything unsupported falls back to English.
+// The locale to start with comes from main (Command i18n.startupInfo: --lang switch →
+// preferences → system locale); a locale whose language has no label file falls back
+// to English. The available languages are the label files present.
 // Lookup order: chosen language → English → the fallback given by the caller → key.
 // =====================================================================================
 
-export const SUPPORTED_LANGUAGES = Object.freeze(['en', 'fr']);
 export const DEFAULT_LANGUAGE = 'en';
 
-// 'fr-BE' → 'fr'; unsupported or empty → 'en'.
-export function pickLanguage(locale) {
+// 'fr-BE' → 'fr' when 'fr' is available; otherwise → 'en'.
+export function pickLanguage(locale, available) {
   const base = String(locale || '').toLowerCase().split(/[-_]/)[0];
-  return SUPPORTED_LANGUAGES.includes(base) ? base : DEFAULT_LANGUAGE;
+  return available.includes(base) ? base : DEFAULT_LANGUAGE;
 }
 
 // Relative to src/index.html.

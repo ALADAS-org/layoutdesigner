@@ -18,6 +18,7 @@
     "jest": "^30.5.2"
   },
   "dependencies": {
+    "izitoast": "^1.4.0",
     "jquery": "^4.0.0",
     "jquery-ui": "^1.14.2"
   }

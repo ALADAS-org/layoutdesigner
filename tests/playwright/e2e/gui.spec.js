@@ -151,7 +151,7 @@ test.describe('About dialog', () => {
     if (app) await app.close();
   });
 
-  const dialog = () => win.locator('.ui-dialog.LdDialog');
+  const dialog = () => win.locator('.ui-dialog.LdDialog', { has: win.locator('.AboutDialog') });
 
   test('Help › About opens a modal dialog with the version from package.json', async () => {
     await expect(dialog()).toBeHidden();

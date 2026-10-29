@@ -10,6 +10,7 @@ const ALL_BUT_PALETTE = [
   'File: Quit',
   'View: Light / Dark Theme',
   'View: Show / Hide Developer Tools',
+  'Preferences: Choose Language…',
   'Help: About Layout Designer…'
 ];
 

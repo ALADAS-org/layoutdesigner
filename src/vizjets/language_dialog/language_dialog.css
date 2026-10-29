@@ -1,0 +1,17 @@
+/* Language dialog (N0.3) — the dialog frame is skinned in app.css (.LdDialog). */
+
+.LanguageDialog {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.LanguageDialogSelect {
+  flex: 1;
+  padding: 3px 6px;
+  background: var(--ld-input-bg);
+  color: var(--ld-menu-fg);
+  border: 1px solid var(--ld-border);
+  font: inherit;
+}

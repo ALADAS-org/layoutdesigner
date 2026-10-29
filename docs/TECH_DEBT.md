@@ -31,3 +31,14 @@ abandoned rather than carried as debt (tag `proto-improvise-2026-10`).
 - Repayment: when packaging is introduced, check the layout or copy the files at build
   time; add an end-to-end test on the packaged app.
 - Status: open
+
+## TD-2 — Preferences written inside the application folder
+- Date / level: 2026-10-29 / N0.3
+- What: preferences are saved in `src/config/preferences.json`, inside the application
+  folder (Product Owner choice).
+- Why: simple and visible during development; no packaging exists yet.
+- Cost if left: a packaged (asar) or installed application cannot write there; an
+  update would also overwrite the user's preferences.
+- Repayment: when packaging is introduced, move the file to Electron's per-user folder
+  (`app.getPath('userData')`) — only `preferences.js` changes.
+- Status: open

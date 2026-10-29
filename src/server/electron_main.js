@@ -12,6 +12,7 @@ const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const { buildMainWindowOptions } = require('./window_options.js');
 const { CommandRegistry } = require('./command_registry.js');
 const { registerAppCommands } = require('./app_commands.js');
+const { registerLanguageCommands } = require('./language_commands.js');
 
 const INDEX_HTML = path.join(__dirname, '..', 'index.html');
 
@@ -20,6 +21,7 @@ const COMMAND_INVOKE_CHANNEL = 'ld:command:invoke';
 
 const commands = new CommandRegistry();
 registerAppCommands(commands);
+registerLanguageCommands(commands);
 
 function createMainWindow() {
   const win = new BrowserWindow(buildMainWindowOptions());

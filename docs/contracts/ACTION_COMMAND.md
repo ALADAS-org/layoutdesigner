@@ -242,5 +242,24 @@ persisted).
 
 ### 13.7 Dependencies
 
-`jquery` and `jquery-ui` (the dialog widget of the Cryptocalc model), approved by the
-PO on 2026-10-29: runtime dependencies, loaded from `node_modules/` as classic scripts.
+`jquery` and `jquery-ui` (the dialog widget of the Cryptocalc model) and `izitoast`
+(notifications), approved by the PO on 2026-10-29: runtime dependencies, loaded from
+`node_modules/` as classic scripts. iziToast embeds its icons as `data:` images, so the
+Content-Security-Policy is `default-src 'self'; img-src 'self' data:`.
+
+### 13.8 Interface language chosen in the GUI (promoted from the backlog, 2026-10-29)
+
+- Palette entry *Preferences: Choose Language…* — client Action `prefs.chooseLanguage`.
+  It opens a modal jQuery UI dialog (vizjet `language_dialog`) listing the languages
+  available = the label files present in `src/i18n`, each named by its
+  `"Language/Name"` key. OK saves the choice; Cancel / Esc / ✕ save nothing.
+- The choice is saved by the Command `prefs.setLanguage` in **`src/config/preferences.json`**
+  (`{ "language": "fr" }`; created on first write, not versioned). A **warning toast
+  (iziToast)** says that the language applies at the next start.
+- Language at start-up, first found: Electron's `--lang` switch → preferences file →
+  system locale; a language without label file falls back to English.
+- At start-up the renderer reads the Command `i18n.startupInfo` directly (no UI trigger
+  is involved); a client Action may likewise call Commands as part of its own work.
+  Menus, toolbar, shortcuts and palette still trigger Actions only.
+- `LD_PREFERENCES_PATH` (environment) points the preferences elsewhere — the end-to-end
+  tests use a temporary file, never the developer's own preferences.
