@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 delivered, awaiting validation |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 next |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -28,20 +28,29 @@ the git tag `proto-improvise-2026-10`. Nothing from it is assumed to be valid.
 *Updated at the end of each session — the first thing a new conversation reads after
 the status table.*
 
-**Next action (2026-10-29): Product Owner validation of N0.3 + N0.4** (HTML GUI and
-localisation, merged into one step). Run `npm test`, then `npm start` and check the
-Design gate: menus (mouse and keyboard), toolbar icons and tooltips, light and dark
-themes, About dialog, status bar, French labels (system locale, or
-`npx electron . --lang=fr`). Details: `docs/contracts/ACTION_COMMAND.md` §13.
-Settled on 2026-10-29: `jquery-ui` approved; theme colours approved; the palette
-icon was replaced by a VS Code-like **command center** in the toolbar; **dark theme by
-default**; *Help › About* also on **F1** and as the palette entry « Help: About… »
-(palette entries read « Category: Label », as in VS Code); **interactive language
-choice** promoted from the backlog into N0.3 (palette entry *Preferences: Choose
-Language…*, jQuery dialog, iziToast restart warning, `src/config/preferences.json`;
-contract §13.8) — awaiting the Product Owner's check.
+**Next action (2026-10-30): open N0.5 — server and renderer plugins.** Before any code:
+- write the **Plugin API contract** (`docs/contracts/PLUGIN_API.md`) and have it
+  validated: plugin kinds (server = CJS in main, renderer = ESM, `both`), discovery and
+  loading, ids prefixed by the plugin name, what a plugin contributes (Actions,
+  Commands, menu entries, labels), lifecycle, errors;
+- reference, read from its HEAD: TscgOntologyExplorer `PLUGINS_README.md`,
+  `src/core/PluginManager.js`, `src/core/ServerPluginApi.js`,
+  `src/renderer/RendererPluginApi.js`, `plugins/tscg-dummy-*`;
+- witness case: **dummy server and renderer plugins**, each contributing an Action
+  visible in the palette (and a menu entry if the contract keeps that);
+- agree the acceptance criteria and the complexity budget (no new dependency expected).
 
-After validation: N0.5 — plugins (write the Plugin API contract first).
+**N0.3 + N0.4 validated by the Product Owner on 2026-10-30** (HTML GUI and localisation,
+merged into one step) — details in `docs/contracts/ACTION_COMMAND.md` §13. Final state:
+menu bar (File / View / Help, Help on the right, Illustrator-like keyboard navigation);
+toolbar with the developer-tools wrench and a VS Code-like **command center** opening
+the command palette over it; palette entries « Category: Label », sorted
+alphabetically, *File › Quit* never preselected; status bar showing failed Commands;
+jQuery UI dialogs (About — F1; Choose Language); light and dark themes, **dark by
+default**; labels in `src/i18n/LD_Labels_<xx>.json` (en, fr); interface language chosen
+in the GUI, saved in `src/config/preferences.json`, applied at restart after a centred
+modal iziToast warning; GUI icons in `assets/icons/`; dependencies jquery, jquery-ui,
+izitoast. Tests at closure: unit 113, end-to-end 48.
 
 **Decision (2026-10-30, Product Owner):** multi-document with one tab per document is
 added to N0 as a new sub-step **N0.6**, before the calques; the following sub-steps
@@ -112,9 +121,9 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 |---|---|---|---|
 | N0.1 | Electron shell (secure empty window) + Jest / Playwright harness | — | ✅ 2026-10-29 |
 | N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ✅ 2026-10-29 |
-| N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | 🔍 delivered, awaiting validation |
-| N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | 🔍 delivered with N0.3 |
-| N0.5 | Server and renderer plugins (dummy ones) | Plugin API | — |
+| N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
+| N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
+| N0.5 | Server and renderer plugins (dummy ones) | Plugin API | ⏳ next |
 | N0.6 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.7 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab) | Calque / object model, EditTransaction | — |
 | N0.8 | Selection + copy / paste | — | — |

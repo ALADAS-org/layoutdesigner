@@ -1,7 +1,7 @@
 # Contract — Actions and Commands (N0.2)
 
 **Status:** §1–§12 validated by the Product Owner on 2026-10-29 (decisions in §12).
-§13 (N0.3 + N0.4 addendum) delivered 2026-10-29, **awaiting Product Owner validation**.
+§13 (N0.3 + N0.4 addendum) validated by the Product Owner on 2026-10-30.
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-10-29
 
 This contract fixes how a user intention travels from the GUI to the code that carries
