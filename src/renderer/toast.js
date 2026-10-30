@@ -10,6 +10,29 @@ function escapeHtml(text) {
   return String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
+// Pure: splits `text` into two lines of lengths as close as possible, at the space
+// nearest to the middle (PO decision). `measure` gives a string's length (characters
+// by default; the toaster passes the rendered width). No space → one line.
+export function splitBalanced(text, measure = (s) => s.length) {
+  const words = String(text).trim().split(/\s+/);
+  if (words.length < 2) return [words.join(' ')];
+  let best = null;
+  for (let i = 1; i < words.length; i += 1) {
+    const first = words.slice(0, i).join(' ');
+    const second = words.slice(i).join(' ');
+    const gap = Math.abs(measure(first) - measure(second));
+    if (best === null || gap < best.gap) best = { gap, lines: [first, second] };
+  }
+  return best.lines;
+}
+
+// Width of `text` in pixels for a CSS font, using an off-screen canvas.
+function textWidth(doc, font) {
+  const ctx = doc.createElement('canvas').getContext('2d');
+  ctx.font = font;
+  return (s) => ctx.measureText(s).width;
+}
+
 export function createToaster(win = window) {
   return {
     // Modal warning, centred in the window: title and message on two lines, an OK
@@ -26,10 +49,12 @@ export function createToaster(win = window) {
           if (toast) win.iziToast.hide({}, toast, 'escape');
         };
         doc.addEventListener('keydown', onKey, true);
+        // Message on exactly two balanced lines, measured in the toast's own font.
+        const lines = splitBalanced(message, textWidth(doc, '14px system-ui, sans-serif'));
         win.iziToast.warning({
           class: 'LdToast LdModalToast',
           title,
-          message,
+          message: lines.map(escapeHtml).join('<br>'),
           layout: 2,
           position: 'center',
           overlay: true,

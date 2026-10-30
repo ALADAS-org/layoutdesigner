@@ -125,9 +125,12 @@ body {
   box-sizing: border-box;
 }
 
-/* Restart warning: when the message wraps, the two lines are of balanced length. */
+/* Restart warning: the message is split into two balanced lines by toast.js
+   (splitBalanced); no further wrapping. */
 .iziToast.LdModalToast .iziToast-message {
-  text-wrap: balance;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 /* Title and message centred, like the OK button below them. */
