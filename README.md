@@ -32,6 +32,7 @@ npm run test:playwright    # end-to-end tests only
 src/                                    the application (Electron main: src/server/, renderer: src/renderer/)
 tests/jest/, tests/playwright/          unit and end-to-end tests
 assets/legacy/patterns/                 Silverquote .pattern corpus (N1 input)
+assets/icons/                           icons of the application GUI (toolbar, …)
 assets/legacy/icons/, tilesets/         assets of the Icons/* pattern family
 assets/legacy/screenshots/silverquote/  Silverquote reference renders (N1 target)
 schemas/                                .pattern grammar: JSON Schema + spec

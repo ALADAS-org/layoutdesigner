@@ -265,7 +265,10 @@ Content-Security-Policy is `default-src 'self'; img-src 'self' data:`.
   (`{ "language": "fr" }`; created on first write, not versioned). A **modal warning
   (iziToast)**, centred in the window, says that the language applies at the next
   start: title and message on two lines, an OK button on its own line below; it stays
-  until OK (or Esc) is pressed (PO decision).
+  until OK (or Esc) is pressed; a message that wraps is split into lines of balanced
+  length, text centred (PO decision).
+- GUI icons live in **`assets/icons/`** (PO decision), referenced from the vizjets as
+  `../assets/icons/<name>` (relative to `src/index.html`).
 - Language at start-up, first found: Electron's `--lang` switch → preferences file →
   system locale; a language without label file falls back to English.
 - At start-up the renderer reads the Command `i18n.startupInfo` directly (no UI trigger

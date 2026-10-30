@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (646 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (647 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -9,6 +9,8 @@
     - **ld-maslow-pyramid-workflow/**
       - SKILL.md ★
 - **assets/**
+  - **icons/**
+    - wrench_icn.png
   - **legacy/**
     - **icons/**
       - digits_icn.png
@@ -614,8 +616,6 @@
   - **i18n/**
     - LD_Labels_en.json
     - LD_Labels_fr.json
-  - **icons/**
-    - wrench_icn.png
   - **renderer/**
     - action_registry.js
     - app.css
@@ -691,6 +691,7 @@
 - _run_LayoutDesigner_W.bat
 - _run_LayoutDesigner_X.sh
 - jest.config.js
+- LayoutDesigner - Github.url
 - LICENSE
 - package-lock.json
 - package.json

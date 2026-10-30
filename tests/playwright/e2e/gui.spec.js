@@ -244,6 +244,12 @@ test.describe('toolbar and status bar', () => {
     await expect(win.locator('#command-palette')).toBeHidden();
   });
 
+  test('toolbar icons are loaded from assets/icons', async () => {
+    const icon = button('dev.toggleDevTools').locator('img');
+    await expect(icon).toHaveAttribute('src', '../assets/icons/wrench_icn.png');
+    expect(await icon.evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true);
+  });
+
   test('the wrench button shows and hides the developer tools', async () => {
     expect(await devToolsOpen()).toBe(false);
     await button('dev.toggleDevTools').click();

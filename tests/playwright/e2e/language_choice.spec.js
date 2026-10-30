@@ -78,6 +78,25 @@ test.describe('choosing French', () => {
     expect(cspViolations).toEqual([]); // dialog and toast load nothing the CSP blocks
   });
 
+  test('a wrapped message is split into two lines of balanced length', async () => {
+    const widths = await win.locator('.LdModalToast .iziToast-message').evaluate((el) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      // One rectangle per line box; merge fragments that share a line.
+      const lines = new Map();
+      for (const r of range.getClientRects()) {
+        const key = Math.round(r.top);
+        lines.set(key, (lines.get(key) || 0) + r.width);
+      }
+      return [...lines.values()];
+    });
+    if (widths.length === 2) {
+      expect(Math.min(...widths) / Math.max(...widths)).toBeGreaterThan(0.75);
+    } else {
+      expect(widths.length).toBe(1); // short enough to fit on one line
+    }
+  });
+
   test('the warning stays until OK is pressed', async () => {
     const toast = win.locator('.iziToast.LdModalToast');
     await win.waitForTimeout(1000);
