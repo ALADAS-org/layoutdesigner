@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (649 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (668 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -10,6 +10,24 @@
       - SKILL.md ★
 - **assets/**
   - **icons/**
+    - close_16px_icn.png
+    - close_24px_icn.png
+    - copy_16px_icn.png
+    - edit_16px_icn.png
+    - edit_24px_icn.png
+    - eye_closed_16px_icn.png
+    - eye_closed_24px_icn.png
+    - eye_open_16px_icn.png
+    - eye_open_24px_icn.png
+    - file_new_24px_icn.png
+    - file_open_16px_icn.png
+    - file_open_24px_icn.png
+    - file_save_24px_disabled_icn.png
+    - file_save_24px_icn.png
+    - file_save_as_24px_icn.png
+    - regenerate_16px_icn.png
+    - regenerate_24px_icn.png
+    - swap_32px_icn.png
     - warning_icn.png
     - wrench_icn.png
   - **legacy/**
@@ -602,6 +620,7 @@
 - **docs/**
   - **contracts/**
     - ACTION_COMMAND.md
+    - PLUGIN_API.md
   - **reboot-kit/**
     - LD_FileTree.md
     - LD_ReferenceCorpus.md
