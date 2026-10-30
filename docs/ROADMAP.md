@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 next (Output panel) · N0.6 contract in draft (plugins) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 next (bottom panel — contract in draft) · N0.6 contract in draft (plugins) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -56,10 +56,15 @@ time:**
    second, independent instance (as VS Code's *Extension Development Host*);
    single-instance lock and shared preferences (TD-2) are settled in the contract.
 2. **Object explorer** — an essential scaffolding feature that was missing: a panel on
-   the **left, full height**, with a splitter and expand / collapse. To place in the
-   pyramid (it shows document objects: calques, the rectangle) and to articulate with
-   the bottom panel's layout (does the bottom panel span the full width or only the
-   document area?).
+   the **left, full height**, with a splitter and expand / collapse. **Decided
+   (2026-10-30, 23:06):** the layout anticipates it **from N0.5** — left column, full
+   height; the bottom panel spans the **document area only**. The explorer itself is
+   **its own sub-step**, not built in N0.5; its exact position relative to the calques
+   is settled when that part of N0 comes (it needs calques and the rectangle as witness).
+
+**Output panel contract drafted (2026-10-30, 23:10):** `docs/contracts/OUTPUT_PANEL.md`
+(not yet validated). Its open points (§13) are settled one at a time, starting with the
+tab order.
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
@@ -177,7 +182,7 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ✅ 2026-10-29 |
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
-| N0.5 | **Output panel** at the bottom, after VS Code: resizable (splitter), tabs (first: *Output*), one channel per source; witness = the application's own traces | Output panel | ⏳ next |
+| N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel (draft) | ⏳ next |
 | N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape | Plugin API (draft) | — |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab) | Calque / object model, EditTransaction | — |
