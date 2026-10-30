@@ -19,6 +19,14 @@ export function sortByLabel(actions, labelOf = englishLabel, locale = 'en') {
   return [...actions].sort((a, b) => collator.compare(labelOf(a), labelOf(b)));
 }
 
+// Pure: index of the entry highlighted when the list is (re)built: the first one,
+// except an Action listed in `noPreselect` (e.g. app.quit — PO decision: never one
+// Enter away from quitting); then nothing is highlighted (-1) until ↓ / ↑ is pressed.
+export function initialSelection(entries, noPreselect = []) {
+  if (entries.length === 0 || noPreselect.includes(entries[0].id)) return -1;
+  return 0;
+}
+
 // Pure: Actions whose (displayed) label contains `query`, case-insensitive, minus
 // `excludeId`.
 export function filterActions(actions, query, excludeId, labelOf = englishLabel) {
@@ -27,12 +35,20 @@ export function filterActions(actions, query, excludeId, labelOf = englishLabel)
 }
 
 // options: { labelOf(action) → displayed label, locale (sort order), ariaLabel, placeholder,
+//            noPreselect: Action ids never highlighted automatically,
 //            anchor: () => element — when visible, the panel opens right over it
 //            (the toolbar's command center, as in VS Code) }
 export function createCommandPalette(
   registry,
   doc,
-  { labelOf = englishLabel, locale = 'en', ariaLabel = 'Command palette', placeholder = '', anchor = () => null } = {}
+  {
+    labelOf = englishLabel,
+    locale = 'en',
+    ariaLabel = 'Command palette',
+    placeholder = '',
+    noPreselect = [],
+    anchor = () => null
+  } = {}
 ) {
   const overlay = doc.createElement('div');
   overlay.id = 'command-palette';
@@ -78,7 +94,7 @@ export function createCommandPalette(
 
   function refresh() {
     entries = sortByLabel(filterActions(registry.list(), input.value, PALETTE_ACTION_ID, labelOf), labelOf, locale);
-    selected = 0;
+    selected = initialSelection(entries, noPreselect);
     render();
   }
 
@@ -124,7 +140,7 @@ export function createCommandPalette(
       render();
       event.preventDefault();
     } else if (event.key === 'ArrowUp' && entries.length > 0) {
-      selected = Math.max(selected - 1, 0);
+      selected = selected < 0 ? entries.length - 1 : Math.max(selected - 1, 0);
       render();
       event.preventDefault();
     } else if (event.key === 'Enter') {

@@ -41,11 +41,22 @@ test.describe('command palette', () => {
     await expect(items()).toHaveText(ALL_BUT_PALETTE);
   });
 
+  test('the first entry is highlighted when it is not « File: Quit »', async () => {
+    await input().fill('about');
+    await expect(items()).toHaveText(['Help: About Layout Designer…']);
+    await expect(items().first()).toHaveAttribute('aria-selected', 'true');
+  });
+
   test('typing filters the list', async () => {
     await input().fill('zzz');
     await expect(items()).toHaveCount(0);
     await input().fill('QUI');
     await expect(items()).toHaveText(['File: Quit']);
+    // « File: Quit » on top is never highlighted automatically (PO decision).
+    await expect(items().first()).toHaveAttribute('aria-selected', 'false');
+    await input().press('Enter');
+    await expect(palette()).toBeVisible(); // Enter did nothing
+    await input().press('ArrowDown');
     await expect(items().first()).toHaveAttribute('aria-selected', 'true');
   });
 
@@ -78,6 +89,7 @@ test.describe('alias Action app.quit', () => {
     await win.locator('.CommandPaletteInput').fill('quit');
     await expect(win.locator('.CommandPaletteItem')).toHaveText(['File: Quit']);
     // The application may close before Playwright finishes the key press: ignore that.
+    await win.keyboard.press('ArrowDown'); // Quit is never preselected
     win.keyboard.press('Enter').catch(() => {});
     expect(await exited).toBe(0);
   });

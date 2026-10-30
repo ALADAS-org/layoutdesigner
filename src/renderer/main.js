@@ -62,6 +62,7 @@ actions.onFailure((message) => statusBar.showError(message));
 const palette = createCommandPalette(actions, document, {
   labelOf: paletteLabelOf,
   locale: lang,
+  noPreselect: ['app.quit'],
   ariaLabel: t('Aria/CommandPalette'),
   placeholder: t('Toolbar/SearchCommands'),
   anchor: () => document.querySelector('.CommandCenter')

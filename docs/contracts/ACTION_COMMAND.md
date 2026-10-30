@@ -204,6 +204,9 @@ Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
 - Not in N0.3 (no witness yet): enable / disable (`isEnabled()`), check items, submenus.
 - Palette entries are sorted alphabetically by displayed label, in the interface
   language (PO decision), not in registration order.
+- The first entry is highlighted (Enter runs it) **unless it is *File › Quit***: then
+  nothing is highlighted until ↓ / ↑ is pressed (PO decision — never one Enter away
+  from quitting). Palette option `noPreselect: ['app.quit']`.
 - **User-facing wording** (PO decision): the user sees *commands* — « Command Palette »,
   « Search commands » — as in VS Code; in the implementation each of them is an
   **Action** (§1). Commands in the §4 sense stay internal.

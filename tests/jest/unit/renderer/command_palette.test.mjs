@@ -1,6 +1,6 @@
 // Unit tests — command palette filtering (docs/contracts/ACTION_COMMAND.md §7).
 // The palette's DOM behaviour is covered end-to-end (tests/playwright/e2e).
-import { filterActions, sortByLabel, PALETTE_ACTION_ID } from '../../../../src/renderer/command_palette.js';
+import { filterActions, sortByLabel, initialSelection, PALETTE_ACTION_ID } from '../../../../src/renderer/command_palette.js';
 
 const actions = [
   { id: PALETTE_ACTION_ID, label: 'Command Palette' },
@@ -46,5 +46,21 @@ describe('sortByLabel', () => {
   test('ignores case and accents in the comparison', () => {
     const list = [{ id: 'b', label: 'été' }, { id: 'a', label: 'Abc' }, { id: 'c', label: 'Zed' }];
     expect(sortByLabel(list, (a) => a.label, 'fr').map((a) => a.id)).toEqual(['a', 'b', 'c']);
+  });
+});
+
+describe('initialSelection', () => {
+  const quit = { id: 'app.quit' };
+  const about = { id: 'help.about' };
+
+  test('the first entry, unless it is listed in noPreselect', () => {
+    expect(initialSelection([about, quit], ['app.quit'])).toBe(0);
+    expect(initialSelection([quit, about], ['app.quit'])).toBe(-1);
+    expect(initialSelection([quit], ['app.quit'])).toBe(-1);
+    expect(initialSelection([quit, about])).toBe(0);
+  });
+
+  test('nothing to select in an empty list', () => {
+    expect(initialSelection([], ['app.quit'])).toBe(-1);
   });
 });
