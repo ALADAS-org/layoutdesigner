@@ -6,7 +6,7 @@
 
 This contract fixes how a user intention travels from the GUI to the code that carries
 it out. Everything later in N0 builds on it: the HTML menu bar and toolbar (N0.3), the
-localised labels (N0.4), the plugins (N0.5), the editing operations (N0.6 onward).
+localised labels (N0.4), the plugins (N0.6), the editing operations (N0.7 onward).
 
 ## 1. Vocabulary (from `docs/ROADMAP.md`)
 
@@ -30,7 +30,7 @@ Every Action and every Command has a **string id**, namespaced with dots:
 - Ids are unique within their registry; registering an existing id is an **error**.
 - An alias Action and its Command normally share the same id (`app.quit` → `app.quit`);
   the contract does not require it.
-- Plugins (N0.5) will prefix their ids with the plugin name; the rule is written in the
+- Plugins (N0.6) will prefix their ids with the plugin name; the rule is written in the
   plugin contract, not here.
 
 ## 3. Action
@@ -115,8 +115,8 @@ Minimal styling only; its look belongs to the theming of N0.3.
 | N0.3 menus / toolbar | They reference Actions by id; nothing else to add. |
 | N0.3 enable / disable | An optional `isEnabled()` on the Action descriptor (absent = enabled). |
 | N0.4 localisation | An optional `labelKey`; `label` stays as the English fallback. |
-| N0.5 plugins | Plugins call the same `register()`; ids prefixed by plugin name. |
-| N0.7 undo / redo | A Command that modifies the document will do it through an EditTransaction (contract written before N0.7; numbering since 2026-10-30). |
+| N0.6 plugins | Plugins call the same `register()`; ids prefixed by plugin name. |
+| N0.8 undo / redo | A Command that modifies the document will do it through an EditTransaction (contract written before N0.8; numbering of 2026-10-30 evening). |
 
 ## 9. Departures from electron-boilerplate-cjs, and why
 
@@ -168,7 +168,7 @@ Witnesses: one **client Action** (`view.commandPalette`) and one **alias Action*
    renderer is where they are triggered; some Actions are aliases that forward to
    Commands of the server.
 
-**Open, for the N0.6 contract:** where the document model lives (renderer or main). It
+**Open, for the N0.7 contract:** where the document model lives (renderer or main). It
 decides whether editing operations are client Actions or alias Actions.
 
 ## 13. Addendum — N0.3 HTML GUI and N0.4 localisation (2026-10-29)

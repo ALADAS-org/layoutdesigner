@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 next |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 next (Output panel) · N0.6 contract in draft (plugins) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -28,7 +28,19 @@ the git tag `proto-improvise-2026-10`. Nothing from it is assumed to be valid.
 *Updated at the end of each session — the first thing a new conversation reads after
 the status table.*
 
-**Next action (2026-10-30): open N0.5 — server and renderer plugins.** Before any code:
+**Next action (2026-10-30, evening): open N0.5 — Output panel.** Write the **Output panel
+contract** (`docs/contracts/OUTPUT_PANEL.md`) and have it validated before any code:
+bottom panel after VS Code, resizable with a splitter (reference: TscgOntologyExplorer
+`src/renderer/Splitter.js`), tabs (first tab: *Output*), channels, the main → renderer
+path for server-side traces; witness case: the **application's own traces**.
+
+**N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
+validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
+reference for where plugin entries appear — a *Plugins* menu (the same word everywhere),
+last on the left before *Help*, entries grouped by theme in **submenus** (part of the
+step); the palette keeps following VS Code; plugin labels English only; `plugins/` at
+the repo root; plugin output goes to the Output panel (N0.5). Remaining in the original
+plan below:
 - write the **Plugin API contract** (`docs/contracts/PLUGIN_API.md`) and have it
   validated: plugin kinds (server = CJS in main, renderer = ESM, `both`), discovery and
   loading, ids prefixed by the plugin name, what a plugin contributes (Actions,
@@ -55,6 +67,15 @@ izitoast. Tests at closure: unit 113, end-to-end 48.
 **Decision (2026-10-30, Product Owner):** multi-document with one tab per document is
 added to N0 as a new sub-step **N0.6**, before the calques; the following sub-steps
 move down by one (calques + undo / redo → N0.7 … zoom / panning → N0.10).
+*Renumbered again the same evening (Output panel inserted as N0.5): see below.*
+
+**Decisions (2026-10-30 evening, Product Owner):**
+- **Reference applications by domain:** Inkscape (and Illustrator) for drawing;
+  **VS Code for generic editor features** (palette, command center, bottom panel…).
+- A bottom **Output panel** after VS Code (splitter, tabs) is a new sub-step **N0.5**,
+  before the plugins — the application's traces are shown there; plugins write in it.
+  Following sub-steps move down by one: plugins → N0.6, multi-document → N0.7,
+  calques + undo / redo → N0.8 … zoom / panning → N0.11.
 
 **Decisions (2026-10-29, Product Owner):**
 - N0 sub-steps and their order: see *N0 sub-steps* below.
@@ -123,12 +144,13 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ✅ 2026-10-29 |
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
-| N0.5 | Server and renderer plugins (dummy ones) | Plugin API | ⏳ next |
-| N0.6 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
-| N0.7 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab) | Calque / object model, EditTransaction | — |
-| N0.8 | Selection + copy / paste | — | — |
-| N0.9 | *Object → Transformation* | — | — |
-| N0.10 | Zoom (loupe) + panning | — | — |
+| N0.5 | **Output panel** at the bottom, after VS Code: resizable (splitter), tabs (first: *Output*), one channel per source; witness = the application's own traces | Output panel | ⏳ next |
+| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape | Plugin API (draft) | — |
+| N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
+| N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab) | Calque / object model, EditTransaction | — |
+| N0.9 | Selection + copy / paste | — | — |
+| N0.10 | *Object → Transformation* | — | — |
+| N0.11 | Zoom (loupe) + panning | — | — |
 
 ### N1 — Base
 Redo Silverquote, without the crypto-wallet part: open a JSON `.pattern` file,
