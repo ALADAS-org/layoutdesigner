@@ -33,6 +33,13 @@ contract** (`docs/contracts/OUTPUT_PANEL.md`) and have it validated before any c
 bottom panel after VS Code, resizable with a splitter (reference: TscgOntologyExplorer
 `src/renderer/Splitter.js`), tabs (first tab: *Output*), channels, the main → renderer
 path for server-side traces; witness case: the **application's own traces**.
+**Reference target validated by the PO (2026-10-30):** the mock-up
+`docs/mockups/output_panel_prototype.html` — tabs *Console* and *Output* (one channel
+shown at a time, chosen in a list on the right, as in VS Code); splitter **4 px, mid
+grey** (a theme token); a **square fold / unfold button with square corners**, top left
+of the panel (arrow down when unfolded, right when folded); when folded, the tab row
+stays visible and a click on a tab unfolds the panel. The details (Console vs Output
+content, height limits, persistence) are settled in the contract, one point at a time.
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
