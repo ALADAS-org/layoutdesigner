@@ -113,7 +113,9 @@ actions.register({
     const choice = await languageDialog.choose(languages, lang);
     if (choice === null) return;
     await command('prefs.setLanguage', { language: choice });
-    if (choice !== lang) toaster.warning(t('Language/RestartTitle'), t('Language/RestartMessage'));
+    if (choice !== lang) {
+      await toaster.modalWarning(t('Language/RestartTitle'), t('Language/RestartMessage'), t('Dialog/OK', 'OK'));
+    }
   }
 });
 actions.register({

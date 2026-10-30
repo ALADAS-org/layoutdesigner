@@ -262,8 +262,10 @@ Content-Security-Policy is `default-src 'self'; img-src 'self' data:`.
   available = the label files present in `src/i18n`, each named by its
   `"Language/Name"` key. OK saves the choice; Cancel / Esc / ✕ save nothing.
 - The choice is saved by the Command `prefs.setLanguage` in **`src/config/preferences.json`**
-  (`{ "language": "fr" }`; created on first write, not versioned). A **warning toast
-  (iziToast)** says that the language applies at the next start.
+  (`{ "language": "fr" }`; created on first write, not versioned). A **modal warning
+  (iziToast)**, centred in the window, says that the language applies at the next
+  start: title and message on two lines, an OK button on its own line below; it stays
+  until OK (or Esc) is pressed (PO decision).
 - Language at start-up, first found: Electron's `--lang` switch → preferences file →
   system locale; a language without label file falls back to English.
 - At start-up the renderer reads the Command `i18n.startupInfo` directly (no UI trigger

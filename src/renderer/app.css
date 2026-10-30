@@ -72,3 +72,55 @@ body {
 .iziToast.LdToast {
   font-family: system-ui, sans-serif;
 }
+
+/* Modal warning (language change): title / message on two lines, OK on its own line. */
+.iziToast.LdModalToast {
+  min-width: 360px;
+  max-width: 520px;
+}
+
+.iziToast.LdModalToast .iziToast-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.iziToast.LdModalToast .iziToast-texts,
+.iziToast.LdModalToast .iziToast-title,
+.iziToast.LdModalToast .iziToast-message {
+  display: block;
+  float: none;
+  margin-right: 0;
+}
+
+.iziToast.LdModalToast .iziToast-buttons {
+  display: flex;
+  justify-content: center;
+  float: none;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk {
+  min-width: 80px;
+  padding: 4px 16px;
+  border: none;
+  border-radius: 3px;
+  background: #1473e6;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:hover,
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:focus {
+  background: #0d62c9;
+  outline: 2px solid #ffffff;
+  outline-offset: 1px;
+}
+
+/* iziToast's centred wrapper is 100% wide plus padding: without border-box it overflows
+   and the toast sits 15 px right of the centre. */
+.iziToast-wrapper.iziToast-wrapper-center {
+  box-sizing: border-box;
+}
