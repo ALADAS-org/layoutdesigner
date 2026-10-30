@@ -76,6 +76,12 @@ test.describe('choosing French', () => {
       return message.y >= title.y + title.height - 1 && okBox.y >= message.y + message.height - 1;
     }).toBe(true);
     await expect(ok).toBeFocused();
+
+    // The PO's warning icon, from assets/icons, at 44 px.
+    const icon = toast.locator('img.iziToast-icon');
+    await expect(icon).toHaveAttribute('src', '../assets/icons/warning_icn.png');
+    await expect.poll(() => icon.evaluate((img) => [img.complete && img.naturalWidth > 0, Math.round(img.getBoundingClientRect().width)]))
+      .toEqual([true, 44]); // once its reveal animation is over
     expect(cspViolations).toEqual([]); // dialog and toast load nothing the CSP blocks
   });
 

@@ -146,3 +146,16 @@ body {
 .iziToast.LdModalToast .iziToast-message {
   text-align: center;
 }
+
+/* Warning icon (assets/icons/warning_icn.png, PO choice), larger than iziToast's. */
+.iziToast.LdModalToast > .iziToast-body {
+  padding-left: 60px !important; /* iziToast sets 33px inline for its small icon */
+}
+
+.iziToast.LdModalToast > .iziToast-body .iziToast-icon {
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  left: 4px;
+  background: none;
+}

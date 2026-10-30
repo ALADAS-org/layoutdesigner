@@ -56,6 +56,7 @@ export function createToaster(win = window) {
           title,
           message: lines.map(escapeHtml).join('<br>'),
           layout: 2,
+          iconUrl: '../assets/icons/warning_icn.png', // relative to src/index.html
           position: 'center',
           overlay: true,
           overlayClose: false,
