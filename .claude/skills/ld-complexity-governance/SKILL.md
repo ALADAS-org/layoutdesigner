@@ -5,7 +5,9 @@ description: "Layout Designer: govern complexity growth and technical debt — c
 
 # Layout Designer — Complexity Governance
 
-Agreed with Michel (Product Owner) on 2026-10-28. Companion skill:
+Agreed with Michel (Product Owner) on 2026-10-28; multi-document added on 2026-10-30.
+The repository copy (`.claude/skills/ld-complexity-governance/SKILL.md` on HEAD) is the
+reference. Companion skill:
 `ld-maslow-pyramid-workflow` (what to build, and when). This skill answers:
 **at what cost?** Claude is responsible for watching complexity and debt and for
 reporting them honestly; the Product Owner decides what to accept.
@@ -18,12 +20,13 @@ reporting them honestly; the Product Owner decides what to accept.
    formats and contracts (e.g. a list of Trame calques, a `transform` object), but
    build only what the step requires.
 3. **Every foundation proves itself on a witness case.** The N0 scaffolding
-   (plugins, calques, editing functions, HTML GUI, i18n, tests) is built up front by
-   decision, so each brick must be exercised by the simplest real case — the
-   **rectangle** (on at least two calques) for calques / selection / copy-paste /
-   transformation / undo / zoom / pan, **dummy client and server plugins** for the
-   API — and covered by tests. Infrastructure without a witness case is speculative
-   and is not delivered.
+   (plugins, multi-document, calques, editing functions, HTML GUI, i18n, tests) is
+   built up front by decision, so each brick must be exercised by the simplest real
+   case — the **rectangle** (on at least two calques) for calques / selection /
+   copy-paste / transformation / undo / zoom / pan, **at least two documents in two
+   tabs** for multi-document (each with its own calques and undo history), **dummy
+   client and server plugins** for the API — and covered by tests. Infrastructure
+   without a witness case is speculative and is not delivered.
 4. **Don't reinvent the wheel.** Reuse established conventions (Illustrator
    for editing; Cryptocalc and TscgOntologyExplorer for GUI, i18n, tests
    and plugins) before designing anything new. Invented behaviour is complexity the
@@ -55,10 +58,10 @@ the Electron app — as in TSCG and Cryptocalc. Layout follows Cryptocalc `tests
 
 Definition of done for any step that touches code:
 
-- **Unit tests** for the new logic (model, calques, commands, parsing, geometry,
-  plugin loading).
-- **End-to-end tests** for the user-visible path (menus, dialogs, editing
-  actions on the rectangle, open a file, render).
+- **Unit tests** for the new logic (model, documents, calques, commands, parsing,
+  geometry, plugin loading).
+- **End-to-end tests** for the user-visible path (menus, dialogs, document tabs,
+  editing actions on the rectangle, open a file, render).
 - **Visual regression** for rendering: reference images (golden files) with a
   stated tolerance. For N1 the references are **Silverquote renders** chosen by the
   Product Owner. A golden file is created or updated **only with Product Owner
@@ -108,7 +111,8 @@ Product Owner's choice of treatment (archive branch / hide / restart minimal).
 - Never hide a problem found on the way: report it, then fix it only if it is in
   scope (otherwise record it as debt or as a proposal).
 - Changes are delivered as git patches (`git am`); one coherent step per patch
-  series.
+  series. Commits are authored by Echopraxium, with **no** `Co-Authored-By` trailer
+  (Product Owner decision, 2026-10-29).
 - After structural changes, regenerate `docs/reboot-kit/LD_FileTree.md` and remind
   the owner to reload it into Project Knowledge.
 - Facts about the code come from HEAD, never from memory.
