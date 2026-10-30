@@ -101,21 +101,29 @@ body {
   margin-top: 10px;
 }
 
+.iziToast.LdModalToast > .iziToast-body .iziToast-title {
+  margin-bottom: 6px; /* a little air between title and message */
+}
+
+/* OK: lighter than the warning's background (PO decision), low height. */
 .iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk {
-  min-width: 80px;
-  padding: 4px 16px;
-  border: none;
+  min-width: 72px;
+  height: 22px;
+  padding: 0 16px;
+  border: 1px solid rgba(110, 70, 30, 0.45);
   border-radius: 3px;
-  background: #1473e6;
-  color: #ffffff;
-  font: inherit;
+  background: #fff6ee;
+  color: #3a2a1c;
+  font: 13px/20px system-ui, sans-serif;
   cursor: pointer;
 }
 
-.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:hover,
-.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:focus {
-  background: #0d62c9;
-  outline: 2px solid #ffffff;
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:hover {
+  background: #ffffff;
+}
+
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:focus-visible {
+  outline: 2px solid rgba(110, 70, 30, 0.6);
   outline-offset: 1px;
 }
 
