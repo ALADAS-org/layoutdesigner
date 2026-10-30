@@ -65,7 +65,8 @@ time:**
 **Output panel contract drafted (2026-10-30, 23:10):** `docs/contracts/OUTPUT_PANEL.md`
 (not yet validated). Its open points (§13) are settled one at a time. Settled so far:
 VS Code is also a code reference (same stack); tabs **Output · Debug Console ·
-Terminal**, **Output** active at first launch. Next: default panel state.
+Terminal**, **Output** active at first launch; first launch unfolded, height a quarter
+of the window. Next: persistence of the panel state.
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the

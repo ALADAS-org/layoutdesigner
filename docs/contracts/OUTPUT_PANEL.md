@@ -52,6 +52,11 @@ status bar
 | **Tabs** | One active at a time. A click on a tab of a folded panel **unfolds** it. |
 | **Body** | The active tab's content; hidden when folded (the document area takes the height). |
 
+**Size.** At first launch the panel is **unfolded**, its height a **quarter of the
+window height** (PO decision 2026-10-30). Resizing limits (proposed; values confirmed
+at the Design gate): minimum = tab row + about three lines of text; maximum = the
+document area always keeps about 100 px.
+
 ## 3. Tabs (PO decision 2026-10-30: all three are built in N0.5)
 
 | Tab | What it is | Process |
@@ -180,12 +185,13 @@ Consequences, to settle (§13):
 3. VS Code is also a **code reference** (same Electron + xterm.js + node-pty stack),
    read from its HEAD.
 4. **Tabs: Output · Debug Console · Terminal; Output active at first launch** (§3).
+5. **First launch: panel unfolded, height = a quarter of the window height** (§2).
 
 ## 13. Open points (settled one at a time, in this order)
 
 1. ~~Tab order and the tab active at first launch.~~ Settled (§12, 4).
-2. Default panel state at first launch (folded / unfolded, height), minimum and
-   maximum heights.
+2. ~~Default panel state at first launch, minimum and maximum heights.~~ Settled
+   (§12, 5); limits confirmed at the Design gate.
 3. Persistence of panel state (height, folded, active tab, active Output channel) in
    the preferences.
 4. Output: line format (time stamp, level), and whether `console.*` calls in main and
