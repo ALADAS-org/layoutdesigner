@@ -64,7 +64,7 @@ on HEAD — read it there, never from memory.
 
 | Level | Need | Content |
 |---|---|---|
-| **N0 — Scaffolding** | A sound workshop before any artwork | **Functional units**: Action registry (client), Command registry (server), Actions as aliases of Commands, **command palette**. **Extensibility**: server-side and client-side plugins with a **plugin API** (plugins contribute Actions, Commands and menu entries). **Multi-document**: several documents open at once, **one tab per document** — *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document, each document owning its state. **Calques**: the generic calque stack (add, remove, reorder, show/hide, select the active calque), per document. **Editing functions**: undo/redo per document (EditTransactions; « modified » mark on the tab), selection, copy/paste, object transformation (*Object → Transformation*: translation, scale, height/width ratio, rotation; mirror as a special case), zoom (loupe) and panning. **GUI structure, entirely in HTML, menus included**: menu bar, toolbar, status bar, dialog boxes, a **bottom panel** after VS Code (tabs *Console* and *Output*, resizable with a splitter, foldable); themable. **Localisation** of labels with JSON files. **First unit and end-to-end tests** (Jest + Playwright). Every brick is validated on the simplest witness case: a **rectangle** (on at least two calques), **at least two documents open in two tabs** for multi-document; dummy client and server plugins for the API. |
+| **N0 — Scaffolding** | A sound workshop before any artwork | **Functional units**: Action registry (client), Command registry (server), Actions as aliases of Commands, **command palette**. **Extensibility**: server-side and client-side plugins with a **plugin API** (plugins contribute Actions, Commands and menu entries). **Multi-document**: several documents open at once, **one tab per document** — *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document, each document owning its state. **Calques**: the generic calque stack (add, remove, reorder, show/hide, select the active calque), per document. **Editing functions**: undo/redo per document (EditTransactions; « modified » mark on the tab), selection, copy/paste, object transformation (*Object → Transformation*: translation, scale, height/width ratio, rotation; mirror as a special case), zoom (loupe) and panning. **GUI structure, entirely in HTML, menus included**: menu bar, toolbar, status bar, dialog boxes, a **bottom panel** after VS Code (tabs *Terminal*, *Debug Console* and *Output*, resizable with a splitter, foldable), and a left **object explorer** column (full height) reserved in the layout; themable. **Localisation** of labels with JSON files. **First unit and end-to-end tests** (Jest + Playwright). Every brick is validated on the simplest witness case: a **rectangle** (on at least two calques), **at least two documents open in two tabs** for multi-document; dummy client and server plugins for the API. |
 | **N1 — Base** | Redo Silverquote, without the crypto-wallet part | Open a JSON `.pattern` file, generate a grid of **square** cells, render **faithfully to Silverquote**. |
 | **N2 — Reliability** | Never regress | Clear messages on invalid files; visual non-regression run on every change. |
 | **N3 — Control** | Drive the generation | Grid size, Random/Sequence, seed, PNG export, save. |
@@ -73,10 +73,11 @@ on HEAD — read it there, never from memory.
 
 N0 sub-steps (order validated; live state in `docs/ROADMAP.md`): N0.1 Electron shell +
 test harness · N0.2 Action / Command registries, command palette · N0.3 + N0.4 HTML GUI
-and localisation · **N0.5 bottom panel (Console / Output)** · N0.6 plugins · N0.7
+and localisation · **N0.5 bottom panel (Terminal / Debug Console / Output)** · N0.6 plugins · N0.7
 multi-document, one tab per document · N0.8 calques + undo / redo per document · N0.9
 selection + copy / paste · N0.10 *Object → Transformation* · N0.11 zoom + panning
-(renumbered 2026-10-30 evening).
+(renumbered 2026-10-30 evening). The object explorer is its own sub-step, placed with
+the calques (position to settle then).
 
 There is **no top level and no "final product"**: the tool evolves continuously.
 Above N5 there is only an **open backlog** (e.g. SVG/`.lypart`/PDF export,
