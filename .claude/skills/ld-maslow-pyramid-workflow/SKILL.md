@@ -31,6 +31,11 @@ copy it. Scope is its **basic toolkit** only (documents, selection, copy/paste,
 transformation, zoom/pan, calques…), not its exhaustive feature set, until the Product
 Owner decides otherwise. Likewise reuse the Product Owner's own prior work (§4).
 
+**Reference applications by domain** (Product Owner decision, 2026-10-30): Illustrator
+(and Inkscape) for **drawing**; **VS Code for generic editor features** — command
+palette, command center, bottom panel. Plugin entries in menus follow Inkscape's
+*Extensions* menu.
+
 ## 1. Vocabulary (agreed)
 
 | Term | Meaning |
@@ -59,7 +64,7 @@ on HEAD — read it there, never from memory.
 
 | Level | Need | Content |
 |---|---|---|
-| **N0 — Scaffolding** | A sound workshop before any artwork | **Functional units**: Action registry (client), Command registry (server), Actions as aliases of Commands, **command palette**. **Extensibility**: server-side and client-side plugins with a **plugin API** (plugins contribute Actions, Commands and menu entries). **Multi-document**: several documents open at once, **one tab per document** — *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document, each document owning its state. **Calques**: the generic calque stack (add, remove, reorder, show/hide, select the active calque), per document. **Editing functions**: undo/redo per document (EditTransactions; « modified » mark on the tab), selection, copy/paste, object transformation (*Object → Transformation*: translation, scale, height/width ratio, rotation; mirror as a special case), zoom (loupe) and panning. **GUI structure, entirely in HTML, menus included**: menu bar, toolbar, status bar, dialog boxes; themable. **Localisation** of labels with JSON files. **First unit and end-to-end tests** (Jest + Playwright). Every brick is validated on the simplest witness case: a **rectangle** (on at least two calques), **at least two documents open in two tabs** for multi-document; dummy client and server plugins for the API. |
+| **N0 — Scaffolding** | A sound workshop before any artwork | **Functional units**: Action registry (client), Command registry (server), Actions as aliases of Commands, **command palette**. **Extensibility**: server-side and client-side plugins with a **plugin API** (plugins contribute Actions, Commands and menu entries). **Multi-document**: several documents open at once, **one tab per document** — *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document, each document owning its state. **Calques**: the generic calque stack (add, remove, reorder, show/hide, select the active calque), per document. **Editing functions**: undo/redo per document (EditTransactions; « modified » mark on the tab), selection, copy/paste, object transformation (*Object → Transformation*: translation, scale, height/width ratio, rotation; mirror as a special case), zoom (loupe) and panning. **GUI structure, entirely in HTML, menus included**: menu bar, toolbar, status bar, dialog boxes, a **bottom panel** after VS Code (tabs *Console* and *Output*, resizable with a splitter, foldable); themable. **Localisation** of labels with JSON files. **First unit and end-to-end tests** (Jest + Playwright). Every brick is validated on the simplest witness case: a **rectangle** (on at least two calques), **at least two documents open in two tabs** for multi-document; dummy client and server plugins for the API. |
 | **N1 — Base** | Redo Silverquote, without the crypto-wallet part | Open a JSON `.pattern` file, generate a grid of **square** cells, render **faithfully to Silverquote**. |
 | **N2 — Reliability** | Never regress | Clear messages on invalid files; visual non-regression run on every change. |
 | **N3 — Control** | Drive the generation | Grid size, Random/Sequence, seed, PNG export, save. |
@@ -68,9 +73,10 @@ on HEAD — read it there, never from memory.
 
 N0 sub-steps (order validated; live state in `docs/ROADMAP.md`): N0.1 Electron shell +
 test harness · N0.2 Action / Command registries, command palette · N0.3 + N0.4 HTML GUI
-and localisation · N0.5 plugins · **N0.6 multi-document, one tab per document** · N0.7
-calques + undo / redo per document · N0.8 selection + copy / paste · N0.9 *Object →
-Transformation* · N0.10 zoom + panning.
+and localisation · **N0.5 bottom panel (Console / Output)** · N0.6 plugins · N0.7
+multi-document, one tab per document · N0.8 calques + undo / redo per document · N0.9
+selection + copy / paste · N0.10 *Object → Transformation* · N0.11 zoom + panning
+(renumbered 2026-10-30 evening).
 
 There is **no top level and no "final product"**: the tool evolves continuously.
 Above N5 there is only an **open backlog** (e.g. SVG/`.lypart`/PDF export,
@@ -84,10 +90,11 @@ step, with its reference target.
 |---|---|
 | Editing behaviour, document tabs, calques (including their user interface), menu content, shortcuts | **Illustrator** conventions — the reference application (basic toolkit only). |
 | HTML menu bar, toolbar, viewlets, Commands / Actions, command palette | **electron-boilerplate-cjs** (ALADAS-org, Product Owner's prototype): `www/src/view/viewlets/{menubar,main_toolbar,command_palette}/`, `www/src/view/viewlet_loader.js`, `www/src/controller/command_registry.js` + `commands/`, `www/src/view/action_registry.js` + `actions/`, `www/css/custom_menu.css`. Menu entries are declarative (`labelKey` for L10n + a key of what they trigger). **Adapt, do not copy blindly**: (a) menu entries trigger **Actions only**; an Action may be an alias redirecting to a server Command over IPC; (b) **lighter form** than the prototype's singleton-per-class (≈30 lines per unit) — one unit = a small registered object, ES modules — without turning the Electron plumbing into a *gas factory*; (c) add what the prototype lacks: keyboard shortcuts, keyboard navigation, enabled/disabled state, separators, check items, submenus, command-palette filter. jQuery and iziToast are accepted. |
+| Generic editor features (palette, command center, bottom panel) | **VS Code**. Bottom panel: the validated mock-up `docs/mockups/output_panel_prototype.html`; splitter after TscgOntologyExplorer `src/renderer/Splitter.js`. |
 | GUI components (dialogs, status bar) | Cryptocalc `www/vizjets/<component>/` (`.html` + `.css` + `.js`, inserted with `w3-include-html`); driver code in `www/js/view/`. |
 | Localisation | Cryptocalc `www/js/L10n/` and electron-boilerplate-cjs `www/L10n/` (`gui-msg-en.json`, `gui-msg-fr.json`). |
 | Tests | **Jest + Playwright**, as in TSCG and Cryptocalc (`tests/jest/unit`, `tests/jest/fixtures`, `tests/playwright/e2e`, `_doc` test protocols). The first tests are generated in N0. |
-| Plugins & API | **TscgOntologyExplorer** (the boilerplate's extensibility was never prototyped): `PLUGINS_README.md`, `src/core/PluginManager.js`, `src/core/ServerPluginApi.js`, `src/renderer/RendererPluginApi.js`, `plugins/tscg-dummy-*` (server = CJS in main; renderer = ESM via `plugin://`; `both` = hybrid; type declared in `package.json`). Plugins register their contributions in the Action / Command registries. |
+| Plugins & API | **TscgOntologyExplorer** (the boilerplate's extensibility was never prototyped): `PLUGINS_README.md`, `src/core/PluginManager.js`, `src/core/ServerPluginApi.js`, `src/renderer/RendererPluginApi.js`, `plugins/tscg-dummy-*` (server = CJS in main; renderer = ESM via `plugin://`; `both` = hybrid; type declared in `package.json`). Plugins register their contributions in the Action / Command registries. Their menu entries follow Inkscape's *Extensions* menu (contract `docs/contracts/PLUGIN_API.md`, draft). |
 | Multi-document (tabs) | **TscgOntologyExplorer** `src/renderer/DocumentManager.js` (a `Document` per tab holding its own state; open — activates an already-open document instead of duplicating it —, close — activates the adjacent tab —, set active, change listeners) and Illustrator's document tabs. |
 | Undo / redo | EditTransaction history, one per document (designed in N0; nothing is inherited from the abandoned prototype). |
 
@@ -125,8 +132,9 @@ Every delivery states its effect on these five axes:
 - Extra ideas go to *Proposals (not built)*; the Product Owner accepts or rejects.
 - Never call a step done before both gates pass.
 - Anticipate in the model, do not implement (e.g. multiple Trame / Scene calques).
-- Prefer an established Illustrator convention, or the Product Owner's
-  prior prototypes, over an invented one; when departing from them, say why.
+- Prefer an established convention — Illustrator for drawing, VS Code for generic
+  editor features — or the Product Owner's prior prototypes, over an invented one;
+  when departing from them, say why.
 - When something is unclear, ask one precise question instead of filling the gap
   with an invented choice.
 - **One point at a time** (Product Owner, 2026-10-30): one question per message; move
