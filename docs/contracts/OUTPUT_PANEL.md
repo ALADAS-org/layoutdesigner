@@ -16,6 +16,9 @@ References:
 - Splitter: TscgOntologyExplorer `src/renderer/Splitter.js` (read from its HEAD;
   `mousedown` / `mousemove` / `mouseup`, minimum sizes, `dragging` class).
 - Behaviour, names and shortcuts: VS Code's panel.
+- **Code reference: VS Code itself** (`microsoft/vscode`, MIT licence), read from its
+  HEAD — it is an Electron application built on the same stack as this step
+  (`@xterm/xterm`, `node-pty`). PO remark, 2026-10-30.
 
 ## 1. Window layout
 
@@ -57,7 +60,9 @@ status bar
 | **Debug Console** | Layout Designer's own command interpreter: text-mode access to the application — preferences (e.g. the language), Actions, a few file commands (list files, change folder) through Commands. | Input and display in the renderer; file commands reach main through alias Actions, as everywhere (`ACTION_COMMAND.md` §5). |
 | **Output** | Read-only channels, **one shown at a time**, chosen in a list on the right of the tab row (as in VS Code). | Renderer; main-side traces reach it over IPC (§6). |
 
-Tab order and the tab active at first launch: open point §13.
+**Tab order, left to right (as VS Code): Output · Debug Console · Terminal.** The tab
+active at first launch is **Output** — it shows the witness case of the step (PO
+decision 2026-10-30, departing from VS Code, which opens on Terminal).
 
 ## 4. Output — channels
 
@@ -144,10 +149,15 @@ Two new runtime dependencies, **accepted by the PO** when choosing the Terminal
 Consequences, to settle (§13):
 - **CSP.** `src/index.html` allows only `default-src 'self'`. xterm.js's `<style>`
   injection needs `style-src 'self' 'unsafe-inline'` (no nonce support found in 6.0.0).
-  Loosening the CSP is a security decision for the PO.
+  Precedent: VS Code's workbench (`src/vs/code/electron-browser/workbench/workbench.html`)
+  declares exactly `style-src 'self' 'unsafe-inline'`. Loosening the CSP is a security
+  decision for the PO.
 - **Electron ABI.** Whether the prebuilt `node-pty` loads in Electron 45 as is, or
   needs `@electron/rebuild` (a third, dev dependency), is to verify on Windows before
-  the contract is validated.
+  the contract is validated. VS Code does **without** `@electron/rebuild`: its `.npmrc`
+  makes npm build native modules against Electron's headers (`runtime="electron"`,
+  `target=<electron version>`, `disturl=https://electronjs.org/headers`) — a path with
+  no extra dependency.
 - Packaging: same situation as TD-1 (files loaded from `node_modules/`).
 
 ## 11. Anticipated, not implemented in N0.5
@@ -167,10 +177,13 @@ Consequences, to settle (§13):
 2. The layout anticipates the object explorer now: left column, full height; the
    bottom panel spans the document area only. The explorer itself is a separate
    sub-step, with the calques.
+3. VS Code is also a **code reference** (same Electron + xterm.js + node-pty stack),
+   read from its HEAD.
+4. **Tabs: Output · Debug Console · Terminal; Output active at first launch** (§3).
 
 ## 13. Open points (settled one at a time, in this order)
 
-1. Tab order and the tab active at first launch.
+1. ~~Tab order and the tab active at first launch.~~ Settled (§12, 4).
 2. Default panel state at first launch (folded / unfolded, height), minimum and
    maximum heights.
 3. Persistence of panel state (height, folded, active tab, active Output channel) in

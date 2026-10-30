@@ -63,8 +63,9 @@ time:**
    is settled when that part of N0 comes (it needs calques and the rectangle as witness).
 
 **Output panel contract drafted (2026-10-30, 23:10):** `docs/contracts/OUTPUT_PANEL.md`
-(not yet validated). Its open points (§13) are settled one at a time, starting with the
-tab order.
+(not yet validated). Its open points (§13) are settled one at a time. Settled so far:
+VS Code is also a code reference (same stack); tabs **Output · Debug Console ·
+Terminal**, **Output** active at first launch. Next: default panel state.
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
