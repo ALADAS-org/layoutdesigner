@@ -41,6 +41,26 @@ of the panel (arrow down when unfolded, right when folded); when folded, the tab
 stays visible and a click on a tab unfolds the panel. The details (Console vs Output
 content, height limits, persistence) are settled in the contract, one point at a time.
 
+**Product Owner input and decisions (2026-10-30, late evening) — settled one point at a
+time:**
+1. **Three tabs, as in VS Code** (decided): **Terminal** — a real system shell embedded
+   in the panel (`cmd` / PowerShell / bash); **Debug Console** — Layout Designer's own
+   command interpreter (text-mode access to the application: preferences such as the
+   language, Actions; a few file commands such as listing files or changing folder,
+   through Commands); **Output** — channels (application, plugins). **All three are
+   built in N0.5** (PO decision), Terminal included. The Terminal brings two new
+   dependencies, **xterm.js** (display) and **node-pty** (native module, rebuilt for
+   Electron) — accepted by the PO when choosing this option; versions and build setup
+   are fixed in the contract. The validated mock-up (tabs *Console* / *Output*) is to
+   be updated to these three tabs. Running `npm start` from the Terminal starts a
+   second, independent instance (as VS Code's *Extension Development Host*);
+   single-instance lock and shared preferences (TD-2) are settled in the contract.
+2. **Object explorer** — an essential scaffolding feature that was missing: a panel on
+   the **left, full height**, with a splitter and expand / collapse. To place in the
+   pyramid (it shows document objects: calques, the rectangle) and to articulate with
+   the bottom panel's layout (does the bottom panel span the full width or only the
+   document area?).
+
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
 reference for where plugin entries appear — a *Plugins* menu (the same word everywhere),
