@@ -99,6 +99,12 @@ move down by one (calques + undo / redo → N0.7 … zoom / panning → N0.10).
 - N1 — deterministic value grid for cell-by-cell comparison with Silverquote: what
   Silverquote can export (an `.xlsx`?) and whether export and screenshot come from the
   same draw.
+- N4 — **TSCG as a modelling tool** for the elements of a composition (stamp,
+  oblitération, pattern, découpe, trame — e.g. fictitious banknotes), to decompose them
+  before writing the calque types' JSON rules. Dependency **one way only**: Layout
+  Designer's formats stay self-contained, TSCG describes them from outside (M0
+  instances of an M1 domain). Waits for TSCG's planned « Application » ontology type
+  (PO idea, 2026-10-30).
 
 ## Vocabulary
 
