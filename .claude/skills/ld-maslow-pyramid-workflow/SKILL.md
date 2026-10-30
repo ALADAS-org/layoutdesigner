@@ -129,5 +129,8 @@ Every delivery states its effect on these five axes:
   prior prototypes, over an invented one; when departing from them, say why.
 - When something is unclear, ask one precise question instead of filling the gap
   with an invented choice.
+- **One point at a time** (Product Owner, 2026-10-30): one question per message; move
+  to the next point only after the Product Owner's answer. Never bundle several open
+  decisions in one message.
 - Opaque composition choices (formats, presets, default layouts, colours) are
   **design decisions** — they belong to the Product Owner.
