@@ -43,6 +43,10 @@ contract §13.8) — awaiting the Product Owner's check.
 
 After validation: N0.5 — plugins (write the Plugin API contract first).
 
+**Decision (2026-10-30, Product Owner):** multi-document with one tab per document is
+added to N0 as a new sub-step **N0.6**, before the calques; the following sub-steps
+move down by one (calques + undo / redo → N0.7 … zoom / panning → N0.10).
+
 **Decisions (2026-10-29, Product Owner):**
 - N0 sub-steps and their order: see *N0 sub-steps* below.
 - Public contracts are written **just before the sub-step that uses them**, not all
@@ -85,6 +89,10 @@ the API.
   aliases of Commands, **command palette**.
 - Extensibility: server-side and client-side **plugins** and their **API** (plugins
   contribute Actions, Commands, menu entries).
+- **Multi-document**: several documents open at once, **one tab per document**
+  (added 2026-10-30 by the Product Owner) — reference: TscgOntologyExplorer
+  `src/renderer/DocumentManager.js` (open / close / activate, per-document state) and
+  Illustrator's document tabs.
 - **Calques**: add, remove, reorder, show/hide, active calque.
 - Editing: undo/redo (EditTransactions), selection, copy/paste, *Object →
   Transformation* (translation, scale, height/width ratio, rotation; mirror as a
@@ -107,10 +115,11 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | 🔍 delivered, awaiting validation |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | 🔍 delivered with N0.3 |
 | N0.5 | Server and renderer plugins (dummy ones) | Plugin API | — |
-| N0.6 | Document + calques + undo / redo (every mutation is an EditTransaction) | Calque / object model, EditTransaction | — |
-| N0.7 | Selection + copy / paste | — | — |
-| N0.8 | *Object → Transformation* | — | — |
-| N0.9 | Zoom (loupe) + panning | — | — |
+| N0.6 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
+| N0.7 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab) | Calque / object model, EditTransaction | — |
+| N0.8 | Selection + copy / paste | — | — |
+| N0.9 | *Object → Transformation* | — | — |
+| N0.10 | Zoom (loupe) + panning | — | — |
 
 ### N1 — Base
 Redo Silverquote, without the crypto-wallet part: open a JSON `.pattern` file,

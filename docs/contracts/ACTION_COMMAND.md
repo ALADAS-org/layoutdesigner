@@ -116,7 +116,7 @@ Minimal styling only; its look belongs to the theming of N0.3.
 | N0.3 enable / disable | An optional `isEnabled()` on the Action descriptor (absent = enabled). |
 | N0.4 localisation | An optional `labelKey`; `label` stays as the English fallback. |
 | N0.5 plugins | Plugins call the same `register()`; ids prefixed by plugin name. |
-| N0.6 undo / redo | A Command that modifies the document will do it through an EditTransaction (contract written before N0.6). |
+| N0.7 undo / redo | A Command that modifies the document will do it through an EditTransaction (contract written before N0.7; numbering since 2026-10-30). |
 
 ## 9. Departures from electron-boilerplate-cjs, and why
 
