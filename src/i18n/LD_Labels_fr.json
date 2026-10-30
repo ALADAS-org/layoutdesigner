@@ -9,7 +9,7 @@
   "Help/About":              "À propos de Layout Designer…",
   "About/Title":             "À propos de Layout Designer",
   "About/Version":           "Version",
-  "About/License":           "Licence MIT",
+  "About/License":           "Licence BSD 3-Clause",
   "Dialog/OK":               "OK",
   "Toolbar/SearchCommands":   "Rechercher une commande",
   "Palette/Entry":           "{category} : {label}",

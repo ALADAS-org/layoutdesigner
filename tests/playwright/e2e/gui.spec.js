@@ -161,6 +161,7 @@ test.describe('About dialog', () => {
     await expect(dialog().locator('.ui-dialog-title')).toHaveText('About Layout Designer');
     await expect(dialog().locator('.AboutVersion')).toHaveText(version);
     await expect(dialog().locator('.AboutAuthor')).toHaveText('© JeanArt & Echopraxium');
+    await expect(dialog()).toContainText('BSD 3-Clause License');
     await expect(win.locator('.ui-widget-overlay')).toBeVisible();
   });
 

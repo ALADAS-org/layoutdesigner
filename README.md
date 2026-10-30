@@ -42,6 +42,6 @@ docs/                                   roadmap, debt register, reboot-kit
 
 ## License
 
-MIT — see `LICENSE`. Copyright © 2026 JeanArt & Echopraxium.
+BSD 3-Clause ("New" BSD) — see `LICENSE`. Copyright © 2026 JeanArt & Echopraxium.
 
 <sub>Development assisted by Claude AI, used as a tool under the authors' direction.</sub>

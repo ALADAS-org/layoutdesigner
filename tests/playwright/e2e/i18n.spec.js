@@ -45,7 +45,7 @@ test.describe('French (--lang=fr)', () => {
     await win.locator('.MenubarItem[data-action="help.about"]').click();
     const dialog = win.locator('.ui-dialog.LdDialog', { has: win.locator('.AboutDialog') });
     await expect(dialog.locator('.ui-dialog-title')).toHaveText('À propos de Layout Designer');
-    await expect(dialog).toContainText('Licence MIT');
+    await expect(dialog).toContainText('Licence BSD 3-Clause');
     await win.keyboard.press('Escape');
   });
 });
