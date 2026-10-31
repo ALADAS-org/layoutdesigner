@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 next (bottom panel — contract in draft) · N0.6 contract in draft (plugins) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — contract validated, step 1 delivered) · N0.6 contract in draft (plugins) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -78,13 +78,16 @@ matches Action ids (§13.11). Debug Console starts in
 the application folder. Terminal: PowerShell on
 Windows, `cmd.exe` as a preference. Terminal also starts in
 the application folder (the root folder). CSP gains
-`style-src 'self' 'unsafe-inline'` (as VS Code). node-pty rebuilt for
-Electron by `@electron/rebuild` in `postinstall` (dev dependency accepted). Several
+`style-src 'self' 'unsafe-inline'` (as VS Code). node-pty: no rebuild,
+its prebuilt N-API binaries (revised during step 1, `OUTPUT_PANEL.md` §10). Several
 instances allowed, no lock (shared preferences file noted in TD-2). Mock-up updated to all
 these decisions. Output « sources » replace
 channels (lines carry their source, the view mixes the selected sources; selector in
-N0.6, ergonomics to check then). Next: the PO looks at the mock-up, then validates the
-contract (status DRAFT → VALIDATED) before any code.
+N0.6, ergonomics to check then). **Contract validated by the PO
+(2026-10-31).** Implementation started — **step 1** delivered: dependencies (xterm.js,
+fit add-on, node-pty) and a test running node-pty inside Electron. **Next: the PO runs
+`npm install` then `npm test` on Windows** to confirm together that node-pty loads with
+no rebuild; then step 2 (rename the three Actions, `ACTION_COMMAND.md` §13.9).
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
@@ -202,7 +205,7 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ✅ 2026-10-29 |
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
-| N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel (draft) | ⏳ next |
+| N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ⏳ in progress |
 | N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector** | Plugin API (draft) | — |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |

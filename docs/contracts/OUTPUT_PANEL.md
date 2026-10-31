@@ -1,7 +1,8 @@
 # Contract — Bottom panel: Terminal, Debug Console, Output (N0.5)
 
-**Status:** DRAFT — to be validated by the Product Owner before any code. Open points
-are listed in §13 and settled **one at a time**; each answer is recorded in §12.
+**Status:** VALIDATED by the Product Owner on 2026-10-31. Decisions are recorded in
+§12; decision 19 was revised during implementation (§10) and is to be confirmed with
+the PO on Windows.
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-10-30
 
 This contract fixes the bottom panel of the main window, after **VS Code** (reference
@@ -239,12 +240,24 @@ Consequences, to settle (§13):
   makes npm build native modules against Electron's headers (`runtime="electron"`,
   `target=<electron version>`, `disturl=https://electronjs.org/headers`) — a path with
   no extra dependency.
-  **Decided (PO, 2026-10-31): `@electron/rebuild`** (dev dependency, 4.2.1 on the
-  registry; requires Node ≥ 22.12), run automatically by a `postinstall` script
-  (`electron-rebuild -o node-pty`), so that `npm install` alone yields a working
-  Terminal — « as automatic as possible ». Preferred over VS Code's `.npmrc` because
-  nothing has to be kept in step by hand when Electron is upgraded. Loading node-pty
-  in Electron 45 is verified on Windows at the very start of the implementation.
+  ~~Decided (PO, 2026-10-31): `@electron/rebuild` in `postinstall`.~~ **Revised
+  (2026-10-31, implementation step 1; to confirm with the PO on Windows): no rebuild
+  at all.** Facts found:
+  1. node-pty 1.1.0 is an **N-API** module (`node-addon-api`): its binary is ABI-stable
+     across Node and Electron. Verified on Linux: node-pty built for Node 22
+     (ABI 127) loads and runs a shell in Electron 45 (ABI 150) with no rebuild.
+  2. On Windows and macOS node-pty ships **prebuilt** binaries (`prebuilds/`), used by
+     `npm install` without a compiler.
+  3. `@electron/rebuild` recognises prebuilt N-API binaries only under the names
+     `node.napi.node` / `electron.napi.node`; node-pty names them `pty.node`, so it
+     would **recompile from source** — requiring Visual Studio Build Tools and Python
+     on Windows, the opposite of « as automatic as possible ».
+  Hence: plain `npm install`, node-pty's prebuilt binaries, no `postinstall`, no
+  `.npmrc`, no extra dependency. Guard: the unit test
+  `tests/jest/unit/server/node_pty_electron.test.js` runs node-pty **inside Electron**
+  (binary in Node mode) and spawns the default shell; a future Electron or node-pty
+  that broke loading fails `npm test`. Linux has no prebuilt binary: `npm install`
+  compiles node-pty there (Python and a C++ toolchain needed).
 - Packaging: same situation as TD-1 (files loaded from `node_modules/`).
 
 ## 11. Anticipated, not implemented in N0.5
@@ -295,7 +308,9 @@ Consequences, to settle (§13):
     start there (§5, §6).
 18. **CSP: `style-src 'self' 'unsafe-inline'` added**, as VS Code; inline scripts stay
     forbidden (§10).
-19. **node-pty rebuilt for Electron by `@electron/rebuild`** in `postinstall` (§10).
+19. ~~node-pty rebuilt for Electron by `@electron/rebuild` in `postinstall`.~~
+    **Revised:** no rebuild — node-pty's prebuilt N-API binaries, guarded by a test in
+    Electron (§10). PO: « yes, to validate together » — confirmed on Windows by the PO.
 20. **Several instances allowed, no lock**; shared `preferences.json` added to TD-2
     (§6).
 21. **Output « sources » instead of channels**: every line carries its source; the
@@ -338,8 +353,8 @@ Consequences, to settle (§13):
   `src/server/pty_service.js`; preload additions; labels; theme tokens; tests.
 - Concepts: bottom panel, Output source (line model), Debug Console command, pty session, the
   bridge functions of §7.
-- Dependencies: `@xterm/xterm`, `@xterm/addon-fit`, `node-pty`; dev:
-  `@electron/rebuild` (all accepted).
+- Dependencies: `@xterm/xterm`, `@xterm/addon-fit`, `node-pty` (accepted); no dev
+  dependency added (`@electron/rebuild` dropped, §10).
 - Size: the largest N0 sub-step so far — the Terminal alone (native module, IPC
   stream, CSP) is about half of it.
 
