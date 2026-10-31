@@ -4,64 +4,151 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prototype panneau du bas</title>
+<!-- Reference target of N0.5 (docs/contracts/OUTPUT_PANEL.md). Static mock-up, not the
+     implementation: content is canned, the Terminal is not a real shell. -->
 <style>
-:root{--bg:#1e1e1e;--bar:#2a2a2a;--doc:#151515;--border:#3a3a3a;--text:#e6e6e6;--muted:#9a9a9a;--accent:#4a9eff;--splitter:#888780;--splitter-hover:#b4b2a9;--btn-border:#8a8a8a}
-:root[data-theme="light"]{--bg:#f3f3f3;--bar:#e8e8e8;--doc:#ffffff;--border:#cfcfcf;--text:#1e1e1e;--muted:#666;--accent:#1a6fd6;--splitter:#888780;--splitter-hover:#5f5e5a;--btn-border:#555}
+:root{--bg:#1e1e1e;--bar:#2a2a2a;--doc:#151515;--border:#3a3a3a;--text:#e6e6e6;--muted:#9a9a9a;--accent:#4a9eff;--splitter:#888780;--splitter-hover:#b4b2a9;--btn-border:#8a8a8a;--warn:#e8a33d;--error:#ff7b7b;--input:#2b2b2b}
+:root[data-theme="light"]{--bg:#f3f3f3;--bar:#e8e8e8;--doc:#ffffff;--border:#cfcfcf;--text:#1e1e1e;--muted:#666;--accent:#1a6fd6;--splitter:#888780;--splitter-hover:#5f5e5a;--btn-border:#555;--warn:#b86e00;--error:#c9252d;--input:#ffffff}
 body{margin:0;padding:16px;background:var(--bg);color:var(--text);font:13px system-ui,sans-serif}
-.win{max-width:900px;margin:auto;border:1px solid var(--border);user-select:none}
+.win{max-width:960px;margin:auto;border:1px solid var(--border);user-select:none;display:flex;flex-direction:column;height:560px}
 .bar{display:flex;align-items:center;gap:16px;padding:4px 10px;background:var(--bar);border-bottom:1px solid var(--border)}
 .cc{width:300px;margin:auto;border:1px solid var(--border);border-radius:5px;padding:3px 10px;color:var(--muted);display:flex;justify-content:space-between}
-.doc{display:flex;align-items:center;justify-content:center;color:var(--muted);background:var(--doc)}
-.split{height:4px;cursor:row-resize;background:var(--splitter)}
+.ws{flex:1;min-height:0;display:flex}
+.ws.ide{flex-direction:row-reverse}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.side{width:200px;border-left:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;text-align:center;background:repeating-linear-gradient(45deg,transparent 0 8px,rgba(128,128,128,.08) 8px 16px)}
+.ws.ide .side{border-left:none;border-right:1px solid var(--border)}
+.side[hidden]{display:none}
+.doc{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;color:var(--muted);background:var(--doc)}
+.split{height:4px;cursor:row-resize;background:var(--splitter);flex:none}
 .split:hover{background:var(--splitter-hover)}
+.tabs{display:flex;align-items:center;gap:4px;padding:0 8px;background:var(--bar);border-bottom:1px solid var(--border);flex:none}
 .tog{width:20px;height:20px;padding:0;border:1px solid var(--btn-border);border-radius:0;background:var(--bar);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .tog svg{width:12px;height:12px}
 .tab{padding:6px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent}
 .tab.on{color:var(--text);border-bottom-color:var(--accent)}
-.log{font:12px/1.6 Consolas,monospace;padding:6px 12px;overflow:auto;color:var(--muted)}
-.status{padding:3px 10px;font-size:12px;color:var(--muted);background:var(--bar);border-top:1px solid var(--border)}
+.body{flex:none;display:flex;flex-direction:column;min-height:0}
+.log{flex:1;font:12px/1.6 Consolas,monospace;padding:6px 12px;overflow:auto;white-space:pre;user-select:text}
+.l-info{color:var(--muted)}.l-warn{color:var(--warn)}.l-error{color:var(--error)}
+.dc-in{display:flex;gap:6px;align-items:center;padding:3px 12px;border-top:1px solid var(--border);font:12px Consolas,monospace}
+.dc-in input{flex:1;background:var(--input);color:var(--text);border:1px solid var(--border);font:inherit;padding:2px 4px}
+.id{color:var(--muted)}
+.term{background:#0c0c0c;color:#cccccc}
+:root[data-theme="light"] .term{background:#ffffff;color:#1e1e1e}
+.status{padding:3px 10px;font-size:12px;color:var(--muted);background:var(--bar);border-top:1px solid var(--border);flex:none}
 select{background:var(--bar);color:var(--text);border:1px solid var(--border);height:22px}
-.note{max-width:900px;margin:10px auto 0;color:var(--muted);font-size:12px}
+.srcsel{margin-left:auto;position:relative;display:flex;align-items:center;gap:6px}
+.srcsel>span{color:var(--muted);font-size:12px}
+.srcsel>button{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srcsel>button{background:var(--bar);color:var(--text);border:1px solid var(--border);height:22px;font:inherit;font-size:12px;cursor:pointer}
+.srcmenu{position:absolute;right:0;bottom:26px;background:var(--bar);border:1px solid var(--border);padding:4px 0;min-width:190px;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.srcmenu label{display:flex;gap:6px;align-items:center;padding:3px 10px;white-space:nowrap;cursor:pointer}
+.srcmenu label:hover{background:var(--border)}
+.src{color:var(--text);opacity:.75}
+.note{max-width:960px;margin:0 auto 10px;padding:6px 10px;border:1px dashed var(--border);color:var(--muted);font-size:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 </style>
 </head>
 <body>
-<div class="win">
+<p class="note"><strong>Aperçus :</strong>
+  <button id="theme">Thème clair / sombre</button>
+  <label><input type="checkbox" id="showSide"> Montrer la colonne Calques réservée (N0.8)</label>
+  <label><input type="checkbox" id="multi"> Aperçu N0.6 : plusieurs sources (sélecteur et étiquettes)</label>
+  <label>Position : <select id="side-pos"><option value="drawing">Droite (Drawing, défaut)</option><option value="ide">Gauche (IDE)</option></select></label>
+</p>
+<div class="win" id="win">
   <div class="bar" style="gap:18px"><span>File</span><span>View</span><span style="margin-left:auto">Help</span></div>
   <div class="bar"><div class="cc"><span>Search commands</span><span>Ctrl+Shift+P</span></div></div>
-  <div class="doc" id="doc">Zone de document</div>
-  <div class="split" id="split" title="Glisser pour redimensionner"></div>
-  <div class="bar" style="padding:0 8px;gap:4px">
-    <button class="tog" id="tog" aria-label="Plier / déplier le panneau"><svg id="arrow" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
-    <span class="tab on" data-t="console">Console</span>
-    <span class="tab" data-t="output">Output</span>
-    <select id="chan" style="margin-left:auto;visibility:hidden"><option>Layout Designer</option><option>ld-dummy-server</option><option>ld-dummy-renderer</option></select>
+  <div class="ws" id="ws">
+    <div class="main" id="main">
+      <div class="doc" id="doc">Contenu visuel du document</div>
+      <div class="split" id="split" title="Glisser pour redimensionner"></div>
+      <div class="tabs">
+        <button class="tog" id="tog" aria-label="Plier / déplier le panneau"><svg viewBox="0 0 12 12"><path id="arrow" d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
+        <span class="tab" data-t="output">Output</span>
+        <span class="tab" data-t="debug">Debug Console</span>
+        <span class="tab" data-t="terminal">Terminal</span>
+        <div class="srcsel" id="srcsel" hidden><button id="srcbtn" aria-haspopup="true">Sources ▾</button><div class="srcmenu" id="srcmenu" hidden></div></div>
+      </div>
+      <div class="body" id="body"></div>
+    </div>
+    <div class="side" id="side" hidden>Panneau Calques<br>(réservé — N0.8)<br>pleine hauteur</div>
   </div>
-  <div class="log" id="body"></div>
   <div class="status">Barre d'état</div>
 </div>
-<p class="note">Thème : <button id="theme">clair / sombre</button></p>
+
 <script>
-const logs={console:["[info]  22:25:01  Labels loaded: fr","[info]  22:25:01  6 Actions registered","[warn]  22:25:02  Plugin 'broken-demo' not loaded: entry not found","[info]  22:25:07  Action view.toggleTheme"],
-output:{"Layout Designer":["Layout Designer 0.0.0 started","Preferences: src/config/preferences.json"],"ld-dummy-server":["Hello from a server plugin (Node.js 22.x)"],"ld-dummy-renderer":["Hello from a renderer plugin"]}};
-let tab="console",open=true,h=140;const TOTAL=420;
+// Every trace line carries its source (OUTPUT_PANEL.md §4). N0.5 has a single source,
+// Layout Designer: no selector, no tag. The « Aperçu N0.6 » box adds two dummy plugin
+// sources to preview the selector and the source tags.
+const t0=Date.now()-60000;let seq=0;
+const hms=t=>new Date(t).toTimeString().slice(0,8);
+const L=(src,lvl,msg,dt)=>({src,lvl,msg,t:dt===undefined?Date.now()+(seq++):t0+dt*1000});
+const LD="Layout Designer";
+let log=[L(LD,"info","Layout Designer 0.0.0 started",0),L(LD,"info","Labels loaded: fr",1),L(LD,"info","8 Actions registered",2),
+  L("ld-dummy-server","info","Hello from a server plugin (Node.js 22.x)",3),L("ld-dummy-renderer","info","Hello from a renderer plugin",4),
+  L(LD,"warn","Preferences: src/config/preferences.json not found, defaults used",5),
+  L("ld-dummy-server","warn","Command 'ld-dummy-server.hello' took 812 ms",9),
+  L(LD,"error","Command 'file.missing' failed: unknown Command",12)];
+const sources=[LD,"ld-dummy-server","ld-dummy-renderer"];
+let multi=false,selected=new Set(sources);
+const actions=[["File: Quit","file.quit"],["Help: About Layout Designer…","help.about"],["Preferences: Choose Language…","preferences.chooseLanguage"],["View: Command Palette","view.commandPalette"],["View: Light / Dark Theme","view.toggleTheme"],["View: Output","view.showOutput"],["View: Show / Hide Developer Tools","view.toggleDevTools"],["View: Show / Hide Panel","view.togglePanel"]];
+let transcript=[{lvl:"info",txt:"Type help for the list of commands."}];
+let tab="output",open=true,frac=0.25;
 const $=id=>document.getElementById(id);
-function render(){
-  const lines=tab==="console"?logs.console:logs.output[$("chan").value];
-  $("body").innerHTML=lines.map(l=>"<div>"+l+"</div>").join("");
-  $("chan").style.visibility=tab==="output"?"visible":"hidden";
-  $("body").style.display=open?"block":"none";$("body").style.height=h+"px";
-  $("doc").style.height=(TOTAL-(open?h:0))+"px";
-  $("split").style.visibility=open?"visible":"hidden";
-  $("arrow").firstElementChild.setAttribute("d",open?"M2 4 L6 8 L10 4":"M4 2 L8 6 L4 10");
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function outputHtml(){
+  const shown=multi?log.filter(l=>selected.has(l.src)):log.filter(l=>l.src===LD);
+  const tag=multi&&selected.size>1;
+  return shown.slice().sort((a,b)=>a.t-b.t).map(l=>`<div class="l-${l.lvl}">[${l.lvl}]  ${hms(l.t)}  ${tag?`<span class="src">[${esc(l.src)}]</span>  `:""}${esc(l.msg)}</div>`).join("");
 }
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");tab=t.dataset.t;open=true;render();});
+function renderSel(){
+  $("srcsel").hidden=!(multi&&tab==="output");
+  const n=selected.size, names=sources.filter(x=>selected.has(x)).join(", ");
+  $("srcbtn").textContent=`${n} / ${sources.length} sources ▾`;
+  $("srcbtn").title=names;
+  $("srcmenu").innerHTML=sources.map(x=>`<label><input type="checkbox" value="${x}" ${selected.has(x)?"checked":""}> ${esc(x)}</label>`).join("");
+  $("srcmenu").querySelectorAll("input").forEach(c=>c.onchange=()=>{if(c.checked)selected.add(c.value);else if(selected.size>1)selected.delete(c.value);else c.checked=true;render();});
+}
+function render(){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.t===tab));
+  const total=$("main").clientHeight, tabsH=document.querySelector(".tabs").offsetHeight;
+  const h=Math.round(frac*$("win").clientHeight);
+  $("body").style.height=(open?Math.min(h,total-tabsH-4-100):0)+"px";
+  $("body").style.display=open?"flex":"none";
+  $("split").style.visibility=open?"visible":"hidden";
+  $("arrow").setAttribute("d",open?"M2 4 L6 8 L10 4":"M4 2 L8 6 L4 10");
+  renderSel();
+  if(tab==="output") $("body").innerHTML=`<div class="log">${outputHtml()}</div>`;
+  else if(tab==="debug"){ $("body").innerHTML=`<div class="log" id="dclog">${transcript.map(l=>`<div class="l-${l.lvl}">${l.html||esc(l.txt)}</div>`).join("")}</div><div class="dc-in">&gt;<input id="dcin" placeholder="view.toggleTheme · help · clear" autocomplete="off"></div>`;
+    const lg=$("dclog");lg.scrollTop=lg.scrollHeight;$("dcin").onkeydown=e=>{if(e.key==="Enter"){run(e.target.value.trim());}};$("dcin").focus();}
+  else $("body").innerHTML=`<div class="log term">Windows PowerShell\nPS C:\\dev\\layoutdesigner&gt; npm start\n\n&gt; layout-designer@0.0.0 start\n&gt; electron .\n\nPS C:\\dev\\layoutdesigner&gt; <span style="background:currentColor">&nbsp;</span></div>`;
+}
+function run(cmd){
+  if(!cmd)return;
+  transcript.push({lvl:"info",txt:"> "+cmd});
+  const id=cmd.split(/\s+/)[0];
+  if(id==="clear")transcript=[];
+  else if(id==="help")actions.forEach(([l,i])=>transcript.push({lvl:"info",html:`${esc(l)}  <span class="id">${i}</span>`}));
+  else if(id==="view.toggleTheme"){toggleTheme();transcript.push({lvl:"info",txt:"OK"});}
+  else if(actions.some(a=>a[1]===id))transcript.push({lvl:"info",txt:"OK (simulated)"});
+  else{transcript.push({lvl:"error",txt:`Unknown command '${id}'. Type help.`});log.push(L(LD,"warn",`Debug Console: unknown command '${id}'`));}
+  render();
+}
+function toggleTheme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{tab=t.dataset.t;open=true;render();});
 $("tog").onclick=()=>{open=!open;render();};
-$("chan").onchange=render;
-$("theme").onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";};
-let y0=null,h0=0;const s=$("split");
-s.onpointerdown=e=>{y0=e.clientY;h0=h;s.setPointerCapture(e.pointerId);};
-s.onpointermove=e=>{if(y0===null)return;h=Math.max(60,Math.min(340,Math.round(h0-(e.clientY-y0))));render();};
+$("theme").onclick=toggleTheme;
+$("multi").onchange=e=>{multi=e.target.checked;$("srcmenu").hidden=true;render();};
+$("srcbtn").onclick=e=>{e.stopPropagation();$("srcmenu").hidden=!$("srcmenu").hidden;};
+$("srcmenu").onclick=e=>e.stopPropagation();
+document.addEventListener("click",()=>{$("srcmenu").hidden=true;});
+$("showSide").onchange=e=>{$("side").hidden=!e.target.checked;render();};
+$("side-pos").onchange=e=>{$("ws").classList.toggle("ide",e.target.value==="ide");};
+let y0=null,f0=0;const s=$("split");
+s.onpointerdown=e=>{y0=e.clientY;f0=frac;s.setPointerCapture(e.pointerId);};
+s.onpointermove=e=>{if(y0===null)return;const W=$("win").clientHeight;frac=Math.max(80/W,Math.min(0.8,f0-(e.clientY-y0)/W));render();};
 s.onpointerup=()=>{y0=null;};
+window.onresize=render;
 render();
 </script>
 </body>

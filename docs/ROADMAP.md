@@ -55,18 +55,36 @@ time:**
    be updated to these three tabs. Running `npm start` from the Terminal starts a
    second, independent instance (as VS Code's *Extension Development Host*);
    single-instance lock and shared preferences (TD-2) are settled in the contract.
-2. **Object explorer** — an essential scaffolding feature that was missing: a panel on
-   the **left, full height**, with a splitter and expand / collapse. **Decided
-   (2026-10-30, 23:06):** the layout anticipates it **from N0.5** — left column, full
-   height; the bottom panel spans the **document area only**. The explorer itself is
-   **its own sub-step**, not built in N0.5; its exact position relative to the calques
-   is settled when that part of N0 comes (it needs calques and the rectangle as witness).
+2. **Object explorer = Calques panel** (PO decision 2026-10-31). The two are one
+   panel: a tree (calques, sub-calques, objects) with expand / collapse, as
+   Illustrator's *Layers* panel and Inkscape's *Layers and Objects* dialog. Full
+   height; **right by default** (« Drawing » layout), left as a user choice (« IDE »
+   layout, as VS Code's side bar). N0.5 reserves its column in a symmetric grid; the
+   central area above the bottom panel is the visual content of the document. The
+   panel, its position setting (a remembered preference) and the Action *Show / Hide
+   Calques* are delivered **with the calques step** — no separate sub-step.
 
 **Output panel contract drafted (2026-10-30, 23:10):** `docs/contracts/OUTPUT_PANEL.md`
 (not yet validated). Its open points (§13) are settled one at a time. Settled so far:
 VS Code is also a code reference (same stack); tabs **Output · Debug Console ·
 Terminal**, **Output** active at first launch; first launch unfolded, height a quarter
-of the window. Next: persistence of the panel state.
+of the window; no persistence (every launch starts from that state). Output line format of the
+mock-up (`[info]  HH:MM:SS  message`). Level colours; an explicit
+journal (no `console.*` redirection). Debug Console general shape
+(Action ids + `key=value`, short words), consistent with the command palette; core
+Action ids aligned on their palette category (`ACTION_COMMAND.md` §13.9). Verb vocabulary for
+Action names (§13.10). The palette filter also
+matches Action ids (§13.11). Debug Console starts in
+the application folder. Terminal: PowerShell on
+Windows, `cmd.exe` as a preference. Terminal also starts in
+the application folder (the root folder). CSP gains
+`style-src 'self' 'unsafe-inline'` (as VS Code). node-pty rebuilt for
+Electron by `@electron/rebuild` in `postinstall` (dev dependency accepted). Several
+instances allowed, no lock (shared preferences file noted in TD-2). Mock-up updated to all
+these decisions. Output « sources » replace
+channels (lines carry their source, the view mixes the selected sources; selector in
+N0.6, ergonomics to check then). Next: the PO looks at the mock-up, then validates the
+contract (status DRAFT → VALIDATED) before any code.
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
@@ -185,9 +203,9 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
 | N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel (draft) | ⏳ next |
-| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape | Plugin API (draft) | — |
+| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector** | Plugin API (draft) | — |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
-| N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab) | Calque / object model, EditTransaction | — |
+| N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
 | N0.9 | Selection + copy / paste | — | — |
 | N0.10 | *Object → Transformation* | — | — |
 | N0.11 | Zoom (loupe) + panning | — | — |
