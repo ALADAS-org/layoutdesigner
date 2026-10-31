@@ -97,7 +97,7 @@ module.exports = function (api) {
   api.registerAction({ id, label, categoryKey?, shortcut?, menuGroup?, command })
                                                    // alias Action only; `command` must be
                                                    // one of this plugin's Commands
-  api.output                                       // the plugin's channel in the Output panel (§8.3)
+  api.output                                       // the plugin's source in the Output panel (§8.3)
   api.log(...args) · api.warn(...args)             // console, prefixed '[plugin:<name>]'
 }
 ```
@@ -117,7 +117,7 @@ export function init(api) {
   api.registerAction(descriptor)                   // as ActionRegistry.register (contract §3):
                                                    // client (`run`) or alias (`command`);
                                                    // English `label`, optional `menuGroup`
-  api.output                                       // the plugin's channel in the Output panel (§8.3)
+  api.output                                       // the plugin's source in the Output panel (§8.3)
   api.log(...args) · api.warn(...args)
 }
 ```
@@ -179,8 +179,9 @@ to its parent entry; ↑ / ↓ move inside it. Same behaviour as Windows / Illus
 ### 8.3 Plugin output — the Output panel (N0.5)
 
 Plugins write their messages in the **Output panel** built at N0.5 (bottom panel, after
-VS Code). Each plugin gets **its own channel**, named after the plugin, as a VS Code
-extension's `OutputChannel`; `api.output` is that channel. Its exact methods (e.g.
+VS Code). Each plugin is **its own source**, named after the plugin (as a VS Code
+extension's `OutputChannel`); `api.output` writes under that source, and the user
+chooses which sources the Output view mixes (`OUTPUT_PANEL.md` §4). Its exact methods (e.g.
 `appendLine`) and the main → renderer path a server plugin needs are fixed by the
 **Output panel contract** (N0.5); this contract only uses them.
 
@@ -203,7 +204,7 @@ extension's `OutputChannel`; `api.output` is that channel. Its exact methods (e.
 | Separate IPC channels per plugin event (`trigger-server-action`, `plugin:<event>`) | Same `ld:command:invoke` channel as the core | One channel, minimal preload (Bootstrap security rule). |
 | Ids not prefixed | `<plugin name>.<name>`, enforced | No collision with the core or between plugins (ACTION_COMMAND §2). |
 | Missing type → `server` | Type required | Explicit; a typo is reported instead of loaded wrongly. |
-| Native popup (`showPopup`) | A channel in the Output panel (`api.output`) | GUI entirely in HTML; VS Code is the reference for generic editor features (PO). |
+| Native popup (`showPopup`) | A source in the Output panel (`api.output`) | GUI entirely in HTML; VS Code is the reference for generic editor features (PO). |
 | *Tools › Plugins* item with free `group` | *Plugins* menu with `menuGroup` submenus | PO decision: Inkscape *Extensions* menu; palette as VS Code. |
 | Plugins folder in `%LOCALAPPDATA%` | `plugins/` at the repo root | PO decision; same packaging issue as TD-2 — recorded as debt. |
 | Registrations kept when a plugin fails midway | All or nothing | Reliable: no half-loaded plugin. |
@@ -225,18 +226,18 @@ extension's `OutputChannel`; `api.output` is that channel. Its exact methods (e.
 
 Witnesses, both with `menuGroup: "Demo"`, so they share *Plugins › Demo*:
 - **`ld-dummy-server`** — Command `ld-dummy-server.hello` returning « Hello from a server
-  plugin (Node.js <version>) » to its Output channel + its alias Action;
+  plugin (Node.js <version>) » under its Output source + its alias Action;
 - **`ld-dummy-renderer`** — client Action `ld-dummy-renderer.hello` writing « Hello from
-  a renderer plugin » to its Output channel.
+  a renderer plugin » under its Output source.
 
 **Anti-regression gate:**
 - Unit (Jest): discovery (valid, no type, unknown type, bad name, duplicate name,
   missing entry, invalid JSON); id prefix rule; all-or-nothing on a throwing plugin;
   `plugin://` path resolution refuses escapes; renderer loader with fake modules;
-  *Plugins* menu model (grouping, order, empty → hidden); one Output channel per plugin.
+  *Plugins* menu model (grouping, order, empty → hidden); one Output source per plugin (and the source selector, `OUTPUT_PANEL.md` §4).
 - End-to-end (Playwright, `LD_PLUGINS_PATH` → test fixtures): both dummy Actions are in
   the palette and in *Plugins › Demo*, by mouse and by keyboard (→ / ← in the submenu),
-  and their lines appear in their Output channels; a broken fixture plugin is reported in the status bar while
+  and their lines appear under their Output sources; a broken fixture plugin is reported in the status bar while
   the application and the other plugins work; no plugin → no *Plugins* menu.
 
 **Design gate (Product Owner):** run `npm start`; open *Plugins › Demo* (mouse and
@@ -254,7 +255,7 @@ message (a broken plugin dropped into `plugins/`).
 - **Concepts:** plugin kinds, `package.json` fields `ld-plugin-type` / `main` /
   `renderer-main`, plugin name and id prefix, the two scoped APIs, Command
   `plugins.startupInfo`, `plugin://` protocol, `LD_PLUGINS_PATH`, rejection rule;
-  *Plugins* menu, `menuGroup`, **submenus** in the menu bar, one Output channel per plugin.
+  *Plugins* menu, `menuGroup`, **submenus** in the menu bar, one Output source per plugin (and the source selector, `OUTPUT_PANEL.md` §4).
 - **Dependencies:** none new.
 - **Size:** ≈ 550–650 lines of code (submenus add ≈ 120 to `menubar.js` / `.css`),
   about as much in tests.

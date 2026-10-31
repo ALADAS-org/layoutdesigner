@@ -280,3 +280,53 @@ Content-Security-Policy is `default-src 'self'; img-src 'self' data:`.
 ---
 
 <sub>Prepared with the assistance of Claude AI, used as a tool under the authors' direction.</sub>
+
+### 13.9 Action ids follow their palette category (PO decision 2026-10-31)
+
+The prefix of a **core Action** id is its palette category (`categoryKey`) in lower
+case, so that `view.…` in the Debug Console reads as « View: … » in the palette. The
+id rule of §2 (`<domain>.<name>`) is unchanged; only the choice of domain is fixed.
+
+| Palette label | Old Action id | New Action id |
+|---|---|---|
+| File: Quit | `app.quit` | `file.quit` |
+| View: Show / Hide Developer Tools | `dev.toggleDevTools` | `view.toggleDevTools` |
+| Preferences: Choose Language… | `prefs.chooseLanguage` | `preferences.chooseLanguage` |
+
+`view.commandPalette`, `view.toggleTheme` and `help.about` already comply.
+**Command ids do not change** (`app.quit`, `dev.toggleDevTools`, `prefs.setLanguage`):
+an alias Action may carry another id than the Command it redirects to (§5). Plugin
+Actions keep the plugin-name prefix of `PLUGIN_API.md` §4. The rename is the first
+code change of N0.5 (menus, toolbar, palette, tests updated with it).
+
+### 13.10 Verb vocabulary for Action names (PO decision 2026-10-31)
+
+The `<name>` part of a core Action id starts with a verb from a fixed vocabulary when
+one applies, so that Actions of the same kind share a prefix (VS Code convention:
+`workbench.action.toggle…`, `…show…`).
+
+| Verb | Meaning | Examples |
+|---|---|---|
+| `toggle` | switch a visible state on / off | `view.toggleDevTools`, `view.togglePanel` |
+| `show` | open or bring forward a view or a tab | `view.showOutput`, `view.showTerminal` |
+| `choose` | open a choice dialog | `preferences.chooseLanguage` |
+| `set` | set a value directly, with an argument | `preferences.setLanguage language=fr` |
+| `reset` | restore a default value or state | — (first use to come) |
+| `save` | write to a file | — (first use to come) |
+| `load` | read from a file | — (first use to come) |
+
+- Actions that fit none of these keep a plain name (`file.quit`, `help.about`).
+- A new verb is added to this table by the Product Owner, not invented in code.
+- **`load` is for files that are not documents** — patterns, palettes, themes and the
+  like (PO, 2026-10-31). Whether documents use `open` (*File › Open*, as Illustrator
+  and VS Code: `workbench.action.files.openFile`) is settled with the N0.7 contract.
+
+### 13.11 The palette filter also matches Action ids (PO decision 2026-10-31)
+
+The palette filter (§7) matches the displayed, localised label **and the Action id**
+(same rule: case-insensitive « contains »). Typing a verb of §13.10 (`toggle`) finds
+every Action of that kind whatever the interface language, with the same word as in
+the Debug Console. Each palette entry shows its id discreetly on the right, in the
+muted colour (`--ld-muted-fg`); its exact look is confirmed at the Design gate.
+Built in N0.5 together with the Debug Console.
+

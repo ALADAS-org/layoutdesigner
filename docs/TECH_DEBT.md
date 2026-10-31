@@ -39,6 +39,10 @@ abandoned rather than carried as debt (tag `proto-improvise-2026-10`).
 - Why: simple and visible during development; no packaging exists yet.
 - Cost if left: a packaged (asar) or installed application cannot write there; an
   update would also overwrite the user's preferences.
+  Since N0.5 (2026-10-31), several instances may run at once (a second one launched
+  from the Terminal, no single-instance lock): they share this file and the last
+  write wins.
 - Repayment: when packaging is introduced, move the file to Electron's per-user folder
-  (`app.getPath('userData')`) — only `preferences.js` changes.
+  (`app.getPath('userData')`) — only `preferences.js` changes. Concurrent instances:
+  re-read before write, or a lock, if a real conflict ever shows up.
 - Status: open
