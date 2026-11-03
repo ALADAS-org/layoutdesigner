@@ -103,6 +103,13 @@ confirm in its contract (written just before the step): the defaults live in a s
 file `src/config/preferences.default.json`, copied over `preferences.json` on reset; a
 new **Edit** menu. Details settled one point at a time.
 
+**Decision (2026-11-03, PO): type checking with option (b)** — the code stays plain
+JavaScript (renderer ESM, main CJS, no build step); types are written as **JSDoc**
+annotations and `.d.ts` files for the contracts, checked by **`tsc --checkJs`**
+(`npm run typecheck`, dev dependency `typescript`). Rejected: (a) no types; (c) `.ts`
+files, which need a build step for the renderer. Migration file by file; placement in
+the pyramid to settle.
+
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
 reference for where plugin entries appear — a *Plugins* menu (the same word everywhere),
