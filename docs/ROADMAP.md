@@ -92,7 +92,16 @@ column, splitter, fold button, three empty tabs, `view.togglePanel` Ctrl+J and t
 `view.show…` Actions, Terminal on Ctrl+Shift+T) validated by the PO (2026-11-03: height 18.75 %, folded at
 first launch); **step 4** (Output: sources, explicit journal in both processes,
 main-side history over `ld.onOutput`, line format and level colours) delivered.
-**Next: step 5 — Debug Console.**
+Step 4 validated by the PO for `info` and `warn` (2026-11-03); the
+`error` colour is judged at step 5. **Next: step 5 — Debug Console.**
+
+**Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
+Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a
+**Preferences dialog** that also offers to **reset** the preferences. Prompted by an
+invalid `preferences.json` (today only a `warn` line in Output). Understood so far, to
+confirm in its contract (written just before the step): the defaults live in a shipped
+file `src/config/preferences.default.json`, copied over `preferences.json` on reset; a
+new **Edit** menu. Details settled one point at a time.
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
