@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (672 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (678 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -648,6 +648,7 @@
     - main.js
     - package.json
     - shortcuts.js
+    - splitter.js
     - theme.css
     - theme.js
     - toast.js
@@ -665,6 +666,10 @@
       - about_dialog.css
       - about_dialog.html
       - about_dialog.js
+    - **bottom_panel/**
+      - bottom_panel.css
+      - bottom_panel.html
+      - bottom_panel.js
     - **language_dialog/**
       - language_dialog.css
       - language_dialog.html
@@ -702,10 +707,12 @@
         - node_pty_electron.test.js
         - window_options.test.js
       - **vizjets/**
+        - bottom_panel.test.mjs
         - gui_helpers.test.mjs
   - **playwright/**
     - **e2e/**
       - app_launch.spec.js
+      - bottom_panel.spec.js
       - command_palette.spec.js
       - gui.spec.js
       - i18n.spec.js

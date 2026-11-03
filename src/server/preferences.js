@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { log } = require('./journal.js');
 
 const DEFAULT_PREFERENCES_PATH = path.join(__dirname, '..', 'config', 'preferences.json');
 
@@ -26,17 +27,17 @@ function readPreferences(file) {
     text = fs.readFileSync(file, 'utf8');
   } catch (err) {
     if (err.code === 'ENOENT') return {};
-    console.warn(`Cannot read preferences '${file}': ${err.message}`);
+    log('warn', `Cannot read preferences '${file}': ${err.message}`);
     return {};
   }
   try {
     const prefs = JSON.parse(text);
     if (prefs !== null && typeof prefs === 'object' && !Array.isArray(prefs)) return prefs;
   } catch (err) {
-    console.warn(`Invalid preferences '${file}': ${err.message}`);
+    log('warn', `Invalid preferences '${file}': ${err.message}`);
     return {};
   }
-  console.warn(`Invalid preferences '${file}': not a JSON object`);
+  log('warn', `Invalid preferences '${file}': not a JSON object`);
   return {};
 }
 

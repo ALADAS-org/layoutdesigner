@@ -96,3 +96,16 @@
   height: 100%;
   overflow: auto;
 }
+
+/* Output tab (N0.5 step 4): level colours — info muted, warn orange, error red (PO). */
+.OutputView {
+  padding: 6px 12px;
+  box-sizing: border-box;
+  font: 12px/1.6 Consolas, "Cascadia Mono", monospace;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.OutputLine.is-info  { color: var(--ld-muted-fg); }
+.OutputLine.is-warn  { color: var(--ld-warn-fg); }
+.OutputLine.is-error { color: var(--ld-error-fg); }

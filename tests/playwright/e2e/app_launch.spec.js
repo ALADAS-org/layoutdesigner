@@ -31,14 +31,18 @@ test('renderer has no Node.js access', async () => {
   expect(exposed).toEqual({ require: 'undefined', process: 'undefined' });
 });
 
-test('the preload bridge exposes only window.ld.invokeCommand', async () => {
+// N0.5 adds onOutput (docs/contracts/OUTPUT_PANEL.md §7); still no generic ipcRenderer.
+test('the preload bridge exposes only window.ld.invokeCommand and window.ld.onOutput', async () => {
   const win = await app.firstWindow();
   const bridge = await win.evaluate(() => ({
-    ldKeys: Object.keys(window.ld),
+    ldKeys: Object.keys(window.ld).sort(),
     invokeType: typeof window.ld.invokeCommand,
+    onOutputType: typeof window.ld.onOutput,
     ipcRenderer: typeof window.ipcRenderer
   }));
-  expect(bridge).toEqual({ ldKeys: ['invokeCommand'], invokeType: 'function', ipcRenderer: 'undefined' });
+  expect(bridge).toEqual({
+    ldKeys: ['invokeCommand', 'onOutput'], invokeType: 'function', onOutputType: 'function', ipcRenderer: 'undefined'
+  });
 });
 
 test('an unknown Command id comes back as ok: false', async () => {

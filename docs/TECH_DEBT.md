@@ -46,3 +46,15 @@ abandoned rather than carried as debt (tag `proto-improvise-2026-10`).
   (`app.getPath('userData')`) — only `preferences.js` changes. Concurrent instances:
   re-read before write, or a lock, if a real conflict ever shows up.
 - Status: open
+
+## TD-3 — Output lines kept without limit, view fully re-rendered
+- Date / level: 2026-11-03 / N0.5
+- What: main's journal and the renderer's Output keep every line of the session; the
+  Output view rebuilds all its rows on each change (batched per micro-task).
+- Why: the only source in N0.5 writes a handful of lines; a cap and an incremental view
+  would be infrastructure without a witness case.
+- Cost if left: a chatty plugin (N0.6) could make memory grow and the view slow over a
+  long session.
+- Repayment: with N0.6 (several sources, the selector) — a cap per source (e.g. the last
+  N lines) and rows appended instead of rebuilt.
+- Status: open

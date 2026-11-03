@@ -29,6 +29,7 @@
   --ld-splitter-hover:  #5f5e5a;
   --ld-tab-active-fg:   #1e1e1e;
   --ld-tab-accent:      #1473e6; /* underline of the active panel tab */
+  --ld-warn-fg:         #b86e00; /* Output warn lines (orange, PO decision) */
 }
 
 :root[data-theme="dark"] {
@@ -53,4 +54,5 @@
   --ld-splitter-hover:  #b4b2a9;
   --ld-tab-active-fg:   #e6e6e6;
   --ld-tab-accent:      #4a9eff;
+  --ld-warn-fg:         #e8a33d;
 }

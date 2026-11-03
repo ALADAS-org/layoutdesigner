@@ -15,6 +15,7 @@
 // =====================================================================================
 
 import { normalizeShortcut } from './shortcuts.js';
+import { log } from './journal.js';
 
 export const ID_PATTERN = /^[A-Za-z][\w-]*(\.[A-Za-z][\w-]*)+$/; // e.g. 'file.quit'
 
@@ -116,7 +117,7 @@ export class ActionRegistry {
       message = err instanceof Error ? err.message : String(err);
     }
     if (message === undefined) return;
-    console.error(message);
+    log('error', message);
     for (const listener of this.#failureListeners) listener(message, id);
   }
 }

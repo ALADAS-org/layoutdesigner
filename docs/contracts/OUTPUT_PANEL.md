@@ -193,12 +193,18 @@ channel — still no generic `ipcRenderer`:
 
 | Function | Channel | Direction |
 |---|---|---|
-| `ld.onOutput(listener)` | `ld:output:append` | main → renderer (main-side Output lines) |
+| `ld.onOutput(listener)` | `ld:output:history` (invoke), then `ld:output:append` | main → renderer: the main-side lines written so far, then every new one (built in step 4) |
 | `ld.pty.start(options)` → id | `ld:pty:start` | renderer → main (invoke) |
 | `ld.pty.write(id, data)` | `ld:pty:write` | renderer → main |
 | `ld.pty.resize(id, cols, rows)` | `ld:pty:resize` | renderer → main |
 | `ld.pty.kill(id)` | `ld:pty:kill` | renderer → main |
 | `ld.pty.onData(listener)` / `ld.pty.onExit(listener)` | `ld:pty:data` / `ld:pty:exit` | main → renderer |
+
+**Step 4 note (2026-11-03):** `ld.onOutput` also needs the **history** of main-side
+lines — traces written before the window is ready (start-up, preferences) would be lost
+otherwise. Main keeps its journal's lines; a renderer that subscribes receives them
+once (`ld:output:history`), then every new line (`ld:output:append`). Still one
+function, no generic `ipcRenderer`.
 
 ## 8. Actions, menu and shortcuts (VS Code names and keys)
 

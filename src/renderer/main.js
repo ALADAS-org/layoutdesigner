@@ -29,6 +29,9 @@ import { createStatusBar } from '../vizjets/status_bar/status_bar.js';
 import { createAboutDialog } from '../vizjets/about_dialog/about_dialog.js';
 import { createLanguageDialog } from '../vizjets/language_dialog/language_dialog.js';
 import { createBottomPanel } from '../vizjets/bottom_panel/bottom_panel.js';
+import { output } from './output_sources.js';
+import { createOutputView } from './output_view.js';
+import { log } from './journal.js';
 import { createToaster } from './toast.js';
 
 const byId = (id) => document.getElementById(id);
@@ -46,6 +49,7 @@ const lang = pickLanguage(locale, languages.map((l) => l.code));
 const { labels, englishLabels } = await loadLabels(lang);
 const t = createTranslator(labels, englishLabels);
 document.documentElement.lang = lang;
+log('info', `Labels loaded: ${lang}`);
 
 // ---- vizjets
 await loadVizjets(document);
@@ -78,6 +82,9 @@ const aboutDialog = createAboutDialog(byId('about_dialog'), { t, version });
 const languageDialog = createLanguageDialog(byId('language_dialog'), { t });
 const toaster = createToaster();
 const bottomPanel = createBottomPanel(byId('bottom_panel'), { workspace: byId('workspace') });
+createOutputView(bottomPanel.view('output'), output);
+// Main-side lines (start-up, preferences…): those written so far, then every new one.
+await window.ld.onOutput((line) => output.add(line));
 
 actions.register({
   id: PALETTE_ACTION_ID,
@@ -163,3 +170,4 @@ for (const [tab, name, shortcut] of [
 createMenubar(byId('menubar'), { actions, labelOf });
 createToolbar(byId('main_toolbar'), { actions, labelOf });
 installShortcuts(actions, window);
+log('info', `${actions.list().length} Actions registered`);
