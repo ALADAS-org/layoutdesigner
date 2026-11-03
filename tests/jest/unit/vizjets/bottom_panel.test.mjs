@@ -1,12 +1,13 @@
 // Unit tests — bottom panel sizing rules (docs/contracts/OUTPUT_PANEL.md §2).
 import {
-  clampBodyHeight, MIN_BODY_PX, DOCUMENT_MIN_PX, INITIAL_FRACTION, INITIAL_TAB, TABS
+  clampBodyHeight, MIN_BODY_PX, DOCUMENT_MIN_PX, INITIAL_FRACTION, INITIAL_FOLDED, INITIAL_TAB, TABS
 } from '../../../../src/vizjets/bottom_panel/bottom_panel.js';
 
 describe('bottom panel first-launch state', () => {
-  test('Output first, 18.75 % of the window, tabs in VS Code order', () => {
+  test('folded on Output, 18.75 % of the window once unfolded, tabs in VS Code order', () => {
     expect(TABS).toEqual(['output', 'debugConsole', 'terminal']);
     expect(INITIAL_TAB).toBe('output');
+    expect(INITIAL_FOLDED).toBe(true);
     expect(INITIAL_FRACTION).toBe(0.1875);
   });
 });

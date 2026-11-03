@@ -23,11 +23,16 @@ test.describe('bottom panel', () => {
   const fold = () => win.locator('.BottomPanelFold');
   const box = (selector) => win.locator(selector).boundingBox();
 
-  test('first launch: unfolded, Output active, body 18.75 % of the window high', async () => {
+  test('first launch: folded on Output; unfolded, the body is 18.75 % of the window high', async () => {
     await expect(win.locator('.BottomPanelTab')).toHaveText(['Output', 'Debug Console', 'Terminal']);
     await expect(tab('output')).toHaveAttribute('aria-selected', 'true');
-    await expect(win.locator('#panel_output')).toBeVisible();
+    await expect(panel()).toHaveClass(/is-folded/);
+    await expect(fold()).toHaveAttribute('aria-expanded', 'false');
+    await expect(body()).toBeHidden();
+    await expect(win.locator('.BottomPanelTabRow')).toBeVisible();
+    await fold().click();
     await expect(fold()).toHaveAttribute('aria-expanded', 'true');
+    await expect(win.locator('#panel_output')).toBeVisible();
     const height = await win.evaluate(() => window.innerHeight);
     const { height: bodyHeight } = await box('.BottomPanelBody');
     expect(Math.abs(bodyHeight - height * 0.1875)).toBeLessThanOrEqual(1);
@@ -126,17 +131,17 @@ test.describe('bottom panel Actions', () => {
     await expect(item('view.togglePanel').locator('.MenubarItemLabel')).toHaveText('Show / Hide Panel');
   });
 
-  test('Ctrl+J folds and unfolds the panel', async () => {
+  test('Ctrl+J unfolds and folds the panel (folded at start)', async () => {
     await win.mouse.click(600, 300);
-    await win.keyboard.press('Control+J');
     await expect(win.locator('.BottomPanel')).toHaveClass(/is-folded/);
     await win.keyboard.press('Control+J');
     await expect(win.locator('.BottomPanel')).not.toHaveClass(/is-folded/);
+    await win.keyboard.press('Control+J');
+    await expect(win.locator('.BottomPanel')).toHaveClass(/is-folded/);
   });
 
   test('the show Actions unfold the panel on their tab', async () => {
-    await win.keyboard.press('Control+J'); // fold
-    await win.keyboard.press('Control+Shift+T');
+    await win.keyboard.press('Control+Shift+T'); // the panel is folded here
     await expect(win.locator('.BottomPanel')).not.toHaveClass(/is-folded/);
     await expect(tab('terminal')).toHaveAttribute('aria-selected', 'true');
     await win.keyboard.press('Control+Shift+Y');

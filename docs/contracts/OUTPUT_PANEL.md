@@ -63,14 +63,15 @@ status bar
 | **Tabs** | One active at a time. A click on a tab of a folded panel **unfolds** it. |
 | **Body** | The active tab's content; hidden when folded (the document area takes the height). |
 
-**Size.** At first launch the panel is **unfolded**, its height **18.75 % of the
-window height** — a quarter (PO decision 2026-10-30) reduced by 25 % at the Design gate
+**Size.** At first launch the panel is **folded** on tab Output — only the tab row
+shows (PO decision 2026-11-03). Unfolded, its height is **18.75 % of the window
+height** — a quarter (PO decision 2026-10-30) reduced by 25 % at the Design gate
 of step 3 (PO, 2026-11-03). Resizing limits (proposed; values confirmed
 at the Design gate): minimum = tab row + about three lines of text; maximum = the
 document area always keeps about 100 px.
 
-**No persistence.** Every launch starts from the first-launch state above: unfolded,
-18.75 % of the window height, tab Output, source `Layout Designer`. Nothing about the
+**No persistence.** Every launch starts from the first-launch state above: folded,
+18.75 % of the window height once unfolded, tab Output, source `Layout Designer`. Nothing about the
 panel is written to the preferences (PO decision 2026-10-30).
 
 ## 3. Tabs (PO decision 2026-10-30: all three are built in N0.5)
@@ -287,7 +288,7 @@ Consequences, to settle (§13):
    read from its HEAD.
 4. **Tabs: Output · Debug Console · Terminal; Output active at first launch** (§3).
 5. **First launch: panel unfolded, height = a quarter of the window height** (§2).
-   *Amended 2026-11-03 by decision 24: 18.75 %.*
+   *Amended 2026-11-03 by decisions 24 (18.75 %) and 25 (folded at first launch).*
 6. **No persistence of the panel state**: every launch starts from the first-launch
    state (§2).
 7. **Output line format of the mock-up**: `[level]  HH:MM:SS  message` (§4).
@@ -331,6 +332,8 @@ Consequences, to settle (§13):
     Ctrl+` (§8).
 24. **First-launch height reduced by 25 %**: 18.75 % of the window height instead of a
     quarter (Design gate of step 3, §2).
+25. **Folded at first launch** (only the tab row shows); unfolding gives the 18.75 %
+    height (Design gate of step 3, §2).
 
 1. ~~Tab order and the tab active at first launch.~~ Settled (§12, 4).
 2. ~~Default panel state at first launch, minimum and maximum heights.~~ Settled

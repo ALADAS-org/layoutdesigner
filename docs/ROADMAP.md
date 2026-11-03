@@ -67,7 +67,7 @@ time:**
 **Output panel contract drafted (2026-10-30, 23:10):** `docs/contracts/OUTPUT_PANEL.md`
 (not yet validated). Its open points (§13) are settled one at a time. Settled so far:
 VS Code is also a code reference (same stack); tabs **Output · Debug Console ·
-Terminal**, **Output** active at first launch; first launch unfolded, height 18.75 % (a quarter reduced by 25 %, 2026-11-03)
+Terminal**, **Output** active at first launch; first launch **folded** (2026-11-03), height 18.75 % once unfolded (a quarter reduced by 25 %)
 of the window; no persistence (every launch starts from that state). Output line format of the
 mock-up (`[info]  HH:MM:SS  message`). Level colours; an explicit
 journal (no `console.*` redirection). Debug Console general shape
