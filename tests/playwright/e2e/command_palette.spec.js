@@ -7,6 +7,11 @@ const { launch, exitCode } = require('./launch.js');
 
 // Palette entries read "Category: Label", as in VS Code, sorted alphabetically.
 const ALL_BUT_PALETTE = [
+  'Debug Console: Change Folder',
+  'Debug Console: Clear',
+  'Debug Console: Help',
+  'Debug Console: List Folder',
+  'Debug Console: Show Folder',
   'File: Quit',
   'Help: About Layout Designer…',
   'Preferences: Choose Language…',

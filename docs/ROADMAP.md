@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — steps 1–4 delivered) · N0.6 contract in draft (plugins) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — steps 1–5 delivered) · N0.6 contract in draft (plugins) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -93,7 +93,11 @@ column, splitter, fold button, three empty tabs, `view.togglePanel` Ctrl+J and t
 first launch); **step 4** (Output: sources, explicit journal in both processes,
 main-side history over `ld.onOutput`, line format and level colours) delivered.
 Step 4 validated by the PO for `info` and `warn` (2026-11-03); the
-`error` colour is judged at step 5. **Next: step 5 — Debug Console** (typed from the start).
+`error` colour is judged at step 5. **Step 5 — Debug Console** delivered (2026-11-04): Action ids
+with `key=value`, short words `help` · `clear` · `pwd` · `ls` · `cd` as Actions of the
+category « Debug Console » (in the palette too), read-only `fs.*` Commands, history,
+Tab completion, errors in red with a line in Output. **Next: step 6 — Preferences**
+(*Edit › Preferences…* dialog with reset; its contract first), then step 7 — Terminal.
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a

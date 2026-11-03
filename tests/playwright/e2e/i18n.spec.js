@@ -36,6 +36,11 @@ test.describe('French (--lang=fr)', () => {
       'Affichage : Terminal',
       'Affichage : Thème clair / sombre',
       'Aide : À propos de Layout Designer…',
+      'Console de débogage : Afficher le dossier',
+      'Console de débogage : Aide',
+      'Console de débogage : Changer de dossier',
+      'Console de débogage : Effacer',
+      'Console de débogage : Lister le dossier',
       'Fichier : Quitter',
       'Préférences : Choisir la langue…'
     ]);

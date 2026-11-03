@@ -160,6 +160,25 @@ output.source('Layout Designer').append('info', 'Labels loaded: fr');
   - **core Action ids are prefixed by their palette category** (`ACTION_COMMAND.md`
     §13.9). Typed labels are not accepted: they are localised and would break when the
     language changes (VS Code likewise keys `keybindings.json` on ids, not labels).
+- **Short words = Actions of the category « Debug Console »**, listed in the palette
+  as VS Code lists « Debug: Clear Console » (PO decision 2026-11-04). Run from the
+  palette (no argument), they show the Debug Console to print their result there.
+
+  | Word | Action | Palette | No argument |
+  |---|---|---|---|
+  | `help` | `debugConsole.showHelp` | Debug Console: Help | lists the Actions as the palette does, each followed by its id |
+  | `clear` | `debugConsole.clear` | Debug Console: Clear | empties the transcript, its own line included |
+  | `pwd` | `debugConsole.showFolder` | Debug Console: Show Folder | prints the current folder |
+  | `ls [folder]` | `debugConsole.listFolder` | Debug Console: List Folder | lists the current folder (folders first, with `/`) |
+  | `cd [folder]` | `debugConsole.setFolder` | Debug Console: Change Folder | back to the application folder, as `cd` alone goes home in a shell |
+
+  Read-only Commands in main behind them: `fs.appFolder`, `fs.resolveFolder
+  ({ from, to })`, `fs.listFolder ({ folder })`. Arguments with spaces go in double
+  quotes (`cd "My Folder"`). Any other Action prints « OK » when it succeeds.
+- Tab completes the first word among the short words and the Action ids (one match:
+  completed; several: their common prefix, a second Tab lists them).
+- Errors in red in the transcript (interface language); in Output, unknown command or
+  argument → `warn`, a failing Action → `error` (English, as every Output line).
 - **Starting folder** of `pwd` / `ls` / `cd`: the **application folder** (the
   repository root) — PO decision 2026-10-31. Anticipated, not built: the active
   document's folder once documents exist (N0.7).
@@ -340,6 +359,10 @@ Consequences, to settle (§13):
     quarter (Design gate of step 3, §2).
 25. **Folded at first launch** (only the tab row shows); unfolding gives the 18.75 %
     height (Design gate of step 3, §2).
+
+**2026-11-04:**
+26. **Debug Console short words are Actions** of the category « Debug Console »,
+    listed in the palette (§5).
 
 1. ~~Tab order and the tab active at first launch.~~ Settled (§12, 4).
 2. ~~Default panel state at first launch, minimum and maximum heights.~~ Settled

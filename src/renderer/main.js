@@ -32,6 +32,7 @@ import { createBottomPanel } from '../vizjets/bottom_panel/bottom_panel.js';
 import { output } from './output_sources.js';
 import { createOutputView } from './output_view.js';
 import { log } from './journal.js';
+import { createDebugConsole } from './debug_console.js';
 import { createToaster } from './toast.js';
 
 /** @typedef {import('../types/contracts').Action} Action */
@@ -105,6 +106,17 @@ const bottomPanel = createBottomPanel(byId('bottom_panel'), { workspace: byId('w
 createOutputView(bottomPanel.view('output'), output);
 // Main-side lines (start-up, preferences…): those written so far, then every new one.
 await window.ld.onOutput((line) => output.add(line));
+const debugConsole = createDebugConsole(bottomPanel.view('debugConsole'), {
+  actions,
+  paletteLabelOf,
+  locale: lang,
+  t,
+  invokeCommand: (id, args) => window.ld.invokeCommand(id, args),
+  appFolder: /** @type {string} */ (await command('fs.appFolder'))
+});
+bottomPanel.onShow((tab) => {
+  if (tab === 'debugConsole') debugConsole.focus();
+});
 
 actions.register({
   id: PALETTE_ACTION_ID,
@@ -183,6 +195,30 @@ for (const [tab, name, shortcut] of [
     categoryKey: 'View',
     shortcut,
     run: async () => bottomPanel.show(tab)
+  });
+}
+
+// Debug Console (OUTPUT_PANEL.md §5): its short words are Actions of the category
+// « Debug Console », listed in the palette too (PO decision 2026-11-04). Run from the
+// palette, they show the Debug Console to print their result there.
+/** @type {Array<[string, string, string, (args?: unknown) => unknown]>} */
+const debugConsoleActions = [
+  ['showHelp', 'Help', 'Help', () => debugConsole.showHelp()],
+  ['clear', 'Clear', 'Clear', () => debugConsole.clear()],
+  ['showFolder', 'ShowFolder', 'Show Folder', () => debugConsole.showFolder()],
+  ['listFolder', 'ListFolder', 'List Folder', (args) => debugConsole.listFolder(args)],
+  ['setFolder', 'SetFolder', 'Change Folder', (args) => debugConsole.setFolder(args)]
+];
+for (const [name, key, label, work] of debugConsoleActions) {
+  actions.register({
+    id: `debugConsole.${name}`,
+    label,
+    labelKey: `DebugConsole/${key}`,
+    categoryKey: 'DebugConsole',
+    run: async (args) => {
+      bottomPanel.show('debugConsole');
+      return work(args);
+    }
   });
 }
 

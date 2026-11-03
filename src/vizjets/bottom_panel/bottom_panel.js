@@ -64,6 +64,8 @@ export function createBottomPanel(host, { win = window, workspace }) {
   /** @type {PanelTab} */
   let active = INITIAL_TAB;
   let fraction = INITIAL_FRACTION;
+  /** @type {Set<(tab: PanelTab) => void>} */
+  const showListeners = new Set();
 
   const room = () => workspace.clientHeight - tabRow.offsetHeight - splitter.offsetHeight;
 
@@ -93,7 +95,10 @@ export function createBottomPanel(host, { win = window, workspace }) {
       active = /** @type {PanelTab} */ (tab);
       folded = false;
       layout();
+      for (const listener of showListeners) listener(active);
     },
+    /** listener(tab) is called each time a tab is shown (click, Action). @param {(tab: PanelTab) => void} listener */
+    onShow: (listener) => { showListeners.add(listener); },
     /** @param {PanelTab} tab @returns {HTMLElement} */
     view: (tab) => /** @type {HTMLElement} */ (views.find((v) => v.dataset.tab === tab))
   };

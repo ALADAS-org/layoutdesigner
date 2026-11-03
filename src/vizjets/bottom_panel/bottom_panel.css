@@ -109,3 +109,52 @@
 .OutputLine.is-info  { color: var(--ld-muted-fg); }
 .OutputLine.is-warn  { color: var(--ld-warn-fg); }
 .OutputLine.is-error { color: var(--ld-error-fg); }
+
+/* Debug Console tab (N0.5 step 5): transcript above, input line below. */
+.DebugConsole {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font: 12px/1.6 Consolas, "Cascadia Mono", monospace;
+}
+
+.DebugConsoleTranscript {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 6px 12px;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.DebugConsoleLine.is-input  { color: var(--ld-muted-fg); }
+.DebugConsoleLine.is-info   { color: var(--ld-muted-fg); }
+.DebugConsoleLine.is-result { color: var(--ld-chrome-fg); }
+.DebugConsoleLine.is-error  { color: var(--ld-error-fg); }
+.DebugConsoleMuted          { color: var(--ld-muted-fg); }
+
+.DebugConsoleInputRow {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 12px;
+  border-top: 1px solid var(--ld-border);
+}
+
+.DebugConsolePrompt {
+  color: var(--ld-muted-fg);
+}
+
+.DebugConsoleInput {
+  flex: 1;
+  font: inherit;
+  padding: 2px 4px;
+  background: var(--ld-input-bg);
+  color: var(--ld-chrome-fg);
+  border: 1px solid var(--ld-border);
+}
+
+.DebugConsoleInput:focus {
+  outline: 1px solid var(--ld-tab-accent);
+}

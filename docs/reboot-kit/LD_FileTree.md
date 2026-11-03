@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (686 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (691 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -665,6 +665,9 @@
     - preferences.js
     - preload.js
     - window_options.js
+  - **types/**
+    - contracts.d.ts
+    - renderer-globals.d.ts
   - **vizjets/**
     - **about_dialog/**
       - about_dialog.css
@@ -738,3 +741,6 @@
 - package-lock.json
 - package.json
 - README.md
+- tsconfig.base.json
+- tsconfig.main.json
+- tsconfig.renderer.json
