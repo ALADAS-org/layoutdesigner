@@ -96,8 +96,10 @@ Step 4 validated by the PO for `info` and `warn` (2026-11-03); the
 `error` colour is judged at step 5. **Step 5 — Debug Console** delivered (2026-11-04): Action ids
 with `key=value`, short words `help` · `clear` · `pwd` · `ls` · `cd` as Actions of the
 category « Debug Console » (in the palette too), read-only `fs.*` Commands, history,
-Tab completion, errors in red with a line in Output. **Next: step 6 — Preferences**
-(*Edit › Preferences…* dialog with reset; its contract first), then step 7 — Terminal.
+Tab completion, errors in red with a line in Output. Step 5 validated by the PO (2026-11-04), Design included
+(the `error` red too). **Next: step 6 — Preferences** — contract drafted in
+`docs/contracts/PREFERENCES.md` (not yet validated), open points settled one at a time;
+then step 7 — Terminal.
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a
