@@ -4,12 +4,13 @@
 // Start-up order: labels (language) → vizjets' HTML → Actions → GUI components.
 // Actions (docs/contracts/ACTION_COMMAND.md §10, §13):
 //   - view.commandPalette  client  Ctrl+Shift+P (as in VS Code)
-//   - app.quit             alias   Ctrl+Q (as in Illustrator)
+//   - file.quit            alias   Ctrl+Q (as in Illustrator) → Command app.quit
 //   - view.toggleTheme     client  light ↔ dark
-//   - dev.toggleDevTools   alias   Ctrl+Shift+I
-//   - prefs.chooseLanguage client  language dialog → Command prefs.setLanguage → toast
+//   - view.toggleDevTools  alias   Ctrl+Shift+I → Command dev.toggleDevTools
+//   - preferences.chooseLanguage client  language dialog → Command prefs.setLanguage → toast
 //   - help.about           client  F1 — opens the About dialog
-// Each Action has a category (its menu); the palette shows "Category: Label".
+// Each Action has a category (its menu); the palette shows "Category: Label". Action ids
+// are prefixed by that category (ACTION_COMMAND.md §13.9); Command ids are not.
 // =====================================================================================
 
 import { ActionRegistry } from './action_registry.js';
@@ -62,7 +63,7 @@ actions.onFailure((message) => statusBar.showError(message));
 const palette = createCommandPalette(actions, document, {
   labelOf: paletteLabelOf,
   locale: lang,
-  noPreselect: ['app.quit'],
+  noPreselect: ['file.quit'],
   ariaLabel: t('Aria/CommandPalette'),
   placeholder: t('Toolbar/SearchCommands'),
   anchor: () => document.querySelector('.CommandCenter')
@@ -81,7 +82,7 @@ actions.register({
   run: async () => palette.toggle()
 });
 actions.register({
-  id: 'app.quit',
+  id: 'file.quit',
   label: 'Quit',
   labelKey: 'File/Quit',
   categoryKey: 'File',
@@ -96,7 +97,7 @@ actions.register({
   run: async () => applyTheme(document, nextTheme(currentTheme(document)))
 });
 actions.register({
-  id: 'dev.toggleDevTools',
+  id: 'view.toggleDevTools',
   label: 'Show / Hide Developer Tools',
   labelKey: 'View/ToggleDevTools',
   categoryKey: 'View',
@@ -104,7 +105,7 @@ actions.register({
   command: 'dev.toggleDevTools'
 });
 actions.register({
-  id: 'prefs.chooseLanguage',
+  id: 'preferences.chooseLanguage',
   label: 'Choose Language…',
   labelKey: 'Language/Choose',
   categoryKey: 'Preferences',

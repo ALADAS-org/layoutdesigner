@@ -16,7 +16,7 @@
 
 import { normalizeShortcut } from './shortcuts.js';
 
-export const ID_PATTERN = /^[A-Za-z][\w-]*(\.[A-Za-z][\w-]*)+$/; // e.g. 'app.quit'
+export const ID_PATTERN = /^[A-Za-z][\w-]*(\.[A-Za-z][\w-]*)+$/; // e.g. 'file.quit'
 
 export class ActionRegistry {
   #actions = new Map();

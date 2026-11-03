@@ -20,7 +20,7 @@ export function sortByLabel(actions, labelOf = englishLabel, locale = 'en') {
 }
 
 // Pure: index of the entry highlighted when the list is (re)built: the first one,
-// except an Action listed in `noPreselect` (e.g. app.quit — PO decision: never one
+// except an Action listed in `noPreselect` (e.g. file.quit — PO decision: never one
 // Enter away from quitting); then nothing is highlighted (-1) until ↓ / ↑ is pressed.
 export function initialSelection(entries, noPreselect = []) {
   if (entries.length === 0 || noPreselect.includes(entries[0].id)) return -1;

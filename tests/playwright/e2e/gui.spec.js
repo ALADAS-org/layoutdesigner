@@ -33,8 +33,8 @@ test.describe('menu bar', () => {
   });
 
   test('entries show the label and shortcut of their Action', async () => {
-    await expect(item('app.quit').locator('.MenubarItemLabel')).toHaveText('Quit');
-    await expect(item('app.quit').locator('.MenubarItemShortcut')).toHaveText('Ctrl+Q');
+    await expect(item('file.quit').locator('.MenubarItemLabel')).toHaveText('Quit');
+    await expect(item('file.quit').locator('.MenubarItemShortcut')).toHaveText('Ctrl+Q');
     await expect(item('view.commandPalette').locator('.MenubarItemShortcut')).toHaveText('Ctrl+Shift+P');
     await expect(item('help.about').locator('.MenubarItemLabel')).toHaveText('About Layout Designer…');
   });
@@ -76,10 +76,10 @@ test.describe('menu bar', () => {
     await expect(item('view.toggleTheme')).toBeFocused();
     await win.keyboard.press('ArrowUp');
     await win.keyboard.press('ArrowUp'); // wraps to the last entry
-    await expect(item('dev.toggleDevTools')).toBeFocused();
+    await expect(item('view.toggleDevTools')).toBeFocused();
     await win.keyboard.press('ArrowLeft'); // previous menu, opened, first entry focused
     await expect(dropdownOf('File')).toBeVisible();
-    await expect(item('app.quit')).toBeFocused();
+    await expect(item('file.quit')).toBeFocused();
     await win.keyboard.press('ArrowLeft'); // wraps to Help
     await expect(dropdownOf('Help')).toBeVisible();
     await win.keyboard.press('Escape');
@@ -217,7 +217,7 @@ test.describe('toolbar and status bar', () => {
 
   test('a wrench button and a command center, with "label (shortcut)" tooltips', async () => {
     await expect(win.locator('.ToolbarButton')).toHaveCount(1);
-    await expect(button('dev.toggleDevTools')).toHaveAttribute('title', 'Show / Hide Developer Tools (Ctrl+Shift+I)');
+    await expect(button('view.toggleDevTools')).toHaveAttribute('title', 'Show / Hide Developer Tools (Ctrl+Shift+I)');
     await expect(commandCenter()).toHaveAttribute('data-action', 'view.commandPalette');
     await expect(commandCenter()).toHaveAttribute('title', 'Command Palette (Ctrl+Shift+P)');
     await expect(commandCenter().locator('.CommandCenterText')).toHaveText('Search commands');
@@ -245,16 +245,16 @@ test.describe('toolbar and status bar', () => {
   });
 
   test('toolbar icons are loaded from assets/icons', async () => {
-    const icon = button('dev.toggleDevTools').locator('img');
+    const icon = button('view.toggleDevTools').locator('img');
     await expect(icon).toHaveAttribute('src', '../assets/icons/wrench_icn.png');
     expect(await icon.evaluate((img) => img.complete && img.naturalWidth > 0)).toBe(true);
   });
 
   test('the wrench button shows and hides the developer tools', async () => {
     expect(await devToolsOpen()).toBe(false);
-    await button('dev.toggleDevTools').click();
+    await button('view.toggleDevTools').click();
     await expect.poll(devToolsOpen).toBe(true);
-    await button('dev.toggleDevTools').click();
+    await button('view.toggleDevTools').click();
     await expect.poll(devToolsOpen).toBe(false);
   });
 
@@ -273,7 +273,7 @@ test.describe('toolbar and status bar', () => {
       ipcMain.removeHandler('ld:command:invoke');
       ipcMain.handle('ld:command:invoke', () => ({ ok: false, error: { message: 'Injected failure' } }));
     });
-    await button('dev.toggleDevTools').click();
+    await button('view.toggleDevTools').click();
     await expect(message).toHaveText('Injected failure');
     await expect(message).toHaveClass(/is-error/);
   });
@@ -285,7 +285,7 @@ test.describe('quitting', () => {
     const exited = exitCode(app);
     await win.locator('.MenubarTitle', { hasText: 'File' }).click();
     // The application may close before Playwright finishes the click: ignore that.
-    win.locator('.MenubarItem[data-action="app.quit"]').click().catch(() => {});
+    win.locator('.MenubarItem[data-action="file.quit"]').click().catch(() => {});
     expect(await exited).toBe(0);
   });
 

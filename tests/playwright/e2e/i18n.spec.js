@@ -20,7 +20,7 @@ test.describe('French (--lang=fr)', () => {
   test('menus, entries and tooltips are in French', async () => {
     expect(await win.evaluate(() => document.documentElement.lang)).toBe('fr');
     await expect(win.locator('.MenubarTitle')).toHaveText(['Fichier', 'Affichage', 'Aide']);
-    await expect(win.locator('.MenubarItem[data-action="app.quit"] .MenubarItemLabel')).toHaveText('Quitter');
+    await expect(win.locator('.MenubarItem[data-action="file.quit"] .MenubarItemLabel')).toHaveText('Quitter');
     await expect(win.locator('.CommandCenter')).toHaveAttribute('title', 'Palette de commandes (Ctrl+Shift+P)');
     await expect(win.locator('.CommandCenterText')).toHaveText('Rechercher une commande');
     await expect(win.locator('.Menubar')).toHaveAttribute('aria-label', 'Menu principal');

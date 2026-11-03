@@ -24,7 +24,7 @@ async function launch({ lang = 'en', prefsFile = tempPreferencesPath() } = {}) {
   const win = await app.firstWindow();
   await win.waitForLoadState('load');
   // The GUI is ready once the menu bar entries have been filled from the Actions.
-  await win.locator('.MenubarItem[data-action="app.quit"] .MenubarItemLabel').waitFor({ state: 'attached' });
+  await win.locator('.MenubarItem[data-action="file.quit"] .MenubarItemLabel').waitFor({ state: 'attached' });
   return { app, win, prefsFile };
 }
 

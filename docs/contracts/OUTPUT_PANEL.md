@@ -1,8 +1,8 @@
 # Contract — Bottom panel: Terminal, Debug Console, Output (N0.5)
 
 **Status:** VALIDATED by the Product Owner on 2026-10-31. Decisions are recorded in
-§12; decision 19 was revised during implementation (§10) and is to be confirmed with
-the PO on Windows.
+§12; decision 19 was revised during implementation (§10) and confirmed by the PO on
+Windows on 2026-11-03.
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-10-30
 
 This contract fixes the bottom panel of the main window, after **VS Code** (reference
@@ -241,8 +241,8 @@ Consequences, to settle (§13):
   `target=<electron version>`, `disturl=https://electronjs.org/headers`) — a path with
   no extra dependency.
   ~~Decided (PO, 2026-10-31): `@electron/rebuild` in `postinstall`.~~ **Revised
-  (2026-10-31, implementation step 1; to confirm with the PO on Windows): no rebuild
-  at all.** Facts found:
+  (2026-10-31, implementation step 1): no rebuild at all — confirmed by the PO on
+  Windows on 2026-11-03 (`npm install`, then unit tests 114 / 114, probe included).** Facts found:
   1. node-pty 1.1.0 is an **N-API** module (`node-addon-api`): its binary is ABI-stable
      across Node and Electron. Verified on Linux: node-pty built for Node 22
      (ABI 127) loads and runs a shell in Electron 45 (ABI 150) with no rebuild.
@@ -310,7 +310,7 @@ Consequences, to settle (§13):
     forbidden (§10).
 19. ~~node-pty rebuilt for Electron by `@electron/rebuild` in `postinstall`.~~
     **Revised:** no rebuild — node-pty's prebuilt N-API binaries, guarded by a test in
-    Electron (§10). PO: « yes, to validate together » — confirmed on Windows by the PO.
+    Electron (§10). PO: « yes, to validate together » — confirmed on Windows on 2026-11-03.
 20. **Several instances allowed, no lock**; shared `preferences.json` added to TD-2
     (§6).
 21. **Output « sources » instead of channels**: every line carries its source; the

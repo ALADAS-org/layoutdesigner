@@ -81,7 +81,7 @@ test.describe('command palette', () => {
   });
 });
 
-test.describe('alias Action app.quit', () => {
+test.describe('alias Action file.quit → Command app.quit', () => {
   test('choosing Quit in the palette closes the application', async () => {
     const { app, win } = await launch();
     const exited = exitCode(app);

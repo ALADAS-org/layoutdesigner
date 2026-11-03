@@ -14,27 +14,27 @@ describe('ActionRegistry.register', () => {
   test('accepts a client Action and an alias Action, listed in order', () => {
     const reg = new ActionRegistry({ invokeCommand: okBridge() });
     reg.register({ id: 'view.commandPalette', label: 'Command Palette', run: async () => {} });
-    reg.register({ id: 'app.quit', label: 'Quit', command: 'app.quit' });
-    expect(reg.list().map((a) => a.id)).toEqual(['view.commandPalette', 'app.quit']);
-    expect(reg.get('app.quit').label).toBe('Quit');
+    reg.register({ id: 'file.quit', label: 'Quit', command: 'app.quit' });
+    expect(reg.list().map((a) => a.id)).toEqual(['view.commandPalette', 'file.quit']);
+    expect(reg.get('file.quit').label).toBe('Quit');
   });
 
   test('rejects a duplicate id', () => {
     const reg = new ActionRegistry({ invokeCommand: okBridge() });
-    reg.register({ id: 'app.quit', label: 'Quit', command: 'app.quit' });
-    expect(() => reg.register({ id: 'app.quit', label: 'Quit', command: 'app.quit' }))
+    reg.register({ id: 'file.quit', label: 'Quit', command: 'app.quit' });
+    expect(() => reg.register({ id: 'file.quit', label: 'Quit', command: 'app.quit' }))
       .toThrow(/already registered/);
   });
 
   test.each([
     ['not an object', null],
     ['id without domain', { id: 'quit', label: 'Quit', command: 'app.quit' }],
-    ['missing label', { id: 'app.quit', command: 'app.quit' }],
-    ['both command and run', { id: 'app.quit', label: 'Quit', command: 'app.quit', run: async () => {} }],
-    ['neither command nor run', { id: 'app.quit', label: 'Quit' }],
-    ['invalid command id', { id: 'app.quit', label: 'Quit', command: 'quit' }],
-    ['run not a function', { id: 'app.quit', label: 'Quit', run: 'nope' }],
-    ['malformed shortcut', { id: 'app.quit', label: 'Quit', command: 'app.quit', shortcut: 'Ctrl+' }]
+    ['missing label', { id: 'file.quit', command: 'app.quit' }],
+    ['both command and run', { id: 'file.quit', label: 'Quit', command: 'app.quit', run: async () => {} }],
+    ['neither command nor run', { id: 'file.quit', label: 'Quit' }],
+    ['invalid command id', { id: 'file.quit', label: 'Quit', command: 'quit' }],
+    ['run not a function', { id: 'file.quit', label: 'Quit', run: 'nope' }],
+    ['malformed shortcut', { id: 'file.quit', label: 'Quit', command: 'app.quit', shortcut: 'Ctrl+' }]
   ])('rejects an invalid descriptor (%s)', (_label, descriptor) => {
     expect(() => new ActionRegistry({ invokeCommand: okBridge() }).register(descriptor)).toThrow(TypeError);
   });
@@ -48,8 +48,8 @@ describe('ActionRegistry.register', () => {
 
   test('registered Actions cannot be modified', () => {
     const reg = new ActionRegistry({ invokeCommand: okBridge() });
-    reg.register({ id: 'app.quit', label: 'Quit', command: 'app.quit' });
-    expect(Object.isFrozen(reg.get('app.quit'))).toBe(true);
+    reg.register({ id: 'file.quit', label: 'Quit', command: 'app.quit' });
+    expect(Object.isFrozen(reg.get('file.quit'))).toBe(true);
   });
 });
 
@@ -57,8 +57,8 @@ describe('ActionRegistry.run', () => {
   test('an alias Action forwards to its Command and resolves to the reply', async () => {
     const invokeCommand = okBridge();
     const reg = new ActionRegistry({ invokeCommand });
-    reg.register({ id: 'app.quit', label: 'Quit', command: 'app.quit' });
-    await expect(reg.run('app.quit', { a: 1 }))
+    reg.register({ id: 'file.quit', label: 'Quit', command: 'app.quit' });
+    await expect(reg.run('file.quit', { a: 1 }))
       .resolves.toEqual({ ok: true, value: { id: 'app.quit', args: { a: 1 } } });
     expect(invokeCommand).toHaveBeenCalledWith('app.quit', { a: 1 });
   });
@@ -87,15 +87,15 @@ describe('ActionRegistry.run', () => {
 describe('ActionRegistry labelKey (N0.3 / N0.4)', () => {
   test('is optional and kept on the descriptor', () => {
     const reg = new ActionRegistry({ invokeCommand: okBridge() });
-    reg.register({ id: 'app.quit', label: 'Quit', labelKey: 'File/Quit', command: 'app.quit' });
+    reg.register({ id: 'file.quit', label: 'Quit', labelKey: 'File/Quit', command: 'app.quit' });
     reg.register({ id: 'test.plain', label: 'Plain', run: async () => {} });
-    expect(reg.get('app.quit').labelKey).toBe('File/Quit');
+    expect(reg.get('file.quit').labelKey).toBe('File/Quit');
     expect(reg.get('test.plain').labelKey).toBeUndefined();
   });
 
   test.each([[''], ['  '], [42]])('rejects an invalid labelKey %p', (labelKey) => {
     const reg = new ActionRegistry({ invokeCommand: okBridge() });
-    expect(() => reg.register({ id: 'app.quit', label: 'Quit', labelKey, command: 'app.quit' })).toThrow(TypeError);
+    expect(() => reg.register({ id: 'file.quit', label: 'Quit', labelKey, command: 'app.quit' })).toThrow(TypeError);
   });
 });
 
@@ -112,9 +112,9 @@ describe('ActionRegistry.trigger / onFailure (N0.3)', () => {
 
   test('a successful Action reports nothing', async () => {
     const { reg, failures } = setup(okBridge());
-    reg.register({ id: 'app.quit', label: 'Quit', command: 'app.quit' });
+    reg.register({ id: 'file.quit', label: 'Quit', command: 'app.quit' });
     reg.register({ id: 'test.ok', label: 'Ok', run: async () => 1 });
-    await expect(reg.trigger('app.quit')).resolves.toBeUndefined();
+    await expect(reg.trigger('file.quit')).resolves.toBeUndefined();
     await expect(reg.trigger('test.ok')).resolves.toBeUndefined();
     expect(failures).toEqual([]);
   });

@@ -25,11 +25,11 @@ So there are two kinds of Actions:
 ## 2. Identifiers
 
 Every Action and every Command has a **string id**, namespaced with dots:
-`<domain>.<name>` — e.g. `app.quit`, `view.commandPalette`.
+`<domain>.<name>` — e.g. `file.quit`, `view.commandPalette`.
 
 - Ids are unique within their registry; registering an existing id is an **error**.
-- An alias Action and its Command normally share the same id (`app.quit` → `app.quit`);
-  the contract does not require it.
+- An alias Action and its Command may have different ids: since §13.9 (2026-10-31)
+  the Action id follows its palette category (`file.quit` → Command `app.quit`).
 - Plugins (N0.6) will prefix their ids with the plugin name; the rule is written in the
   plugin contract, not here.
 
@@ -39,7 +39,7 @@ An Action is a plain object (a descriptor) registered in the **ActionRegistry**:
 
 ```js
 {
-  id:       'app.quit',          // required, unique
+  id:       'file.quit',         // required, unique
   label:    'Quit',              // required — English text shown in menus and palette
   shortcut: 'Ctrl+Q',            // optional — Electron accelerator syntax
   command:  'app.quit',          // alias Action only: the Command it forwards to
@@ -136,7 +136,7 @@ is followed except where it conflicts with our vocabulary or our rules.
 ## 10. N0.2 witness case and acceptance criteria
 
 Witnesses: one **client Action** (`view.commandPalette`) and one **alias Action**
-(`app.quit` → Command `app.quit`).
+(`app.quit` → Command `app.quit`; renamed `file.quit` by §13.9).
 
 **Anti-regression gate:**
 - Unit (Jest): both registries — register, duplicate id, invalid descriptor, run,
@@ -206,7 +206,7 @@ Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
   language (PO decision), not in registration order.
 - The first entry is highlighted (Enter runs it) **unless it is *File › Quit***: then
   nothing is highlighted until ↓ / ↑ is pressed (PO decision — never one Enter away
-  from quitting). Palette option `noPreselect: ['app.quit']`.
+  from quitting). Palette option `noPreselect: ['file.quit']` (`app.quit` before §13.9).
 - **User-facing wording** (PO decision): the user sees *commands* — « Command Palette »,
   « Search commands » — as in VS Code; in the implementation each of them is an
   **Action** (§1). Commands in the §4 sense stay internal.
@@ -227,7 +227,7 @@ Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
 ### 13.4 Commands
 
 - `dev.toggleDevTools` — shows / hides the developer tools of the sender window
-  (alias Action of the same id, `Ctrl+Shift+I`, wrench button).
+  (alias Action `view.toggleDevTools` since §13.9, `Ctrl+Shift+I`, wrench button).
 - The Command context now also carries `webContents` — the sender of the request.
 
 ### 13.5 Themes
@@ -257,7 +257,8 @@ Content-Security-Policy is `default-src 'self'; img-src 'self' data:`.
 
 ### 13.8 Interface language chosen in the GUI (promoted from the backlog, 2026-10-29)
 
-- Palette entry *Preferences: Choose Language…* — client Action `prefs.chooseLanguage`.
+- Palette entry *Preferences: Choose Language…* — client Action `preferences.chooseLanguage`
+  (`prefs.chooseLanguage` before §13.9).
   It opens a modal jQuery UI dialog (vizjet `language_dialog`) listing the languages
   available = the label files present in `src/i18n`, each named by its
   `"Language/Name"` key. OK saves the choice; Cancel / Esc / ✕ save nothing.
@@ -297,7 +298,8 @@ id rule of §2 (`<domain>.<name>`) is unchanged; only the choice of domain is fi
 **Command ids do not change** (`app.quit`, `dev.toggleDevTools`, `prefs.setLanguage`):
 an alias Action may carry another id than the Command it redirects to (§5). Plugin
 Actions keep the plugin-name prefix of `PLUGIN_API.md` §4. The rename is the first
-code change of N0.5 (menus, toolbar, palette, tests updated with it).
+code change of N0.5 (menus, toolbar, palette, tests updated with it) — **done** in N0.5
+step 2 (2026-11-03).
 
 ### 13.10 Verb vocabulary for Action names (PO decision 2026-10-31)
 

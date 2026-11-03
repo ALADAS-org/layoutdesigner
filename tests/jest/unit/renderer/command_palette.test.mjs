@@ -4,18 +4,18 @@ import { filterActions, sortByLabel, initialSelection, PALETTE_ACTION_ID } from 
 
 const actions = [
   { id: PALETTE_ACTION_ID, label: 'Command Palette' },
-  { id: 'app.quit', label: 'Quit' },
+  { id: 'file.quit', label: 'Quit' },
   { id: 'test.quick', label: 'Quick Look' }
 ];
 
 describe('filterActions', () => {
   test('empty query lists every Action except the palette itself, in order', () => {
-    expect(filterActions(actions, '', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['app.quit', 'test.quick']);
+    expect(filterActions(actions, '', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['file.quit', 'test.quick']);
   });
 
   test('matches a substring, case-insensitively', () => {
-    expect(filterActions(actions, 'QUI', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['app.quit', 'test.quick']);
-    expect(filterActions(actions, 'quit', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['app.quit']);
+    expect(filterActions(actions, 'QUI', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['file.quit', 'test.quick']);
+    expect(filterActions(actions, 'quit', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['file.quit']);
     expect(filterActions(actions, ' look ', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['test.quick']);
   });
 
@@ -25,11 +25,11 @@ describe('filterActions', () => {
 });
 
 describe('filterActions with localised labels', () => {
-  const fr = { 'app.quit': 'Quitter', 'test.quick': 'Aperçu rapide' };
+  const fr = { 'file.quit': 'Quitter', 'test.quick': 'Aperçu rapide' };
   const labelOf = (a) => fr[a.id] || a.label;
 
   test('filters on the displayed label, not the English one', () => {
-    expect(filterActions(actions, 'quitter', PALETTE_ACTION_ID, labelOf).map((a) => a.id)).toEqual(['app.quit']);
+    expect(filterActions(actions, 'quitter', PALETTE_ACTION_ID, labelOf).map((a) => a.id)).toEqual(['file.quit']);
     expect(filterActions(actions, 'look', PALETTE_ACTION_ID, labelOf)).toEqual([]);
     expect(filterActions(actions, 'APERÇU', PALETTE_ACTION_ID, labelOf).map((a) => a.id)).toEqual(['test.quick']);
   });
@@ -50,17 +50,17 @@ describe('sortByLabel', () => {
 });
 
 describe('initialSelection', () => {
-  const quit = { id: 'app.quit' };
+  const quit = { id: 'file.quit' };
   const about = { id: 'help.about' };
 
   test('the first entry, unless it is listed in noPreselect', () => {
-    expect(initialSelection([about, quit], ['app.quit'])).toBe(0);
-    expect(initialSelection([quit, about], ['app.quit'])).toBe(-1);
-    expect(initialSelection([quit], ['app.quit'])).toBe(-1);
+    expect(initialSelection([about, quit], ['file.quit'])).toBe(0);
+    expect(initialSelection([quit, about], ['file.quit'])).toBe(-1);
+    expect(initialSelection([quit], ['file.quit'])).toBe(-1);
     expect(initialSelection([quit, about])).toBe(0);
   });
 
   test('nothing to select in an empty list', () => {
-    expect(initialSelection([], ['app.quit'])).toBe(-1);
+    expect(initialSelection([], ['file.quit'])).toBe(-1);
   });
 });

@@ -43,7 +43,7 @@ describe('installShortcuts', () => {
     const reg = new ActionRegistry({ invokeCommand });
     const palette = jest.fn(async () => {});
     reg.register({ id: 'view.commandPalette', label: 'Palette', shortcut: 'Ctrl+Shift+P', run: palette });
-    reg.register({ id: 'app.quit', label: 'Quit', shortcut: 'Ctrl+Q', command: 'app.quit' });
+    reg.register({ id: 'file.quit', label: 'Quit', shortcut: 'Ctrl+Q', command: 'app.quit' });
     let listener;
     const target = { addEventListener: (type, fn) => { if (type === 'keydown') listener = fn; } };
     installShortcuts(reg, target);

@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — contract validated, step 1 delivered) · N0.6 contract in draft (plugins) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — steps 1–2 delivered) · N0.6 contract in draft (plugins) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -84,10 +84,12 @@ instances allowed, no lock (shared preferences file noted in TD-2). Mock-up upda
 these decisions. Output « sources » replace
 channels (lines carry their source, the view mixes the selected sources; selector in
 N0.6, ergonomics to check then). **Contract validated by the PO
-(2026-10-31).** Implementation started — **step 1** delivered: dependencies (xterm.js,
-fit add-on, node-pty) and a test running node-pty inside Electron. **Next: the PO runs
-`npm install` then `npm test` on Windows** to confirm together that node-pty loads with
-no rebuild; then step 2 (rename the three Actions, `ACTION_COMMAND.md` §13.9).
+(2026-10-31).** Implementation:
+**step 1** (dependencies, node-pty checked inside Electron) — confirmed by the PO on
+Windows on 2026-11-03, no rebuild needed; **step 2** (the three Actions renamed after
+their palette category, `ACTION_COMMAND.md` §13.9) delivered. **Next: step 3 — the
+bottom panel shell** (layout grid with the reserved Calques column, splitter, fold
+button, the three tabs, `view.togglePanel` and the `view.show…` Actions).
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the
