@@ -11,7 +11,7 @@
   "About/Version":           "Version",
   "About/License":           "Licence BSD 3-Clause",
   "Dialog/OK":               "OK",
-  "Toolbar/SearchCommands":   "Rechercher une commande",
+  "Toolbar/SearchCommands":  "Rechercher une commande",
   "Palette/Entry":           "{category} : {label}",
   "Aria/Menubar":            "Menu principal",
   "Aria/Toolbar":            "Barre d'outils",
@@ -23,5 +23,15 @@
   "Language/RestartTitle":   "Redémarrage nécessaire",
   "Language/RestartMessage": "La nouvelle langue sera appliquée au prochain démarrage de Layout Designer.",
   "Preferences":             "Préférences",
-  "Dialog/Cancel":           "Annuler"
+  "Dialog/Cancel":           "Annuler",
+  "View/TogglePanel":        "Afficher / masquer le panneau",
+  "View/ShowOutput":         "Sortie",
+  "View/ShowDebugConsole":   "Console de débogage",
+  "View/ShowTerminal":       "Terminal",
+  "Panel/Output":            "Sortie",
+  "Panel/DebugConsole":      "Console de débogage",
+  "Panel/Terminal":          "Terminal",
+  "Panel/Fold":              "Plier / déplier le panneau",
+  "Aria/Panel":              "Panneau",
+  "Aria/PanelSplitter":      "Redimensionner le panneau"
 }

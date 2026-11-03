@@ -1,0 +1,26 @@
+<!-- Bottom panel (N0.5) — after VS Code. Contract: docs/contracts/OUTPUT_PANEL.md §2–§3.
+     Splitter on top, then the tab row (fold button + tabs), then the active tab's body.
+     Tab bodies are empty in step 3: Output, Debug Console and Terminal come next. -->
+<div class="BottomPanel">
+  <div class="BottomPanelSplitter" role="separator" aria-orientation="horizontal"
+       data-aria-label-key="Aria/PanelSplitter" aria-label="Resize the panel"></div>
+  <div class="BottomPanelTabRow">
+    <button class="BottomPanelFold" type="button" aria-expanded="true"
+            data-aria-label-key="Panel/Fold" aria-label="Fold / unfold the panel">
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path class="BottomPanelArrow" d="M2 4 L6 8 L10 4"/></svg>
+    </button>
+    <div class="BottomPanelTabs" role="tablist" data-aria-label-key="Aria/Panel" aria-label="Panel">
+      <button class="BottomPanelTab" role="tab" type="button" data-tab="output"
+              aria-controls="panel_output" data-label-key="Panel/Output">Output</button>
+      <button class="BottomPanelTab" role="tab" type="button" data-tab="debugConsole"
+              aria-controls="panel_debugConsole" data-label-key="Panel/DebugConsole">Debug Console</button>
+      <button class="BottomPanelTab" role="tab" type="button" data-tab="terminal"
+              aria-controls="panel_terminal" data-label-key="Panel/Terminal">Terminal</button>
+    </div>
+  </div>
+  <div class="BottomPanelBody">
+    <div class="BottomPanelView" role="tabpanel" id="panel_output" data-tab="output"></div>
+    <div class="BottomPanelView" role="tabpanel" id="panel_debugConsole" data-tab="debugConsole" hidden></div>
+    <div class="BottomPanelView" role="tabpanel" id="panel_terminal" data-tab="terminal" hidden></div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+/* Bottom panel (N0.5) — colours from theme.css. Contract: docs/contracts/OUTPUT_PANEL.md §2. */
+
+#bottom_panel {
+  flex: none;
+}
+
+.BottomPanel {
+  display: flex;
+  flex-direction: column;
+  background: var(--ld-panel-bg);
+  color: var(--ld-chrome-fg);
+}
+
+/* Splitter: 4 px, mid grey (PO decision); hidden while the panel is folded. */
+.BottomPanelSplitter {
+  flex: none;
+  height: 4px;
+  cursor: row-resize;
+  background: var(--ld-splitter);
+}
+
+.BottomPanelSplitter:hover,
+.BottomPanelSplitter.is-dragging {
+  background: var(--ld-splitter-hover);
+}
+
+.BottomPanel.is-folded .BottomPanelSplitter {
+  visibility: hidden;
+}
+
+.BottomPanelTabRow {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  background: var(--ld-chrome-bg);
+  border-bottom: 1px solid var(--ld-border);
+}
+
+/* Fold button: square, square corners, top left (PO decision). */
+.BottomPanelFold {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ld-muted-fg);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ld-chrome-fg);
+  cursor: pointer;
+}
+
+.BottomPanelFold svg {
+  width: 12px;
+  height: 12px;
+}
+
+.BottomPanelArrow {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.BottomPanelTabs {
+  display: flex;
+}
+
+.BottomPanelTab {
+  padding: 6px 12px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--ld-muted-fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.BottomPanelTab[aria-selected="true"] {
+  color: var(--ld-tab-active-fg);
+  border-bottom-color: var(--ld-tab-accent);
+}
+
+.BottomPanelBody {
+  overflow: hidden;
+}
+
+.BottomPanel.is-folded .BottomPanelBody {
+  display: none;
+}
+
+.BottomPanelView {
+  height: 100%;
+  overflow: auto;
+}

@@ -29,7 +29,11 @@ test.describe('French (--lang=fr)', () => {
   test('the palette lists and filters the French labels, sorted alphabetically', async () => {
     await win.keyboard.press('Control+Shift+P');
     await expect(win.locator('.CommandPaletteItem')).toHaveText([
+      'Affichage : Afficher / masquer le panneau',
       'Affichage : Afficher / masquer les outils de développement',
+      'Affichage : Console de débogage',
+      'Affichage : Sortie',
+      'Affichage : Terminal',
       'Affichage : Thème clair / sombre',
       'Aide : À propos de Layout Designer…',
       'Fichier : Quitter',

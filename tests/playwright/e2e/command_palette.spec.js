@@ -10,8 +10,12 @@ const ALL_BUT_PALETTE = [
   'File: Quit',
   'Help: About Layout Designer…',
   'Preferences: Choose Language…',
+  'View: Debug Console',
   'View: Light / Dark Theme',
-  'View: Show / Hide Developer Tools'
+  'View: Output',
+  'View: Show / Hide Developer Tools',
+  'View: Show / Hide Panel',
+  'View: Terminal'
 ];
 
 test.describe('command palette', () => {

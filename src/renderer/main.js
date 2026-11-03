@@ -9,6 +9,10 @@
 //   - view.toggleDevTools  alias   Ctrl+Shift+I → Command dev.toggleDevTools
 //   - preferences.chooseLanguage client  language dialog → Command prefs.setLanguage → toast
 //   - help.about           client  F1 — opens the About dialog
+//   - view.togglePanel     client  Ctrl+J — folds / unfolds the bottom panel (N0.5)
+//   - view.showOutput      client  Ctrl+Shift+U — unfolds the panel on Output
+//   - view.showDebugConsole client Ctrl+Shift+Y — … on Debug Console
+//   - view.showTerminal    client  Ctrl+Shift+T — … on Terminal (PO: same key everywhere)
 // Each Action has a category (its menu); the palette shows "Category: Label". Action ids
 // are prefixed by that category (ACTION_COMMAND.md §13.9); Command ids are not.
 // =====================================================================================
@@ -24,6 +28,7 @@ import { createToolbar } from '../vizjets/main_toolbar/main_toolbar.js';
 import { createStatusBar } from '../vizjets/status_bar/status_bar.js';
 import { createAboutDialog } from '../vizjets/about_dialog/about_dialog.js';
 import { createLanguageDialog } from '../vizjets/language_dialog/language_dialog.js';
+import { createBottomPanel } from '../vizjets/bottom_panel/bottom_panel.js';
 import { createToaster } from './toast.js';
 
 const byId = (id) => document.getElementById(id);
@@ -72,6 +77,7 @@ const { version } = await (await fetch('../package.json')).json();
 const aboutDialog = createAboutDialog(byId('about_dialog'), { t, version });
 const languageDialog = createLanguageDialog(byId('language_dialog'), { t });
 const toaster = createToaster();
+const bottomPanel = createBottomPanel(byId('bottom_panel'), { workspace: byId('workspace') });
 
 actions.register({
   id: PALETTE_ACTION_ID,
@@ -127,6 +133,31 @@ actions.register({
   shortcut: 'F1',
   run: async () => aboutDialog.open()
 });
+
+// Bottom panel (docs/contracts/OUTPUT_PANEL.md §8): VS Code names and keys, except the
+// Terminal — Ctrl+Shift+T, the same on every keyboard (PO decision, AZERTY).
+actions.register({
+  id: 'view.togglePanel',
+  label: 'Show / Hide Panel',
+  labelKey: 'View/TogglePanel',
+  categoryKey: 'View',
+  shortcut: 'Ctrl+J',
+  run: async () => bottomPanel.toggle()
+});
+for (const [tab, name, shortcut] of [
+  ['output', 'Output', 'Ctrl+Shift+U'],
+  ['debugConsole', 'DebugConsole', 'Ctrl+Shift+Y'],
+  ['terminal', 'Terminal', 'Ctrl+Shift+T']
+]) {
+  actions.register({
+    id: `view.show${name}`,
+    label: name === 'DebugConsole' ? 'Debug Console' : name,
+    labelKey: `View/Show${name}`,
+    categoryKey: 'View',
+    shortcut,
+    run: async () => bottomPanel.show(tab)
+  });
+}
 
 // ---- GUI components
 createMenubar(byId('menubar'), { actions, labelOf });

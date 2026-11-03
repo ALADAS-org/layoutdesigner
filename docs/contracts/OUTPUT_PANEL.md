@@ -203,9 +203,14 @@ channel — still no generic `ipcRenderer`:
 | Action id | Label (en) | Shortcut | Menu |
 |---|---|---|---|
 | `view.togglePanel` | Show / Hide Panel | Ctrl+J | View |
-| `view.showTerminal` | Terminal | Ctrl+` | View |
+| `view.showTerminal` | Terminal | Ctrl+Shift+T | View |
 | `view.showDebugConsole` | Debug Console | Ctrl+Shift+Y | View |
 | `view.showOutput` | Output | Ctrl+Shift+U | View |
+
+**Terminal shortcut: Ctrl+Shift+T**, not VS Code's Ctrl+` — on AZERTY keyboards the
+backtick needs a dead key with AltGr; Ctrl+Shift+T is the same on every keyboard and
+mnemonic (PO decision 2026-11-03). `view.togglePanel` **folds / unfolds** the panel
+(the tab row stays, as with the fold button), it does not remove it.
 
 All four appear in the command palette (« View: … »). Labels in
 `LD_Labels_<xx>.json` (en, fr), like the tab names.
@@ -318,6 +323,10 @@ Consequences, to settle (§13):
     is built in N0.6 and its ergonomics checked by the PO then (§4).
 22. **Source selector**: no label; closed value « n / m sources »; check
     boxes in its drop-down list; a new source is checked by default (§4).
+
+**2026-11-03:**
+23. **Terminal shortcut Ctrl+Shift+T** (same on every keyboard, mnemonic) instead of
+    Ctrl+` (§8).
 
 1. ~~Tab order and the tab active at first launch.~~ Settled (§12, 4).
 2. ~~Default panel state at first launch, minimum and maximum heights.~~ Settled

@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — steps 1–2 delivered) · N0.6 contract in draft (plugins) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — steps 1–3 delivered) · N0.6 contract in draft (plugins) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -87,9 +87,11 @@ N0.6, ergonomics to check then). **Contract validated by the PO
 (2026-10-31).** Implementation:
 **step 1** (dependencies, node-pty checked inside Electron) — confirmed by the PO on
 Windows on 2026-11-03, no rebuild needed; **step 2** (the three Actions renamed after
-their palette category, `ACTION_COMMAND.md` §13.9) delivered. **Next: step 3 — the
-bottom panel shell** (layout grid with the reserved Calques column, splitter, fold
-button, the three tabs, `view.togglePanel` and the `view.show…` Actions).
+their palette category, `ACTION_COMMAND.md` §13.9) delivered. **step 3** (bottom panel shell: workspace grid with the reserved Calques
+column, splitter, fold button, three empty tabs, `view.togglePanel` Ctrl+J and the
+`view.show…` Actions, Terminal on Ctrl+Shift+T) delivered, awaiting the PO's Design
+gate. **Next: step 4 — Output** (sources, explicit journal in both processes, line
+format and level colours).
 
 **N0.6 — plugins: contract drafted** in `docs/contracts/PLUGIN_API.md` (not yet
 validated). Agreed so far (PO, 2026-10-30): Inkscape's *Extensions* menu is the

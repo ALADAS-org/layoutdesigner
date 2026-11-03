@@ -2,6 +2,8 @@
    app.css — layout of the application window and the shared dialog skin (N0.3)
    =====================================================================================
    Rows, top to bottom: menu bar · toolbar · workspace · status bar.
+   Workspace (N0.5): document area above the bottom panel; the Calques column beside
+   them, full height — reserved, empty until N0.8 (OUTPUT_PANEL.md §1).
    ===================================================================================== */
 
 html,
@@ -22,6 +24,32 @@ body {
 #workspace {
   flex: 1;
   min-height: 0;
+  display: flex;
+}
+
+/* « IDE » layout: the Calques column on the left (user choice, N0.8). */
+#workspace.is-ide {
+  flex-direction: row-reverse;
+}
+
+.WorkspaceMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.DocumentArea {
+  flex: 1;
+  min-height: 0;
+}
+
+.CalquesColumn {
+  flex: none;
+}
+
+.CalquesColumn[hidden] {
+  display: none;
 }
 
 /* jQuery UI dialogs, skinned with the theme tokens (classes: { 'ui-dialog': 'LdDialog' }). */

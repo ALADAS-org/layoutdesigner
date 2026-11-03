@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="vizjets/menubar/menubar.css">
   <link rel="stylesheet" href="vizjets/main_toolbar/main_toolbar.css">
   <link rel="stylesheet" href="vizjets/status_bar/status_bar.css">
+  <link rel="stylesheet" href="vizjets/bottom_panel/bottom_panel.css">
   <link rel="stylesheet" href="vizjets/about_dialog/about_dialog.css">
   <link rel="stylesheet" href="vizjets/language_dialog/language_dialog.css">
   <link rel="stylesheet" href="renderer/command_palette.css">
@@ -30,7 +31,16 @@
   <!-- Vizjets: one host per GUI component; vizjet_loader.js inserts their HTML. -->
   <div id="menubar"      data-vizjet="vizjets/menubar/menubar.html"></div>
   <div id="main_toolbar" data-vizjet="vizjets/main_toolbar/main_toolbar.html"></div>
-  <main id="workspace"></main>
+  <!-- Workspace (N0.5, docs/contracts/OUTPUT_PANEL.md §1): the document area above the
+       bottom panel, and beside them the Calques column, full height — reserved here,
+       built with N0.8 (right by default, « Drawing »; left with the class is-ide). -->
+  <main id="workspace" class="Workspace">
+    <div class="WorkspaceMain">
+      <div id="document_area" class="DocumentArea"></div>
+      <div id="bottom_panel" data-vizjet="vizjets/bottom_panel/bottom_panel.html"></div>
+    </div>
+    <aside id="calques_column" class="CalquesColumn" hidden></aside>
+  </main>
   <div id="status_bar"   data-vizjet="vizjets/status_bar/status_bar.html"></div>
   <div id="about_dialog" data-vizjet="vizjets/about_dialog/about_dialog.html" hidden></div>
   <div id="language_dialog" data-vizjet="vizjets/language_dialog/language_dialog.html" hidden></div>

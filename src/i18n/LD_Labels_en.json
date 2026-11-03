@@ -11,7 +11,7 @@
   "About/Version":           "Version",
   "About/License":           "BSD 3-Clause License",
   "Dialog/OK":               "OK",
-  "Toolbar/SearchCommands":   "Search commands",
+  "Toolbar/SearchCommands":  "Search commands",
   "Palette/Entry":           "{category}: {label}",
   "Aria/Menubar":            "Main menu",
   "Aria/Toolbar":            "Toolbar",
@@ -23,5 +23,15 @@
   "Language/RestartTitle":   "Restart required",
   "Language/RestartMessage": "The new language will be applied when Layout Designer restarts.",
   "Preferences":             "Preferences",
-  "Dialog/Cancel":           "Cancel"
+  "Dialog/Cancel":           "Cancel",
+  "View/TogglePanel":        "Show / Hide Panel",
+  "View/ShowOutput":         "Output",
+  "View/ShowDebugConsole":   "Debug Console",
+  "View/ShowTerminal":       "Terminal",
+  "Panel/Output":            "Output",
+  "Panel/DebugConsole":      "Debug Console",
+  "Panel/Terminal":          "Terminal",
+  "Panel/Fold":              "Fold / unfold the panel",
+  "Aria/Panel":              "Panel",
+  "Aria/PanelSplitter":      "Resize the panel"
 }

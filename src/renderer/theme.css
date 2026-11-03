@@ -24,6 +24,11 @@
   --ld-shadow:        rgba(0, 0, 0, 0.25);
   --ld-backdrop:      rgba(0, 0, 0, 0.25);
   --ld-icon-filter:   none;    /* toolbar icons are drawn black */
+  --ld-panel-bg:        #f8f8f8; /* bottom panel body (N0.5) */
+  --ld-splitter:        #888780; /* 4 px splitter, mid grey (PO decision) */
+  --ld-splitter-hover:  #5f5e5a;
+  --ld-tab-active-fg:   #1e1e1e;
+  --ld-tab-accent:      #1473e6; /* underline of the active panel tab */
 }
 
 :root[data-theme="dark"] {
@@ -43,4 +48,9 @@
   --ld-shadow:        rgba(0, 0, 0, 0.6);
   --ld-backdrop:      rgba(0, 0, 0, 0.45);
   --ld-icon-filter:   invert(1);
+  --ld-panel-bg:        #262626;
+  --ld-splitter:        #888780;
+  --ld-splitter-hover:  #b4b2a9;
+  --ld-tab-active-fg:   #e6e6e6;
+  --ld-tab-accent:      #4a9eff;
 }
