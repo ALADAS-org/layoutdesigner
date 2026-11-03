@@ -1,0 +1,12 @@
+{
+  // Electron main process and preload: CommonJS, Node.js types, no DOM.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "node16",
+    "moduleResolution": "node16",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "resolveJsonModule": true
+  },
+  "include": ["src/server/**/*.js", "src/types/**/*.d.ts"]
+}

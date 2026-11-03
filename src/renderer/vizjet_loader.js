@@ -7,15 +7,17 @@
 // The HTML is local, static and script-free; each vizjet's .js wires it afterwards.
 // =====================================================================================
 
+/** @param {Document} doc @param {(url: string) => Promise<string>} [fetchText] */
 export async function loadVizjets(doc, fetchText = defaultFetchText) {
-  const hosts = [...doc.querySelectorAll('[data-vizjet]')];
+  const hosts = /** @type {HTMLElement[]} */ ([...doc.querySelectorAll('[data-vizjet]')]);
   await Promise.all(
     hosts.map(async (host) => {
-      host.innerHTML = await fetchText(host.dataset.vizjet);
+      host.innerHTML = await fetchText(/** @type {string} */ (host.dataset.vizjet));
     })
   );
 }
 
+/** @param {string} url */
 async function defaultFetchText(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Cannot load vizjet '${url}' (HTTP ${response.status})`);

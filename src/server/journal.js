@@ -11,16 +11,30 @@
 // =====================================================================================
 'use strict';
 
+/** @type {readonly string[]} */
 const LEVELS = ['info', 'warn', 'error'];
 const APP_SOURCE = 'Layout Designer';
 
-// options: { out (console-like), now () → epoch ms }
+/** @typedef {import('../types/contracts').LogLevel} LogLevel */
+/** @typedef {import('../types/contracts').OutputLine} OutputLine */
+/** @typedef {Pick<Console, 'log' | 'warn' | 'error'>} ConsoleLike */
+
+/**
+ * @param {{ out?: ConsoleLike, now?: () => number }} [options]
+ */
 function createJournal({ out = console, now = Date.now } = {}) {
+  /** @type {OutputLine[]} */
   const lines = [];
+  /** @type {Set<(line: OutputLine) => void>} */
   const sinks = new Set();
 
+  /**
+   * @param {LogLevel} level
+   * @param {unknown} message
+   */
   function log(level, message) {
     if (!LEVELS.includes(level)) throw new TypeError(`Invalid log level: '${level}'`);
+    /** @type {OutputLine} */
     const line = { source: APP_SOURCE, level, time: now(), message: String(message) };
     lines.push(line);
     out[level === 'info' ? 'log' : level](line.message);
@@ -30,7 +44,10 @@ function createJournal({ out = console, now = Date.now } = {}) {
   return {
     log,
     history: () => lines.slice(),
-    // sink(line) receives every later line; returns the unsubscribe function.
+    /**
+     * sink(line) receives every later line; returns the unsubscribe function.
+     * @param {(line: OutputLine) => void} sink
+     */
     subscribe(sink) {
       sinks.add(sink);
       return () => sinks.delete(sink);
@@ -40,4 +57,7 @@ function createJournal({ out = console, now = Date.now } = {}) {
 
 const journal = createJournal();
 
-module.exports = { LEVELS, APP_SOURCE, createJournal, journal, log: (level, message) => journal.log(level, message) };
+/** @param {LogLevel} level @param {unknown} message */
+const log = (level, message) => journal.log(level, message);
+
+module.exports = { LEVELS, APP_SOURCE, createJournal, journal, log };

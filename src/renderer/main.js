@@ -34,9 +34,25 @@ import { createOutputView } from './output_view.js';
 import { log } from './journal.js';
 import { createToaster } from './toast.js';
 
-const byId = (id) => document.getElementById(id);
+/** @typedef {import('../types/contracts').Action} Action */
 
-// Start-up reads one Command directly (no UI trigger involved — contract §13.8).
+/**
+ * The element of index.html with that id — its absence is a defect of the page.
+ * @param {string} id
+ * @returns {HTMLElement}
+ */
+const byId = (id) => {
+  const el = document.getElementById(id);
+  if (el === null) throw new Error(`index.html: missing element '#${id}'`);
+  return el;
+};
+
+/**
+ * Start-up reads one Command directly (no UI trigger involved — contract §13.8).
+ * @param {string} id
+ * @param {unknown} [args]
+ * @returns {Promise<unknown>}
+ */
 async function command(id, args) {
   const reply = await window.ld.invokeCommand(id, args);
   if (!reply.ok) throw new Error(reply.error.message);
@@ -44,7 +60,9 @@ async function command(id, args) {
 }
 
 // ---- language and labels
-const { locale, languages } = await command('i18n.startupInfo');
+const { locale, languages } = /** @type {{ locale: string, languages: import('../types/contracts').LanguageInfo[] }} */ (
+  await command('i18n.startupInfo')
+);
 const lang = pickLanguage(locale, languages.map((l) => l.code));
 const { labels, englishLabels } = await loadLabels(lang);
 const t = createTranslator(labels, englishLabels);
@@ -60,7 +78,9 @@ applyTheme(document, DEFAULT_THEME);
 const actions = new ActionRegistry({
   invokeCommand: (id, args) => window.ld.invokeCommand(id, args)
 });
+/** @param {Action} action */
 const labelOf = (action) => t(action.labelKey, action.label);
+/** @param {Action} action */
 const paletteLabelOf = (action) =>
   action.categoryKey === undefined
     ? labelOf(action)

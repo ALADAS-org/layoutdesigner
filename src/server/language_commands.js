@@ -17,12 +17,16 @@ const { preferencesPath, readPreferences, writePreferences } = require('./prefer
 const I18N_DIR = path.join(__dirname, '..', 'i18n');
 const LABEL_FILE = /^LD_Labels_([a-z]{2,3})\.json$/;
 
-// [{ code, name }] sorted by code.
+/**
+ * [{ code, name }] sorted by code.
+ * @param {string} [dir]
+ * @returns {import('../types/contracts').LanguageInfo[]}
+ */
 function listLanguages(dir = I18N_DIR) {
   return fs
     .readdirSync(dir)
     .map((file) => LABEL_FILE.exec(file))
-    .filter(Boolean)
+    .filter((match) => match !== null)
     .map(([file, code]) => {
       const labels = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
       return { code, name: labels['Language/Name'] || code };
@@ -30,11 +34,18 @@ function listLanguages(dir = I18N_DIR) {
     .sort((a, b) => a.code.localeCompare(b.code));
 }
 
-// Pure: the locale to start with.
+/**
+ * Pure: the locale to start with.
+ * @param {{ switchLang?: string, preferred?: string, systemLocale?: string }} sources
+ */
 function resolveStartupLocale({ switchLang, preferred, systemLocale }) {
   return switchLang || preferred || systemLocale || '';
 }
 
+/**
+ * @param {InstanceType<typeof import('./command_registry.js').CommandRegistry>} registry
+ * @param {{ i18nDir?: string, prefsFile?: string }} [options]
+ */
 function registerLanguageCommands(registry, { i18nDir = I18N_DIR, prefsFile = preferencesPath() } = {}) {
   registry.register({
     id: 'i18n.startupInfo',
@@ -51,8 +62,8 @@ function registerLanguageCommands(registry, { i18nDir = I18N_DIR, prefsFile = pr
   registry.register({
     id: 'prefs.setLanguage',
     run: async (args) => {
-      const language = args && args.language;
-      if (!listLanguages(i18nDir).some((l) => l.code === language)) {
+      const language = /** @type {{ language?: unknown } | undefined} */ (args)?.language;
+      if (typeof language !== 'string' || !listLanguages(i18nDir).some((l) => l.code === language)) {
         throw new Error(`Unknown language '${language}'`);
       }
       const prefs = readPreferences(prefsFile);

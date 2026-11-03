@@ -13,27 +13,32 @@
 // =====================================================================================
 
 // Pure: index after moving by `delta` in a circular list of `length` entries.
+/** @param {number} index @param {number} delta @param {number} length */
 export function cycleIndex(index, delta, length) {
   if (length <= 0) return -1;
   return (((index + delta) % length) + length) % length;
 }
 
-// options: { actions (ActionRegistry), labelOf(action) → displayed label }
+/**
+ * @param {HTMLElement} root
+ * @param {{ actions: import('../../renderer/action_registry.js').ActionRegistry,
+ *           labelOf: (action: import('../../types/contracts').Action) => string }} options
+ */
 export function createMenubar(root, { actions, labelOf }) {
   const doc = root.ownerDocument;
-  const win = doc.defaultView;
-  const nav = root.querySelector('.Menubar');
+  const win = /** @type {Window} */ (doc.defaultView);
+  const nav = /** @type {HTMLElement} */ (root.querySelector('.Menubar'));
   const menus = [...nav.querySelectorAll('.MenubarMenu')].map((el) => ({
     el,
-    title: el.querySelector('.MenubarTitle'),
-    dropdown: el.querySelector('.MenubarDropdown'),
-    items: [...el.querySelectorAll('.MenubarItem')]
+    title: /** @type {HTMLElement} */ (el.querySelector('.MenubarTitle')),
+    dropdown: /** @type {HTMLElement} */ (el.querySelector('.MenubarDropdown')),
+    items: /** @type {HTMLElement[]} */ ([...el.querySelectorAll('.MenubarItem')])
   }));
 
   // Fill each entry from its Action: label on the left, shortcut on the right.
   for (const menu of menus) {
     for (const item of menu.items) {
-      const action = actions.get(item.dataset.action);
+      const action = actions.get(String(item.dataset.action));
       if (action === undefined) {
         throw new Error(`Menu entry refers to unknown Action '${item.dataset.action}'`);
       }
@@ -58,6 +63,7 @@ export function createMenubar(root, { actions, labelOf }) {
     openIndex = -1;
   }
 
+  /** @param {number} index @param {boolean} focusFirstItem */
   function open(index, focusFirstItem) {
     close();
     const menu = menus[index];
@@ -72,12 +78,14 @@ export function createMenubar(root, { actions, labelOf }) {
   // Close and give the focus back to the document.
   function leave() {
     close();
-    if (nav.contains(doc.activeElement)) doc.activeElement.blur();
+    const active = doc.activeElement;
+    if (active instanceof HTMLElement && nav.contains(active)) active.blur();
   }
 
+  /** @param {HTMLElement} item */
   function activate(item) {
     leave();
-    actions.trigger(item.dataset.action);
+    actions.trigger(String(item.dataset.action));
   }
 
   function toggleKeyboardFocus() {
@@ -97,7 +105,7 @@ export function createMenubar(root, { actions, labelOf }) {
   });
 
   nav.addEventListener('keydown', (event) => {
-    const active = doc.activeElement;
+    const active = /** @type {HTMLElement} */ (doc.activeElement);
     const titleIndex = menus.findIndex((m) => m.title === active);
     const itemMenuIndex = menus.findIndex((m) => m.items.includes(active));
     const current = titleIndex >= 0 ? titleIndex : itemMenuIndex;
@@ -147,10 +155,10 @@ export function createMenubar(root, { actions, labelOf }) {
 
   // Focus leaving the bar (Tab, click elsewhere) closes the open menu.
   nav.addEventListener('focusout', (event) => {
-    if (!nav.contains(event.relatedTarget)) close();
+    if (!nav.contains(/** @type {Node | null} */ (event.relatedTarget))) close();
   });
   doc.addEventListener('mousedown', (event) => {
-    if (!nav.contains(event.target)) close();
+    if (!nav.contains(/** @type {Node | null} */ (event.target))) close();
   });
 
   // F10, or Alt alone (pressed and released with no other key in between).
@@ -178,5 +186,5 @@ export function createMenubar(root, { actions, labelOf }) {
     true
   );
 
-  return { open: (index) => open(index, false), close, isOpen: () => openIndex >= 0 };
+  return { open: (/** @type {number} */ index) => open(index, false), close, isOpen: () => openIndex >= 0 };
 }

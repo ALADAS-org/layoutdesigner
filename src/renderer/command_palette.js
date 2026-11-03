@@ -10,10 +10,15 @@
 
 export const PALETTE_ACTION_ID = 'view.commandPalette';
 
+/** @typedef {import('../types/contracts').Action} Action */
+/** @typedef {(action: Action) => string} LabelOf */
+
+/** @type {LabelOf} */
 const englishLabel = (action) => action.label;
 
 // Pure: the Actions sorted by displayed label, alphabetically for `locale`
 // (PO decision: no fixed order that puts « Quit » first).
+/** @param {Action[]} actions @param {LabelOf} [labelOf] @param {string} [locale] */
 export function sortByLabel(actions, labelOf = englishLabel, locale = 'en') {
   const collator = new Intl.Collator(locale, { sensitivity: 'base' });
   return [...actions].sort((a, b) => collator.compare(labelOf(a), labelOf(b)));
@@ -22,6 +27,7 @@ export function sortByLabel(actions, labelOf = englishLabel, locale = 'en') {
 // Pure: index of the entry highlighted when the list is (re)built: the first one,
 // except an Action listed in `noPreselect` (e.g. file.quit — PO decision: never one
 // Enter away from quitting); then nothing is highlighted (-1) until ↓ / ↑ is pressed.
+/** @param {Action[]} entries @param {string[]} [noPreselect] */
 export function initialSelection(entries, noPreselect = []) {
   if (entries.length === 0 || noPreselect.includes(entries[0].id)) return -1;
   return 0;
@@ -29,6 +35,12 @@ export function initialSelection(entries, noPreselect = []) {
 
 // Pure: Actions whose (displayed) label contains `query`, case-insensitive, minus
 // `excludeId`.
+/**
+ * @param {Action[]} actions
+ * @param {string | undefined} query
+ * @param {string} [excludeId]
+ * @param {LabelOf} [labelOf]
+ */
 export function filterActions(actions, query, excludeId, labelOf = englishLabel) {
   const q = (query || '').trim().toLowerCase();
   return actions.filter((a) => a.id !== excludeId && labelOf(a).toLowerCase().includes(q));
@@ -38,6 +50,12 @@ export function filterActions(actions, query, excludeId, labelOf = englishLabel)
 //            noPreselect: Action ids never highlighted automatically,
 //            anchor: () => element — when visible, the panel opens right over it
 //            (the toolbar's command center, as in VS Code) }
+/**
+ * @param {import('./action_registry.js').ActionRegistry} registry
+ * @param {Document} doc
+ * @param {{ labelOf?: LabelOf, locale?: string, ariaLabel?: string, placeholder?: string,
+ *           noPreselect?: string[], anchor?: () => Element | null }} [options]
+ */
 export function createCommandPalette(
   registry,
   doc,
@@ -74,6 +92,7 @@ export function createCommandPalette(
   overlay.append(panel);
   doc.body.append(overlay);
 
+  /** @type {Action[]} */
   let entries = [];
   let selected = 0;
 
@@ -126,6 +145,7 @@ export function createCommandPalette(
     return !overlay.hidden;
   }
 
+  /** @param {number} i */
   function runEntry(i) {
     const action = entries[i];
     if (!action) return;

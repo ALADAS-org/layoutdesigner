@@ -14,13 +14,20 @@
 //   start()   → the size at the start of the drag (px)
 //   resize(size)  called while dragging with start size − pointer delta (px)
 //   end()     called once the drag ends (optional)
+/**
+ * @param {HTMLElement} handle
+ * @param {{ axis?: 'x' | 'y', start: () => number, resize: (size: number) => void, end?: () => void }} options
+ */
 export function installSplitter(handle, { axis = 'y', start, resize, end = () => {} }) {
-  const win = handle.ownerDocument.defaultView;
+  const win = /** @type {Window} */ (handle.ownerDocument.defaultView);
+  /** @param {PointerEvent} event */
   const position = (event) => (axis === 'y' ? event.clientY : event.clientX);
+  /** @type {number | null} */
   let origin = null;
   let size0 = 0;
 
   // Dragging up (or left) makes the panel below (or to the right) bigger.
+  /** @param {PointerEvent} event */
   const onMove = (event) => {
     if (origin !== null) resize(size0 - (position(event) - origin));
   };

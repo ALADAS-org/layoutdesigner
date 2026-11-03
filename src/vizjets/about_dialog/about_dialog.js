@@ -6,8 +6,12 @@
 // =====================================================================================
 
 // options: { t (translator), version, $ (jQuery) }
-export function createAboutDialog(host, { t, version, $ = host.ownerDocument.defaultView.jQuery }) {
-  host.querySelector('.AboutVersion').textContent = version;
+/**
+ * @param {HTMLElement} host
+ * @param {{ t: import('../../renderer/i18n.js').Translate, version: string, $?: any }} options
+ */
+export function createAboutDialog(host, { t, version, $ = /** @type {Window} */ (host.ownerDocument.defaultView).jQuery }) {
+  /** @type {HTMLElement} */ (host.querySelector('.AboutVersion')).textContent = version;
   const dialog = $(host);
   dialog.dialog({
     autoOpen: false,

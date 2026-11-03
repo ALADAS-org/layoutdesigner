@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (678 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (686 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -645,7 +645,10 @@
     - command_palette.css
     - command_palette.js
     - i18n.js
+    - journal.js
     - main.js
+    - output_sources.js
+    - output_view.js
     - package.json
     - shortcuts.js
     - splitter.js
@@ -657,6 +660,7 @@
     - app_commands.js
     - command_registry.js
     - electron_main.js
+    - journal.js
     - language_commands.js
     - preferences.js
     - preload.js
@@ -697,12 +701,15 @@
         - action_registry.test.mjs
         - command_palette.test.mjs
         - i18n.test.mjs
+        - output_sources.test.mjs
         - shortcuts.test.mjs
+        - splitter.test.mjs
         - theme.test.mjs
         - toast.test.mjs
         - vizjet_loader.test.mjs
       - **server/**
         - command_registry.test.js
+        - journal.test.js
         - language_commands.test.js
         - node_pty_electron.test.js
         - window_options.test.js
@@ -718,6 +725,7 @@
       - i18n.spec.js
       - language_choice.spec.js
       - launch.js
+      - output.spec.js
     - playwright.config.js
 - .gitattributes
 - .gitignore

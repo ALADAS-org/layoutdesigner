@@ -1,0 +1,14 @@
+{
+  // Type checking only (docs/ROADMAP.md, decision 2026-11-03, option b): the code stays
+  // JavaScript, types are JSDoc annotations and src/types/*.d.ts, `npm run typecheck`
+  // runs tsc without emitting anything.
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": true,
+    "target": "ES2023",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}

@@ -58,6 +58,10 @@ the Electron app — as in TSCG and Cryptocalc. Layout follows Cryptocalc `tests
 
 Definition of done for any step that touches code:
 
+- **Type check** (`npm run typecheck`, decision 2026-11-03): JSDoc types checked by
+  `tsc --checkJs` in strict mode, zero error; new code is typed from the start, and
+  contract types live in `src/types/contracts.d.ts`. `npm test` runs it first.
+
 - **Unit tests** for the new logic (model, documents, calques, commands, parsing,
   geometry, plugin loading).
 - **End-to-end tests** for the user-visible path (menus, dialogs, document tabs,

@@ -8,14 +8,16 @@
   "main": "./src/server/electron_main.js",
   "scripts": {
     "start": "electron .",
-    "test": "npm run test:jest && npm run test:playwright",
+    "typecheck": "tsc -p tsconfig.main.json && tsc -p tsconfig.renderer.json",
+    "test": "npm run typecheck && npm run test:jest && npm run test:playwright",
     "test:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.js",
     "test:playwright": "playwright test --config=tests/playwright/playwright.config.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
     "electron": "^45.1.0",
-    "jest": "^30.5.2"
+    "jest": "^30.5.2",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.11.0",

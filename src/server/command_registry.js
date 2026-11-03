@@ -10,9 +10,15 @@
 
 const ID_PATTERN = /^[A-Za-z][\w-]*(\.[A-Za-z][\w-]*)+$/; // e.g. 'app.quit'
 
+/** @typedef {import('../types/contracts').CommandDescriptor} CommandDescriptor */
+/** @typedef {import('../types/contracts').CommandContext} CommandContext */
+/** @typedef {import('../types/contracts').CommandReply} CommandReply */
+
 class CommandRegistry {
+  /** @type {Map<string, CommandDescriptor>} */
   #commands = new Map();
 
+  /** @param {CommandDescriptor} descriptor */
   register(descriptor) {
     if (descriptor === null || typeof descriptor !== 'object') {
       throw new TypeError('Command descriptor must be an object');
@@ -30,11 +36,18 @@ class CommandRegistry {
     this.#commands.set(id, { id, run });
   }
 
+  /** @param {string} id */
   has(id) {
     return this.#commands.has(id);
   }
 
   // Never throws: always resolves to { ok: true, value } or { ok: false, error: { message } }.
+  /**
+   * @param {string} id
+   * @param {unknown} args
+   * @param {CommandContext} context
+   * @returns {Promise<CommandReply>}
+   */
   async run(id, args, context) {
     const command = this.#commands.get(id);
     if (command === undefined) {

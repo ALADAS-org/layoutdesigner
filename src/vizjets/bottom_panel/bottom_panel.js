@@ -13,7 +13,11 @@
 
 import { installSplitter } from '../../renderer/splitter.js';
 
+/** @typedef {'output' | 'debugConsole' | 'terminal'} PanelTab */
+
+/** @type {readonly PanelTab[]} */
 export const TABS = ['output', 'debugConsole', 'terminal'];
+/** @type {PanelTab} */
 export const INITIAL_TAB = 'output';
 export const INITIAL_FOLDED = true;
 export const INITIAL_FRACTION = 0.1875;
@@ -23,23 +27,41 @@ export const DOCUMENT_MIN_PX = 100;
 // Pure: the body height to display, in px, for a wanted height and the room available.
 // `room` = workspace height − tab row − splitter. The minimum wins over the maximum
 // when the window is too small for both.
+/** @param {number} wanted @param {number} room */
 export function clampBodyHeight(wanted, room) {
   const max = room - DOCUMENT_MIN_PX;
   return Math.round(Math.max(MIN_BODY_PX, Math.min(wanted, max)));
 }
 
-// options: { win (window), workspace (element whose height is shared with the document) }
+/**
+ * @template {Element} E
+ * @param {ParentNode} root
+ * @param {string} selector
+ * @returns {E}
+ */
+function required(root, selector) {
+  const el = root.querySelector(selector);
+  if (el === null) throw new Error(`Bottom panel: missing '${selector}'`);
+  return /** @type {E} */ (el);
+}
+
+/**
+ * @param {HTMLElement} host
+ * @param {{ win?: Window, workspace: HTMLElement }} options — workspace: the element
+ *   whose height is shared with the document area
+ */
 export function createBottomPanel(host, { win = window, workspace }) {
-  const root = host.querySelector('.BottomPanel');
-  const splitter = root.querySelector('.BottomPanelSplitter');
-  const tabRow = root.querySelector('.BottomPanelTabRow');
-  const foldButton = root.querySelector('.BottomPanelFold');
-  const arrow = root.querySelector('.BottomPanelArrow');
-  const body = root.querySelector('.BottomPanelBody');
-  const tabs = [...root.querySelectorAll('.BottomPanelTab')];
-  const views = [...root.querySelectorAll('.BottomPanelView')];
+  /** @type {HTMLElement} */ const root = required(host, '.BottomPanel');
+  /** @type {HTMLElement} */ const splitter = required(root, '.BottomPanelSplitter');
+  /** @type {HTMLElement} */ const tabRow = required(root, '.BottomPanelTabRow');
+  /** @type {HTMLButtonElement} */ const foldButton = required(root, '.BottomPanelFold');
+  /** @type {SVGPathElement} */ const arrow = required(root, '.BottomPanelArrow');
+  /** @type {HTMLElement} */ const body = required(root, '.BottomPanelBody');
+  const tabs = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('.BottomPanelTab')]);
+  const views = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('.BottomPanelView')]);
 
   let folded = INITIAL_FOLDED;
+  /** @type {PanelTab} */
   let active = INITIAL_TAB;
   let fraction = INITIAL_FRACTION;
 
@@ -65,17 +87,19 @@ export function createBottomPanel(host, { win = window, workspace }) {
     fold() { folded = true; layout(); },
     unfold() { folded = false; layout(); },
     toggle() { folded = !folded; layout(); },
+    /** @param {string} tab */
     show(tab) {
-      if (!TABS.includes(tab)) throw new Error(`Unknown panel tab '${tab}'`);
-      active = tab;
+      if (!TABS.includes(/** @type {PanelTab} */ (tab))) throw new Error(`Unknown panel tab '${tab}'`);
+      active = /** @type {PanelTab} */ (tab);
       folded = false;
       layout();
     },
-    view: (tab) => views.find((v) => v.dataset.tab === tab)
+    /** @param {PanelTab} tab @returns {HTMLElement} */
+    view: (tab) => /** @type {HTMLElement} */ (views.find((v) => v.dataset.tab === tab))
   };
 
   foldButton.addEventListener('click', () => panel.toggle());
-  for (const tab of tabs) tab.addEventListener('click', () => panel.show(tab.dataset.tab));
+  for (const tab of tabs) tab.addEventListener('click', () => panel.show(String(tab.dataset.tab)));
   installSplitter(splitter, {
     axis: 'y',
     start: () => body.offsetHeight,

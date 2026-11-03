@@ -6,6 +6,7 @@
 // =====================================================================================
 
 // Escapes text placed in iziToast's HTML button markup.
+/** @param {unknown} text */
 function escapeHtml(text) {
   return String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
@@ -13,9 +14,15 @@ function escapeHtml(text) {
 // Pure: splits `text` into two lines of lengths as close as possible, at the space
 // nearest to the middle (PO decision). `measure` gives a string's length (characters
 // by default; the toaster passes the rendered width). No space → one line.
+/**
+ * @param {string} text
+ * @param {(s: string) => number} [measure]
+ * @returns {string[]}
+ */
 export function splitBalanced(text, measure = (s) => s.length) {
   const words = String(text).trim().split(/\s+/);
   if (words.length < 2) return [words.join(' ')];
+  /** @type {{ gap: number, lines: string[] } | null} */
   let best = null;
   for (let i = 1; i < words.length; i += 1) {
     const first = words.slice(0, i).join(' ');
@@ -23,24 +30,29 @@ export function splitBalanced(text, measure = (s) => s.length) {
     const gap = Math.abs(measure(first) - measure(second));
     if (best === null || gap < best.gap) best = { gap, lines: [first, second] };
   }
-  return best.lines;
+  return /** @type {{ lines: string[] }} */ (best).lines;
 }
 
 // Width of `text` in pixels for a CSS font, using an off-screen canvas.
+/** @param {Document} doc @param {string} font @returns {(s: string) => number} */
 function textWidth(doc, font) {
   const ctx = doc.createElement('canvas').getContext('2d');
+  if (ctx === null) return (s) => s.length;
   ctx.font = font;
   return (s) => ctx.measureText(s).width;
 }
 
+/** @param {Window} [win] */
 export function createToaster(win = window) {
   return {
     // Modal warning, centred in the window: title and message on two lines, an OK
     // button on its own line below (PO decision). Resolves once dismissed (OK or Esc).
+    /** @param {string} title @param {string} message @param {string} [okLabel] @returns {Promise<void>} */
     modalWarning: (title, message, okLabel = 'OK') =>
       new Promise((resolve) => {
         const doc = win.document;
         let done = false;
+        /** @param {KeyboardEvent} event */
         const onKey = (event) => {
           if (event.key !== 'Escape') return;
           event.preventDefault();
@@ -68,7 +80,7 @@ export function createToaster(win = window) {
           buttons: [
             [
               `<button class="LdToastOk">${escapeHtml(okLabel)}</button>`,
-              (instance, toast) => instance.hide({}, toast, 'ok'),
+              (/** @type {any} */ instance, /** @type {HTMLElement} */ toast) => instance.hide({}, toast, 'ok'),
               true // focus the button
             ]
           ],

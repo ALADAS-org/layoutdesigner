@@ -16,10 +16,15 @@ const COMMAND_INVOKE_CHANNEL = 'ld:command:invoke';
 const OUTPUT_APPEND_CHANNEL = 'ld:output:append';
 const OUTPUT_HISTORY_CHANNEL = 'ld:output:history';
 
-contextBridge.exposeInMainWorld('ld', {
+/** @type {import('../types/contracts').LdBridge} */
+const bridge = {
   invokeCommand: (id, args) => ipcRenderer.invoke(COMMAND_INVOKE_CHANNEL, { id, args }),
   onOutput: (listener) => {
     ipcRenderer.on(OUTPUT_APPEND_CHANNEL, (_event, line) => listener(line));
-    return ipcRenderer.invoke(OUTPUT_HISTORY_CHANNEL).then((lines) => lines.forEach(listener));
+    return ipcRenderer
+      .invoke(OUTPUT_HISTORY_CHANNEL)
+      .then((/** @type {import('../types/contracts').OutputLine[]} */ lines) => lines.forEach(listener));
   }
-});
+};
+
+contextBridge.exposeInMainWorld('ld', bridge);

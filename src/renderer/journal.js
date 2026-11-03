@@ -10,6 +10,7 @@ import { output, APP_SOURCE } from './output_sources.js';
 
 const app = output.source(APP_SOURCE);
 
+/** @param {import('../types/contracts').LogLevel} level @param {unknown} message */
 export function log(level, message) {
   app.append(level, message);
   console[level === 'info' ? 'log' : level](message);

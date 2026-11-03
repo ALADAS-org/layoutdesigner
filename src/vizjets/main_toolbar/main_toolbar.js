@@ -7,14 +7,20 @@
 // =====================================================================================
 
 // Pure: tooltip text of a toolbar button.
+/** @param {string} label @param {string} [shortcut] */
 export function tooltipOf(label, shortcut) {
   return shortcut ? `${label} (${shortcut})` : label;
 }
 
 // options: { actions (ActionRegistry), labelOf(action) → displayed label }
+/**
+ * @param {HTMLElement} root
+ * @param {{ actions: import('../../renderer/action_registry.js').ActionRegistry,
+ *           labelOf: (action: import('../../types/contracts').Action) => string }} options
+ */
 export function createToolbar(root, { actions, labelOf }) {
-  for (const control of root.querySelectorAll('[data-action]')) {
-    const action = actions.get(control.dataset.action);
+  for (const control of /** @type {NodeListOf<HTMLElement>} */ (root.querySelectorAll('[data-action]'))) {
+    const action = actions.get(String(control.dataset.action));
     if (action === undefined) {
       throw new Error(`Toolbar control refers to unknown Action '${control.dataset.action}'`);
     }

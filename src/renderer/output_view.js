@@ -8,6 +8,10 @@
 
 import { formatLine } from './output_sources.js';
 
+/**
+ * @param {HTMLElement} el
+ * @param {ReturnType<typeof import('./output_sources.js').createOutput>} output
+ */
 export function createOutputView(el, output) {
   el.classList.add('OutputView');
   let pending = false;

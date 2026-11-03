@@ -6,13 +6,19 @@
 // =====================================================================================
 
 // options: { t (translator), $ (jQuery) }
-export function createLanguageDialog(host, { t, $ = host.ownerDocument.defaultView.jQuery }) {
+/**
+ * @param {HTMLElement} host
+ * @param {{ t: import('../../renderer/i18n.js').Translate, $?: any }} options
+ */
+export function createLanguageDialog(host, { t, $ = /** @type {Window} */ (host.ownerDocument.defaultView).jQuery }) {
   const doc = host.ownerDocument;
-  const select = host.querySelector('.LanguageDialogSelect');
+  const select = /** @type {HTMLSelectElement} */ (host.querySelector('.LanguageDialogSelect'));
   const dialog = $(host);
+  /** @type {((value: string | null) => void) | null} */
   let settle = null;
 
   // Resolves the pending choose() once, whatever closed the dialog (OK, Cancel, Esc, ✕).
+  /** @param {string | null} value */
   function finish(value) {
     const resolve = settle;
     settle = null;
@@ -36,6 +42,11 @@ export function createLanguageDialog(host, { t, $ = host.ownerDocument.defaultVi
   host.hidden = false; // jQuery UI now controls its visibility
 
   return {
+    /**
+     * @param {import('../../types/contracts').LanguageInfo[]} languages
+     * @param {string} current
+     * @returns {Promise<string | null>}
+     */
     choose(languages, current) {
       select.replaceChildren(
         ...languages.map(({ code, name }) => {

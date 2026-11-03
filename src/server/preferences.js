@@ -15,17 +15,23 @@ const { log } = require('./journal.js');
 
 const DEFAULT_PREFERENCES_PATH = path.join(__dirname, '..', 'config', 'preferences.json');
 
+/** Known keys are typed; other keys are kept as they are. */
+/** @typedef {{ language?: string, [key: string]: unknown }} Preferences */
+
+/** @param {NodeJS.ProcessEnv} [env] @returns {string} */
 function preferencesPath(env = process.env) {
   return env.LD_PREFERENCES_PATH || DEFAULT_PREFERENCES_PATH;
 }
 
 // Missing file → {}. Unreadable or not a JSON object → {} with a warning, so a broken
 // preferences file never prevents the application from starting.
+/** @param {string} file @returns {Preferences} */
 function readPreferences(file) {
   let text;
   try {
     text = fs.readFileSync(file, 'utf8');
-  } catch (err) {
+  } catch (e) {
+    const err = /** @type {NodeJS.ErrnoException} */ (e);
     if (err.code === 'ENOENT') return {};
     log('warn', `Cannot read preferences '${file}': ${err.message}`);
     return {};
@@ -34,13 +40,14 @@ function readPreferences(file) {
     const prefs = JSON.parse(text);
     if (prefs !== null && typeof prefs === 'object' && !Array.isArray(prefs)) return prefs;
   } catch (err) {
-    log('warn', `Invalid preferences '${file}': ${err.message}`);
+    log('warn', `Invalid preferences '${file}': ${/** @type {Error} */ (err).message}`);
     return {};
   }
   log('warn', `Invalid preferences '${file}': not a JSON object`);
   return {};
 }
 
+/** @param {string} file @param {Preferences} prefs */
 function writePreferences(file, prefs) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, JSON.stringify(prefs, null, 2) + '\n', 'utf8');

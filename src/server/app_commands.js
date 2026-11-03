@@ -8,6 +8,7 @@
 // =====================================================================================
 'use strict';
 
+/** @param {InstanceType<typeof import('./command_registry.js').CommandRegistry>} registry */
 function registerAppCommands(registry) {
   registry.register({
     id: 'app.quit',
