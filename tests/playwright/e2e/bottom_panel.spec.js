@@ -81,30 +81,41 @@ test.describe('bottom panel', () => {
     await tab('output').click();
   });
 
+  // The drag is driven with pointer events dispatched in the page, not with Playwright's
+  // mouse: on Windows with a display scale other than 100 %, the simulated mouse moves
+  // are not converted like the press, and the measured delta is wrong although a real
+  // drag follows the mouse exactly (PO check, 2026-11-04). Dispatched events also take
+  // the path where pointer capture is refused.
+  /** Drags the splitter from its middle by `dy` px (negative: up); returns the body height. */
+  async function drag(dy) {
+    return win.evaluate((delta) => {
+      const handle = document.querySelector('.BottomPanelSplitter');
+      const r = handle.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      const init = (clientY) => ({ bubbles: true, button: 0, pointerId: 1, clientX: x, clientY });
+      handle.dispatchEvent(new PointerEvent('pointerdown', init(y)));
+      for (let i = 1; i <= 5; i += 1) window.dispatchEvent(new PointerEvent('pointermove', init(y + (delta * i) / 5)));
+      window.dispatchEvent(new PointerEvent('pointerup', init(y + delta)));
+      return document.querySelector('.BottomPanelBody').getBoundingClientRect().height;
+    }, dy);
+  }
+
   test('dragging the splitter resizes the panel, within the limits', async () => {
-    const s = await box('.BottomPanelSplitter');
-    const x = s.x + s.width / 2;
-    const y = s.y + 2;
     const before = (await box('.BottomPanelBody')).height;
-    await win.mouse.move(x, y);
-    await win.mouse.down();
-    await win.mouse.move(x, y - 100, { steps: 5 });
-    await win.mouse.up();
-    expect(Math.round((await box('.BottomPanelBody')).height)).toBe(Math.round(before + 100));
+    expect(Math.round(await drag(-100))).toBe(Math.round(before + 100));
+    expect(Math.round(await drag(50))).toBe(Math.round(before + 50));
     // Far down: the body keeps its minimum (about three lines).
-    const s2 = await box('.BottomPanelSplitter');
-    await win.mouse.move(x, s2.y + 2);
-    await win.mouse.down();
-    await win.mouse.move(x, s2.y + 2000, { steps: 5 });
-    await win.mouse.up();
-    expect((await box('.BottomPanelBody')).height).toBe(60);
+    expect(await drag(2000)).toBe(60);
     // Far up: the document area keeps 100 px.
-    const s3 = await box('.BottomPanelSplitter');
-    await win.mouse.move(x, s3.y + 2);
-    await win.mouse.down();
-    await win.mouse.move(x, 0, { steps: 5 });
-    await win.mouse.up();
+    await drag(-2000);
     expect(Math.round((await box('#document_area')).height)).toBe(100);
+  });
+
+  test('a move after the release does nothing', async () => {
+    const height = (await box('.BottomPanelBody')).height;
+    await win.evaluate(() => window.dispatchEvent(new PointerEvent('pointermove', { clientY: 0 })));
+    expect((await box('.BottomPanelBody')).height).toBe(height);
   });
 });
 
