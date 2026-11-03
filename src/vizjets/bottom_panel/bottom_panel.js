@@ -3,7 +3,8 @@
 // =====================================================================================
 // Contract: docs/contracts/OUTPUT_PANEL.md §1–§3.
 // - Spans the document area only (the Calques column is beside it, full height).
-// - First launch: unfolded, body height = a quarter of the window height, tab Output.
+// - First launch: unfolded, body height = 18.75 % of the window height (a quarter
+//   reduced by 25 %, PO decision 2026-11-03), tab Output.
 //   Nothing is remembered between sessions (PO decision).
 // - Folded: the tab row stays visible; a click on a tab unfolds the panel.
 // - Limits: body ≥ about three lines of text; the document area keeps ≥ 100 px.
@@ -14,7 +15,7 @@ import { installSplitter } from '../../renderer/splitter.js';
 
 export const TABS = ['output', 'debugConsole', 'terminal'];
 export const INITIAL_TAB = 'output';
-export const INITIAL_FRACTION = 0.25;
+export const INITIAL_FRACTION = 0.1875;
 export const MIN_BODY_PX = 60;
 export const DOCUMENT_MIN_PX = 100;
 

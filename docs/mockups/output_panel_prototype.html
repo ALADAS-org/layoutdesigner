@@ -93,7 +93,7 @@ const sources=[LD,"ld-dummy-server","ld-dummy-renderer"];
 let multi=false,selected=new Set(sources);
 const actions=[["File: Quit","file.quit"],["Help: About Layout Designer…","help.about"],["Preferences: Choose Language…","preferences.chooseLanguage"],["View: Command Palette","view.commandPalette"],["View: Light / Dark Theme","view.toggleTheme"],["View: Output","view.showOutput"],["View: Show / Hide Developer Tools","view.toggleDevTools"],["View: Show / Hide Panel","view.togglePanel"]];
 let transcript=[{lvl:"info",txt:"Type help for the list of commands."}];
-let tab="output",open=true,frac=0.25;
+let tab="output",open=true,frac=0.1875;
 const $=id=>document.getElementById(id);
 const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 function outputHtml(){

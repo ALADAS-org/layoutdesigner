@@ -23,14 +23,14 @@ test.describe('bottom panel', () => {
   const fold = () => win.locator('.BottomPanelFold');
   const box = (selector) => win.locator(selector).boundingBox();
 
-  test('first launch: unfolded, Output active, body a quarter of the window high', async () => {
+  test('first launch: unfolded, Output active, body 18.75 % of the window high', async () => {
     await expect(win.locator('.BottomPanelTab')).toHaveText(['Output', 'Debug Console', 'Terminal']);
     await expect(tab('output')).toHaveAttribute('aria-selected', 'true');
     await expect(win.locator('#panel_output')).toBeVisible();
     await expect(fold()).toHaveAttribute('aria-expanded', 'true');
     const height = await win.evaluate(() => window.innerHeight);
     const { height: bodyHeight } = await box('.BottomPanelBody');
-    expect(Math.abs(bodyHeight - height / 4)).toBeLessThanOrEqual(1);
+    expect(Math.abs(bodyHeight - height * 0.1875)).toBeLessThanOrEqual(1);
   });
 
   test('layout: document area above the panel, the panel spans the document area', async () => {

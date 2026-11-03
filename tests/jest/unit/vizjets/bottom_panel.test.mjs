@@ -4,10 +4,10 @@ import {
 } from '../../../../src/vizjets/bottom_panel/bottom_panel.js';
 
 describe('bottom panel first-launch state', () => {
-  test('Output first, a quarter of the window, tabs in VS Code order', () => {
+  test('Output first, 18.75 % of the window, tabs in VS Code order', () => {
     expect(TABS).toEqual(['output', 'debugConsole', 'terminal']);
     expect(INITIAL_TAB).toBe('output');
-    expect(INITIAL_FRACTION).toBe(0.25);
+    expect(INITIAL_FRACTION).toBe(0.1875);
   });
 });
 
