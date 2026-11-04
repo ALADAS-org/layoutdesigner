@@ -232,6 +232,10 @@ Electron's native menu is removed (`Menu.setApplicationMenu(null)`).
 
 ### 13.5 Themes
 
+> **Since N0.5 (2026-11-05)** the theme is remembered in the preferences
+> (`PREFERENCES.md` §5 8): *Preferences › Interface › Theme*, and the Action
+> `view.toggleTheme` saves it too.
+
 Two predefined themes, `light` and `dark` (PO decision): `<html data-theme="…">`;
 `renderer/theme.css` maps it to `--ld-*` colour tokens; components use tokens only.
 Witness: client Action `view.toggleTheme`. **Dark at start-up** (PO decision; not

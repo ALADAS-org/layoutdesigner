@@ -36,7 +36,7 @@ References: **Inkscape** *Edit › Preferences…* (one dialog, the language in 
 - **Categories in a list on the left**, the selected one's page on the right. In this
   step:
   - **Interface** — *Language*: « System language » (`null`) first, then the available
-    languages;
+    languages; *Theme*: Dark / Light (added 2026-11-05, §5 8);
   - **System** — **Reset preferences** (as Inkscape's *System › Reset preferences*) and
     the preferences file path, read-only.
 - **Rule: a category appears only when it holds at least one real preference** — no
@@ -63,7 +63,7 @@ References: **Inkscape** *Edit › Preferences…* (one dialog, the language in 
   **`src/config/preferences.default.json`** — also the living list of every preference
   and its default value, completed by each step that adds one. `preferences.json` stays
   the user's own file, not versioned.
-- In this step it holds `{ "language": null }`: **`null` means « the system
+- It holds `{ "language": null, "theme": "dark" }`: **`null` means « the system
   language »**, so that a reset gives back the first-launch behaviour (no preferences
   file → system locale) instead of forcing English.
 - **Reset** = `preferences.default.json` copied over `preferences.json`:
@@ -127,6 +127,12 @@ Inkscape, *Edit › Preferences…* opens a dialog that also offers the reset.
 7. **Inkscape model**: categories on the left (*Interface*, *System* now; a category
    appears only with a real preference), changes applied at once, one *Close* button,
    *Reset preferences* under *System* (§1).
+
+**2026-11-05:**
+8. **The theme becomes a preference**: *Interface › Theme* (Dark / Light), remembered
+   in `preferences.json` (`theme`, default `"dark"` in `preferences.default.json`),
+   **applied at once** (no restart); *View › Light / Dark Theme* stays as a shortcut and
+   saves it too; a reset goes back to dark at once.
 
 ## 6. Open points (settled one at a time, in this order)
 

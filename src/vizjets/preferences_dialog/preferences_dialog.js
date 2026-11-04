@@ -14,15 +14,17 @@
  * @param {HTMLElement} host
  * @param {{ t: import('../../renderer/i18n.js').Translate,
  *           onLanguage: (language: string | null) => Promise<void>,
- *           onReset: () => Promise<{ language: string | null } | null>,
+ *           onTheme: (theme: string) => Promise<void>,
+ *           onReset: () => Promise<{ language: string | null, theme: string } | null>,
  *           $?: any }} options — onReset resolves with the new state, or null when
  *           the user cancelled its confirmation
  */
-export function createPreferencesDialog(host, { t, onLanguage, onReset, $ = /** @type {Window} */ (host.ownerDocument.defaultView).jQuery }) {
+export function createPreferencesDialog(host, { t, onLanguage, onTheme, onReset, $ = /** @type {Window} */ (host.ownerDocument.defaultView).jQuery }) {
   const doc = host.ownerDocument;
   const categories = /** @type {HTMLElement[]} */ ([...host.querySelectorAll('.PreferencesCategory')]);
   const pages = /** @type {HTMLElement[]} */ ([...host.querySelectorAll('.PreferencesPage')]);
   const select = /** @type {HTMLSelectElement} */ (host.querySelector('.PreferencesLanguage'));
+  const themeSelect = /** @type {HTMLSelectElement} */ (host.querySelector('.PreferencesTheme'));
   const fileLabel = /** @type {HTMLElement} */ (host.querySelector('.PreferencesFile'));
   const resetButton = /** @type {HTMLButtonElement} */ (host.querySelector('.PreferencesReset'));
   const dialog = $(host);
@@ -55,14 +57,20 @@ export function createPreferencesDialog(host, { t, onLanguage, onReset, $ = /** 
   select.addEventListener('change', () => {
     onLanguage(select.value === '' ? null : select.value);
   });
+  themeSelect.addEventListener('change', () => {
+    onTheme(themeSelect.value);
+  });
   resetButton.addEventListener('click', async () => {
     const state = await onReset();
-    if (state !== null) select.value = state.language ?? '';
+    if (state !== null) {
+      select.value = state.language ?? '';
+      themeSelect.value = state.theme;
+    }
   });
 
   return {
     /**
-     * @param {{ languages: LanguageInfo[], language: string | null, file: string }} state
+     * @param {{ languages: LanguageInfo[], language: string | null, theme: string, file: string }} state
      * @param {{ category?: PreferencesCategory, focusLanguage?: boolean }} [options]
      */
     open(state, { category = 'interface', focusLanguage = false } = {}) {
@@ -79,6 +87,7 @@ export function createPreferencesDialog(host, { t, onLanguage, onReset, $ = /** 
         })
       );
       select.value = state.language ?? '';
+      themeSelect.value = state.theme;
       fileLabel.textContent = state.file;
       fileLabel.title = state.file;
       showCategory(category);

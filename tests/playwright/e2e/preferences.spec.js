@@ -108,6 +108,19 @@ test.describe('the Preferences dialog', () => {
     await answer(win, 'ok');
   });
 
+  test('Interface: the theme, applied at once and remembered, no restart warning', async () => {
+    const theme = dialog(win).locator('.PreferencesTheme');
+    await expect(theme.locator('option')).toHaveText(['Dark', 'Light']);
+    await expect(theme).toHaveValue('dark');
+    await theme.selectOption('light');
+    await expect.poll(() => win.evaluate(() => document.documentElement.dataset.theme)).toBe('light');
+    await expect.poll(() => readJson(prefsFile).theme).toBe('light');
+    await win.waitForTimeout(300);
+    await expect(toast(win)).toHaveCount(0);
+    await theme.selectOption('dark');
+    await expect.poll(() => readJson(prefsFile).theme).toBe('dark');
+  });
+
   test('System: the preferences file and Reset preferences', async () => {
     await category(win, 'system').click();
     await expect(category(win, 'system')).toHaveAttribute('aria-selected', 'true');
@@ -119,16 +132,19 @@ test.describe('the Preferences dialog', () => {
     await dialog(win).locator('.PreferencesReset').click();
     await expect(toast(win).locator('.iziToast-title')).toHaveText('Reset preferences');
     await answer(win, 'cancel');
-    expect(readJson(prefsFile)).toEqual({ language: 'fr' });
+    expect(readJson(prefsFile)).toEqual({ language: 'fr', theme: 'dark' });
     expect(fs.existsSync(`${prefsFile}.bak`)).toBe(false);
   });
 
   test('Reset OK: the file is kept as .bak, the defaults are written, a line in Output', async () => {
+    fs.writeFileSync(prefsFile, JSON.stringify({ language: 'fr', theme: 'light' }));
+    await win.evaluate(() => { document.documentElement.dataset.theme = 'light'; });
     await dialog(win).locator('.PreferencesReset').click();
     await answer(win, 'ok');
     await answer(win, 'ok'); // the language changed (fr → system): restart warning
-    expect(readJson(`${prefsFile}.bak`)).toEqual({ language: 'fr' });
-    expect(readJson(prefsFile)).toEqual({ language: null });
+    expect(readJson(`${prefsFile}.bak`)).toEqual({ language: 'fr', theme: 'light' });
+    expect(await win.evaluate(() => document.documentElement.dataset.theme)).toBe('dark'); // at once
+    expect(readJson(prefsFile)).toEqual({ language: null, theme: 'dark' });
     await category(win, 'interface').click();
     await expect(select(win)).toHaveValue('');
     await dialog(win).locator('.ui-dialog-buttonpane').getByRole('button', { name: 'Close' }).click();
@@ -166,6 +182,23 @@ test('the chosen language applies after a restart (no --lang switch)', async () 
     await app.close();
     ({ app, win } = await launch({ lang: null, prefsFile }));
     await expect(win.locator('.MenubarTitle')).toHaveText(MENUS_FR);
+  } finally {
+    await app.close();
+  }
+});
+
+test('the theme is remembered: View › Light / Dark Theme saves it, a restart keeps it', async () => {
+  const prefsFile = tempPreferencesPath();
+  let { app, win } = await launch({ prefsFile });
+  try {
+    expect(await win.evaluate(() => document.documentElement.dataset.theme)).toBe('dark'); // default
+    await win.evaluate(() => document.querySelector('.MenubarItem[data-action="view.toggleTheme"]').click());
+    await expect.poll(() => fs.existsSync(prefsFile) && readJson(prefsFile).theme).toBe('light');
+    await app.close();
+    ({ app, win } = await launch({ prefsFile }));
+    expect(await win.evaluate(() => document.documentElement.dataset.theme)).toBe('light');
+    await win.keyboard.press('Control+K');
+    await expect(dialog(win).locator('.PreferencesTheme')).toHaveValue('light');
   } finally {
     await app.close();
   }
@@ -215,7 +248,7 @@ test.describe('an invalid preferences file at start-up', () => {
       await answer(win, 'reset');
       await expect.poll(() => fs.existsSync(`${prefsFile}.bak`)).toBe(true);
       expect(fs.readFileSync(`${prefsFile}.bak`, 'utf8')).toBe('{ not json');
-      expect(readJson(prefsFile)).toEqual({ language: null });
+      expect(readJson(prefsFile)).toEqual({ language: null, theme: 'dark' });
       await expect(toast(win)).toHaveCount(0); // language unchanged (system): no restart warning
     } finally {
       await app.close();

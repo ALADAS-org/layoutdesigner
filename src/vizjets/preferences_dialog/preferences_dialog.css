@@ -55,7 +55,8 @@
   margin-bottom: 10px;
 }
 
-.PreferencesLanguage {
+.PreferencesLanguage,
+.PreferencesTheme {
   padding: 3px 6px;
   background: var(--ld-input-bg);
   color: var(--ld-menu-fg);
@@ -82,7 +83,7 @@
 }
 
 .PreferencesHelp {
-  margin: 4px 0 0;
+  margin: -4px 0 14px;
   color: var(--ld-muted-fg);
   font-size: 12px;
 }

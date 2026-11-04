@@ -62,5 +62,9 @@
   "Preferences/InvalidMessage":      "The preferences file cannot be read; the defaults are used.",
   "Dialog/Close":                    "Close",
   "Dialog/Reset":                    "Reset",
-  "Dialog/Ignore":                   "Ignore"
+  "Dialog/Ignore":                   "Ignore",
+  "Preferences/Theme":               "Theme",
+  "Preferences/ThemeDark":           "Dark",
+  "Preferences/ThemeLight":          "Light",
+  "Preferences/ThemeHelp":           "Applied at once."
 }

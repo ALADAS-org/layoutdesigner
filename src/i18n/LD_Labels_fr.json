@@ -62,5 +62,9 @@
   "Preferences/InvalidMessage":      "Le fichier de préférences est illisible ; les valeurs par défaut sont utilisées.",
   "Dialog/Close":                    "Fermer",
   "Dialog/Reset":                    "Réinitialiser",
-  "Dialog/Ignore":                   "Ignorer"
+  "Dialog/Ignore":                   "Ignorer",
+  "Preferences/Theme":               "Thème",
+  "Preferences/ThemeDark":           "Sombre",
+  "Preferences/ThemeLight":          "Clair",
+  "Preferences/ThemeHelp":           "Appliqué aussitôt."
 }

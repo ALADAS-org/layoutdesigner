@@ -21,7 +21,16 @@ const DEFAULT_PREFERENCES_PATH = path.join(__dirname, '..', 'config', 'preferenc
 const DEFAULTS_PATH = path.join(__dirname, '..', 'config', 'preferences.default.json');
 
 /** Known keys are typed; other keys are kept as they are. `language: null` = system. */
-/** @typedef {{ language?: string | null, [key: string]: unknown }} Preferences */
+/** @typedef {{ language?: string | null, theme?: string, [key: string]: unknown }} Preferences */
+
+/** The two predefined themes (N0.3), dark by default; remembered since N0.5. */
+const THEMES = ['light', 'dark'];
+const DEFAULT_THEME = 'dark';
+
+/** Pure: the theme a preferences object asks for, the default when absent or unknown. @param {Preferences} prefs */
+function themeOf(prefs) {
+  return typeof prefs.theme === 'string' && THEMES.includes(prefs.theme) ? prefs.theme : DEFAULT_THEME;
+}
 /** @typedef {'ok' | 'missing' | 'invalid'} PreferencesStatus */
 
 /** @param {NodeJS.ProcessEnv} [env] @returns {string} */
@@ -98,6 +107,9 @@ function resetPreferences(file, defaultsFile = DEFAULTS_PATH) {
 }
 
 module.exports = {
+  THEMES,
+  DEFAULT_THEME,
+  themeOf,
   DEFAULT_PREFERENCES_PATH,
   DEFAULTS_PATH,
   preferencesPath,

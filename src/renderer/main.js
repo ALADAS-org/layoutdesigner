@@ -5,7 +5,7 @@
 // Actions (docs/contracts/ACTION_COMMAND.md §10, §13):
 //   - view.commandPalette  client  Ctrl+Shift+P (as in VS Code)
 //   - file.quit            alias   Ctrl+Q (as in Illustrator) → Command app.quit
-//   - view.toggleTheme     client  light ↔ dark
+//   - view.toggleTheme     client  light ↔ dark, remembered in the preferences (N0.5)
 //   - view.toggleDevTools  alias   Ctrl+Shift+I → Command dev.toggleDevTools
 //   - edit.choosePreferences client Ctrl+K (as Illustrator) — the Preferences dialog (N0.5)
 //   - preferences.chooseLanguage client  the Preferences dialog, on the language
@@ -22,7 +22,7 @@ import { ActionRegistry } from './action_registry.js';
 import { installShortcuts } from './shortcuts.js';
 import { createCommandPalette, PALETTE_ACTION_ID } from './command_palette.js';
 import { pickLanguage, loadLabels, createTranslator, localizeTree, format } from './i18n.js';
-import { applyTheme, currentTheme, nextTheme, DEFAULT_THEME } from './theme.js';
+import { applyTheme, currentTheme, nextTheme } from './theme.js';
 import { loadVizjets } from './vizjet_loader.js';
 import { createMenubar } from '../vizjets/menubar/menubar.js';
 import { createToolbar } from '../vizjets/main_toolbar/main_toolbar.js';
@@ -75,7 +75,8 @@ log('info', `Labels loaded: ${lang}`);
 // ---- vizjets
 await loadVizjets(document);
 localizeTree(document.body, t);
-applyTheme(document, DEFAULT_THEME);
+// The remembered theme — dark by default (preferences.default.json).
+applyTheme(document, /** @type {{ theme: string }} */ (await command('prefs.info')).theme);
 
 // ---- Actions
 const actions = new ActionRegistry({
@@ -105,14 +106,20 @@ const aboutDialog = createAboutDialog(byId('about_dialog'), { t, version });
 const toaster = createToaster();
 
 // ---- Preferences (docs/contracts/PREFERENCES.md): one dialog, changes applied at once.
-/** @typedef {{ file: string, status: 'ok' | 'missing' | 'invalid', language: string | null }} PrefsInfo */
+/** @typedef {{ file: string, status: 'ok' | 'missing' | 'invalid', language: string | null, theme: string }} PrefsInfo */
+/** Applies a theme at once and remembers it (no restart). @param {string} theme */
+async function setTheme(theme) {
+  applyTheme(document, theme);
+  await command('prefs.setTheme', { theme });
+}
 const prefsInfo = async () => /** @type {PrefsInfo} */ (await command('prefs.info'));
 const restartWarning = () =>
   toaster.modalWarning(t('Language/RestartTitle'), t('Language/RestartMessage'), t('Dialog/OK', 'OK'));
 /** Resets with no confirmation; shows the restart warning when the language changed. */
 async function resetPreferences() {
   const before = (await prefsInfo()).language;
-  const state = /** @type {{ language: string | null }} */ (await command('prefs.reset'));
+  const state = /** @type {{ language: string | null, theme: string }} */ (await command('prefs.reset'));
+  applyTheme(document, state.theme); // at once; the language needs a restart
   if (state.language !== before) await restartWarning();
   return state;
 }
@@ -122,6 +129,7 @@ const preferencesDialog = createPreferencesDialog(byId('preferences_dialog'), {
     await command('prefs.setLanguage', { language });
     await restartWarning();
   },
+  onTheme: setTheme,
   onReset: async () => {
     const answer = await toaster.modalChoice(t('Preferences/ResetTitle', 'Reset preferences'),
       t('Preferences/ResetMessage', 'Reset all preferences to their defaults?'), [
@@ -134,7 +142,7 @@ const preferencesDialog = createPreferencesDialog(byId('preferences_dialog'), {
 /** @param {{ category?: 'interface' | 'system', focusLanguage?: boolean }} [options] */
 async function openPreferences(options) {
   const { file, language } = await prefsInfo();
-  preferencesDialog.open({ languages, language, file }, options);
+  preferencesDialog.open({ languages, language, theme: currentTheme(document), file }, options);
 }
 const bottomPanel = createBottomPanel(byId('bottom_panel'), { workspace: byId('workspace') });
 createOutputView(bottomPanel.view('output'), output);
@@ -175,7 +183,7 @@ actions.register({
   label: 'Light / Dark Theme',
   labelKey: 'View/ToggleTheme',
   categoryKey: 'View',
-  run: async () => applyTheme(document, nextTheme(currentTheme(document)))
+  run: async () => setTheme(nextTheme(currentTheme(document)))
 });
 actions.register({
   id: 'view.toggleDevTools',
