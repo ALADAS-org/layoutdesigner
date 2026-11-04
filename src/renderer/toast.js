@@ -78,7 +78,8 @@ export function createToaster(win = window) {
       doc.addEventListener('keydown', onKey, true);
       // Message on exactly two balanced lines, measured in the toast's own font.
       const lines = splitBalanced(message, textWidth(doc, '14px system-ui, sans-serif'));
-      win.iziToast.warning({
+      // An error: iziToast's error style, a pale red background (PO, 2026-11-04).
+      win.iziToast[icon === 'error' ? 'error' : 'warning']({
         class: 'LdToast LdModalToast',
         title,
         message: lines.map(escapeHtml).join('<br>'),

@@ -68,6 +68,7 @@ test.describe('the Preferences dialog', () => {
     await select(win).selectOption('fr');
     await expect(toast(win)).toBeVisible();
     await expect(toast(win).locator('.iziToast-title')).toHaveText('Restart required');
+    await expect(toast(win)).toHaveClass(/iziToast-color-orange/); // a warning stays orange
     expect(await toast(win).locator('.iziToast-message').innerText())
       .toBe('The new language will be applied\nwhen Layout Designer restarts.');
     expect(readJson(prefsFile)).toEqual({ language: 'fr' });
@@ -198,6 +199,7 @@ test.describe('an invalid preferences file at start-up', () => {
       await expect(toast(win).locator('button')).toHaveCount(2);
       // An error: the PO's error icon, not the warning one.
       await expect(toast(win).locator('img.iziToast-icon')).toHaveAttribute('src', '../assets/icons/error_icn.png');
+      await expect(toast(win)).toHaveClass(/iziToast-color-red/); // pale red background
       await answer(win, 'ignore');
       expect(fs.readFileSync(prefsFile, 'utf8')).toBe('{ not json'); // left as it is
       expect(fs.existsSync(`${prefsFile}.bak`)).toBe(false);

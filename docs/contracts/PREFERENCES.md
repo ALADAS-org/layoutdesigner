@@ -88,7 +88,8 @@ References: **Inkscape** *Edit › Preferences…* (one dialog, the language in 
   - **Ignore**: closes the warning; the file is left as it is (the user may repair it by
     hand); the warning comes back at each launch while the file is invalid.
 - It is an **error**, not a warning: the toast shows the **error icon**
-  `assets/icons/error_icn.png` (PO, 2026-11-04) instead of the warning icon.
+  `assets/icons/error_icn.png` (PO, 2026-11-04) instead of the warning icon, on a
+  **pale red** background (iziToast's error style) instead of the warnings' orange.
 - A **missing** file is not an error (first launch): no warning.
 
 ## 4. Menu, Action, shortcut
