@@ -196,6 +196,8 @@ test.describe('an invalid preferences file at start-up', () => {
       await expect(win.locator('.MenubarTitle')).toHaveText(locale.toLowerCase().startsWith('fr') ? MENUS_FR : MENUS_EN);
       await expect(toast(win)).toBeVisible();
       await expect(toast(win).locator('button')).toHaveCount(2);
+      // An error: the PO's error icon, not the warning one.
+      await expect(toast(win).locator('img.iziToast-icon')).toHaveAttribute('src', '../assets/icons/error_icn.png');
       await answer(win, 'ignore');
       expect(fs.readFileSync(prefsFile, 'utf8')).toBe('{ not json'); // left as it is
       expect(fs.existsSync(`${prefsFile}.bak`)).toBe(false);

@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (695 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (700 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -638,6 +638,8 @@
   - pattern.schema.json ★
   - pattern.spec.md ★
 - **src/**
+  - **config/**
+    - preferences.default.json
   - **i18n/**
     - LD_Labels_en.json
     - LD_Labels_fr.json
@@ -667,6 +669,7 @@
     - journal.js
     - language_commands.js
     - preferences.js
+    - preferences_commands.js
     - preload.js
     - window_options.js
   - **types/**
@@ -689,6 +692,10 @@
       - menubar.css
       - menubar.html
       - menubar.js
+    - **preferences_dialog/**
+      - preferences_dialog.css
+      - preferences_dialog.html
+      - preferences_dialog.js
     - **status_bar/**
       - status_bar.css
       - status_bar.html

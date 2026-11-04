@@ -269,7 +269,7 @@ if ((await prefsInfo()).status === 'invalid') {
       t('Preferences/InvalidMessage', 'The preferences file cannot be read; the defaults are used.'), [
         { label: t('Dialog/Reset', 'Reset'), value: 'reset' },
         { label: t('Dialog/Ignore', 'Ignore'), value: 'ignore', primary: false }
-      ])
+      ], { icon: 'error' }) // an error, not a warning (PO, 2026-11-04)
     .then(async (answer) => {
       if (answer === 'reset') await resetPreferences();
       else log('info', 'Invalid preferences ignored; the warning comes back at the next launch');

@@ -45,6 +45,12 @@ function textWidth(doc, font) {
 
 /** @typedef {{ label: string, value: string, primary?: boolean }} ToastButton */
 
+/** The PO's icons, relative to src/index.html: a warning, or an error (N0.5 step 6). */
+const ICONS = Object.freeze({
+  warning: '../assets/icons/warning_icn.png',
+  error: '../assets/icons/error_icn.png'
+});
+
 /** @param {Window} [win] */
 export function createToaster(win = window) {
   /**
@@ -52,9 +58,10 @@ export function createToaster(win = window) {
    * their own line below (PO decision). Resolves with the value of the button pressed,
    * or null when dismissed with Esc. The first button has the focus.
    * @param {string} title @param {string} message @param {ToastButton[]} buttons
+   * @param {{ icon?: keyof typeof ICONS }} [options] the icon: warning (default) or error
    * @returns {Promise<string | null>}
    */
-  const modalChoice = (title, message, buttons) =>
+  const modalChoice = (title, message, buttons, { icon = 'warning' } = {}) =>
     new Promise((resolve) => {
       const doc = win.document;
       /** @type {string | null} */
@@ -76,7 +83,7 @@ export function createToaster(win = window) {
         title,
         message: lines.map(escapeHtml).join('<br>'),
         layout: 2,
-        iconUrl: '../assets/icons/warning_icn.png', // relative to src/index.html
+        iconUrl: ICONS[icon],
         position: 'center',
         overlay: true,
         overlayClose: false,
