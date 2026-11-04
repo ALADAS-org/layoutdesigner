@@ -12,6 +12,7 @@ const ALL_BUT_PALETTE = [
   'Debug Console: Help',
   'Debug Console: List Folder',
   'Debug Console: Show Folder',
+  'Edit: Preferences…',
   'File: Quit',
   'Help: About Layout Designer…',
   'Preferences: Choose Language…',

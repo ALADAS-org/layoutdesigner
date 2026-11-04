@@ -1,8 +1,8 @@
 # Contract — Preferences dialog and reset (N0.5 step 6)
 
-**Status:** DRAFT — accepted on principle by the Product Owner (2026-11-04), to be
-confirmed **in use** on the mock-up `docs/mockups/preferences_prototype.html` (reference
-target of the Design gate) before any code. Open points are settled one at a time; each
+**Status:** VALIDATED by the Product Owner on 2026-11-04, after trying the mock-up
+`docs/mockups/preferences_prototype.html` — « until further notice »: it stays open to
+reformulation in use. Open points are settled one at a time; each
 answer is recorded in §5.
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-11-04
 

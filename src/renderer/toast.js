@@ -20,7 +20,8 @@ function escapeHtml(text) {
  * @returns {string[]}
  */
 export function splitBalanced(text, measure = (s) => s.length) {
-  const words = String(text).trim().split(/\s+/);
+  // Ordinary spaces only: a no-break space (French « illisible ; ») keeps its words together.
+  const words = String(text).trim().split(/[ \t\r\n]+/);
   if (words.length < 2) return [words.join(' ')];
   /** @type {{ gap: number, lines: string[] } | null} */
   let best = null;
@@ -42,55 +43,70 @@ function textWidth(doc, font) {
   return (s) => ctx.measureText(s).width;
 }
 
+/** @typedef {{ label: string, value: string, primary?: boolean }} ToastButton */
+
 /** @param {Window} [win] */
 export function createToaster(win = window) {
+  /**
+   * Modal warning, centred in the window: title and message on two lines, the buttons on
+   * their own line below (PO decision). Resolves with the value of the button pressed,
+   * or null when dismissed with Esc. The first button has the focus.
+   * @param {string} title @param {string} message @param {ToastButton[]} buttons
+   * @returns {Promise<string | null>}
+   */
+  const modalChoice = (title, message, buttons) =>
+    new Promise((resolve) => {
+      const doc = win.document;
+      /** @type {string | null} */
+      let chosen = null;
+      let done = false;
+      /** @param {KeyboardEvent} event */
+      const onKey = (event) => {
+        if (event.key !== 'Escape') return;
+        event.preventDefault();
+        event.stopPropagation();
+        const toast = doc.querySelector('.iziToast.LdModalToast');
+        if (toast) win.iziToast.hide({}, toast, 'escape');
+      };
+      doc.addEventListener('keydown', onKey, true);
+      // Message on exactly two balanced lines, measured in the toast's own font.
+      const lines = splitBalanced(message, textWidth(doc, '14px system-ui, sans-serif'));
+      win.iziToast.warning({
+        class: 'LdToast LdModalToast',
+        title,
+        message: lines.map(escapeHtml).join('<br>'),
+        layout: 2,
+        iconUrl: '../assets/icons/warning_icn.png', // relative to src/index.html
+        position: 'center',
+        overlay: true,
+        overlayClose: false,
+        close: false,
+        drag: false,
+        timeout: false,
+        progressBar: false,
+        zindex: 2000,
+        buttons: buttons.map((b, i) => [
+          `<button class="LdToastButton${b.primary === false ? ' LdSecondary' : ''}" data-value="${escapeHtml(b.value)}">${escapeHtml(b.label)}</button>`,
+          (/** @type {any} */ instance, /** @type {HTMLElement} */ toast) => {
+            chosen = b.value;
+            instance.hide({}, toast, b.value);
+          },
+          i === 0 // focus the first button
+        ]),
+        onClosed: () => {
+          if (done) return;
+          done = true;
+          doc.removeEventListener('keydown', onKey, true);
+          resolve(chosen);
+        }
+      });
+    });
+
   return {
-    // Modal warning, centred in the window: title and message on two lines, an OK
-    // button on its own line below (PO decision). Resolves once dismissed (OK or Esc).
+    modalChoice,
     /** @param {string} title @param {string} message @param {string} [okLabel] @returns {Promise<void>} */
-    modalWarning: (title, message, okLabel = 'OK') =>
-      new Promise((resolve) => {
-        const doc = win.document;
-        let done = false;
-        /** @param {KeyboardEvent} event */
-        const onKey = (event) => {
-          if (event.key !== 'Escape') return;
-          event.preventDefault();
-          event.stopPropagation();
-          const toast = doc.querySelector('.iziToast.LdModalToast');
-          if (toast) win.iziToast.hide({}, toast, 'escape');
-        };
-        doc.addEventListener('keydown', onKey, true);
-        // Message on exactly two balanced lines, measured in the toast's own font.
-        const lines = splitBalanced(message, textWidth(doc, '14px system-ui, sans-serif'));
-        win.iziToast.warning({
-          class: 'LdToast LdModalToast',
-          title,
-          message: lines.map(escapeHtml).join('<br>'),
-          layout: 2,
-          iconUrl: '../assets/icons/warning_icn.png', // relative to src/index.html
-          position: 'center',
-          overlay: true,
-          overlayClose: false,
-          close: false,
-          drag: false,
-          timeout: false,
-          progressBar: false,
-          zindex: 2000,
-          buttons: [
-            [
-              `<button class="LdToastOk">${escapeHtml(okLabel)}</button>`,
-              (/** @type {any} */ instance, /** @type {HTMLElement} */ toast) => instance.hide({}, toast, 'ok'),
-              true // focus the button
-            ]
-          ],
-          onClosed: () => {
-            if (done) return;
-            done = true;
-            doc.removeEventListener('keydown', onKey, true);
-            resolve();
-          }
-        });
-      })
+    modalWarning: async (title, message, okLabel = 'OK') => {
+      await modalChoice(title, message, [{ label: okLabel, value: 'ok' }]);
+    }
   };
 }

@@ -257,6 +257,10 @@ Content-Security-Policy is `default-src 'self'; img-src 'self' data:`.
 
 ### 13.8 Interface language chosen in the GUI (promoted from the backlog, 2026-10-29)
 
+> **Superseded in part by N0.5 step 6** (`PREFERENCES.md` §2, 2026-11-04): the language
+> is chosen in the *Edit › Preferences…* dialog; *Choose Language…* stays in the palette
+> and opens that dialog on the language; the small `language_dialog` is removed.
+
 - Palette entry *Preferences: Choose Language…* — client Action `preferences.chooseLanguage`
   (`prefs.chooseLanguage` before §13.9).
   It opens a modal jQuery UI dialog (vizjet `language_dialog`) listing the languages

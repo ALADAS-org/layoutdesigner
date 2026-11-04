@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (697 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (695 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -625,6 +625,7 @@
     - PREFERENCES.md
   - **mockups/**
     - output_panel_prototype.html
+    - preferences_prototype.html
   - **reboot-kit/**
     - LD_FileTree.md
     - LD_ReferenceCorpus.md
@@ -680,10 +681,6 @@
       - bottom_panel.css
       - bottom_panel.html
       - bottom_panel.js
-    - **language_dialog/**
-      - language_dialog.css
-      - language_dialog.html
-      - language_dialog.js
     - **main_toolbar/**
       - main_toolbar.css
       - main_toolbar.html
@@ -732,9 +729,9 @@
       - debug_console.spec.js
       - gui.spec.js
       - i18n.spec.js
-      - language_choice.spec.js
       - launch.js
       - output.spec.js
+      - preferences.spec.js
     - playwright.config.js
 - .gitattributes
 - .gitignore

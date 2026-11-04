@@ -1,0 +1,88 @@
+/* Preferences dialog (N0.5 step 6) — the dialog frame is skinned in app.css (.LdDialog). */
+
+.PreferencesDialog {
+  display: flex;
+  height: 300px;
+  margin: 0 -1em; /* jQuery UI content padding: the category list touches the frame */
+}
+
+.PreferencesCategories {
+  flex: none;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  background: var(--ld-panel-bg);
+  border-right: 1px solid var(--ld-border);
+}
+
+.PreferencesCategory {
+  padding: 5px 12px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.PreferencesCategory:hover {
+  background: var(--ld-hover-bg);
+}
+
+.PreferencesCategory[aria-selected="true"] {
+  background: var(--ld-highlight-bg);
+  color: var(--ld-highlight-fg);
+}
+
+.PreferencesPages {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 18px;
+  overflow: auto;
+}
+
+.PreferencesPageTitle {
+  margin: 6px 0 12px;
+  font-size: 14px;
+}
+
+.PreferencesRow {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.PreferencesLanguage {
+  padding: 3px 6px;
+  background: var(--ld-input-bg);
+  color: var(--ld-menu-fg);
+  border: 1px solid var(--ld-border);
+  font: inherit;
+}
+
+.PreferencesFile {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 12px Consolas, "Cascadia Mono", monospace;
+  color: var(--ld-muted-fg);
+  user-select: text;
+}
+
+.PreferencesReset {
+  padding: 4px 12px;
+  background: var(--ld-hover-bg);
+  color: var(--ld-menu-fg);
+  border: 1px solid var(--ld-border);
+  font: inherit;
+  cursor: pointer;
+}
+
+.PreferencesHelp {
+  margin: 4px 0 0;
+  color: var(--ld-muted-fg);
+  font-size: 12px;
+}

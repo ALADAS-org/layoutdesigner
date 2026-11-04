@@ -19,7 +19,7 @@ test.describe('French (--lang=fr)', () => {
 
   test('menus, entries and tooltips are in French', async () => {
     expect(await win.evaluate(() => document.documentElement.lang)).toBe('fr');
-    await expect(win.locator('.MenubarTitle')).toHaveText(['Fichier', 'Affichage', 'Aide']);
+    await expect(win.locator('.MenubarTitle')).toHaveText(['Fichier', 'Édition', 'Affichage', 'Aide']);
     await expect(win.locator('.MenubarItem[data-action="file.quit"] .MenubarItemLabel')).toHaveText('Quitter');
     await expect(win.locator('.CommandCenter')).toHaveAttribute('title', 'Palette de commandes (Ctrl+Shift+P)');
     await expect(win.locator('.CommandCenterText')).toHaveText('Rechercher une commande');
@@ -41,6 +41,7 @@ test.describe('French (--lang=fr)', () => {
       'Console de débogage : Changer de dossier',
       'Console de débogage : Effacer',
       'Console de débogage : Lister le dossier',
+      'Édition : Préférences…',
       'Fichier : Quitter',
       'Préférences : Choisir la langue…'
     ]);
@@ -63,7 +64,7 @@ test('an unsupported language falls back to English (--lang=de)', async () => {
   const { app, win } = await launch({ lang: 'de' });
   try {
     expect(await win.evaluate(() => document.documentElement.lang)).toBe('en');
-    await expect(win.locator('.MenubarTitle')).toHaveText(['File', 'View', 'Help']);
+    await expect(win.locator('.MenubarTitle')).toHaveText(['File', 'Edit', 'View', 'Help']);
   } finally {
     await app.close();
   }

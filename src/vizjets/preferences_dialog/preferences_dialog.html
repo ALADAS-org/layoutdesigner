@@ -1,0 +1,33 @@
+<!-- Preferences dialog (N0.5 step 6) — after Inkscape. Contract: docs/contracts/PREFERENCES.md §1.
+     Categories on the left, the selected one's page on the right; changes apply at once.
+     A category appears only when it holds a real preference. -->
+<div class="PreferencesDialog">
+  <div class="PreferencesCategories" role="tablist" aria-orientation="vertical">
+    <button class="PreferencesCategory" type="button" role="tab" data-category="interface"
+            data-label-key="Preferences/Interface">Interface</button>
+    <button class="PreferencesCategory" type="button" role="tab" data-category="system"
+            data-label-key="Preferences/System">System</button>
+  </div>
+  <div class="PreferencesPages">
+    <section class="PreferencesPage" role="tabpanel" data-category="interface">
+      <h3 class="PreferencesPageTitle" data-label-key="Preferences/Interface">Interface</h3>
+      <div class="PreferencesRow">
+        <label for="preferences_language" data-label-key="Preferences/Language">Language</label>
+        <select class="PreferencesLanguage" id="preferences_language"></select>
+      </div>
+      <p class="PreferencesHelp" data-label-key="Preferences/LanguageHelp">Saved at once; applied when Layout Designer restarts.</p>
+    </section>
+    <section class="PreferencesPage" role="tabpanel" data-category="system" hidden>
+      <h3 class="PreferencesPageTitle" data-label-key="Preferences/System">System</h3>
+      <div class="PreferencesRow">
+        <span data-label-key="Preferences/File">Preferences file</span>
+        <span class="PreferencesFile"></span>
+      </div>
+      <div class="PreferencesRow">
+        <span></span>
+        <span><button class="PreferencesReset" type="button" data-label-key="Preferences/Reset">Reset preferences</button></span>
+      </div>
+      <p class="PreferencesHelp" data-label-key="Preferences/ResetHelp">Restores the defaults of preferences.default.json. The current file is kept as preferences.json.bak.</p>
+    </section>
+  </div>
+</div>

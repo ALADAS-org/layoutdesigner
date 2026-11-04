@@ -94,3 +94,48 @@ describe('language Commands', () => {
     expect(fs.existsSync(prefsFile)).toBe(false);
   });
 });
+
+describe('defaults and reset (N0.5 step 6)', () => {
+  const { DEFAULTS_PATH, readDefaults, inspectPreferences, resetPreferences } = require('../../../../src/server/preferences.js');
+  const { registerPreferencesCommands } = require('../../../../src/server/preferences_commands.js');
+
+  test('preferences.default.json is valid JSON and lists the language, null = system', () => {
+    expect(readDefaults(DEFAULTS_PATH)).toEqual({ language: null });
+  });
+
+  test('inspectPreferences tells ok, missing and invalid apart, without logging', () => {
+    const dir = tmp();
+    const spy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    expect(inspectPreferences(path.join(dir, 'none.json')).status).toBe('missing');
+    fs.writeFileSync(path.join(dir, 'bad.json'), '{ not json');
+    expect(inspectPreferences(path.join(dir, 'bad.json')).status).toBe('invalid');
+    fs.writeFileSync(path.join(dir, 'ok.json'), '{"language": "fr"}');
+    expect(inspectPreferences(path.join(dir, 'ok.json'))).toEqual({ status: 'ok', prefs: { language: 'fr' } });
+    expect(spy).not.toHaveBeenCalled();
+    jest.restoreAllMocks();
+  });
+
+  test('resetPreferences keeps the replaced file as .bak, then writes the defaults', () => {
+    const file = path.join(tmp(), 'preferences.json');
+    expect(resetPreferences(file)).toEqual({ backup: null, prefs: { language: null } }); // no file yet
+    fs.writeFileSync(file, '{ not json');
+    expect(resetPreferences(file).backup).toBe(`${file}.bak`);
+    expect(fs.readFileSync(`${file}.bak`, 'utf8')).toBe('{ not json');
+    expect(JSON.parse(fs.readFileSync(file, 'utf8'))).toEqual({ language: null });
+  });
+
+  test('prefs.info and prefs.reset; prefs.setLanguage accepts null', async () => {
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    const prefsFile = path.join(tmp(), 'preferences.json');
+    const reg = new CommandRegistry();
+    registerPreferencesCommands(reg, { prefsFile });
+    registerLanguageCommands(reg, { prefsFile });
+    expect((await reg.run('prefs.info', undefined, {})).value).toEqual({ file: prefsFile, status: 'missing', language: null });
+    await reg.run('prefs.setLanguage', { language: 'fr' }, {});
+    expect((await reg.run('prefs.info', undefined, {})).value).toMatchObject({ status: 'ok', language: 'fr' });
+    expect(await reg.run('prefs.reset', undefined, {})).toEqual({ ok: true, value: { backup: `${prefsFile}.bak`, language: null } });
+    await expect(reg.run('prefs.setLanguage', { language: null }, {})).resolves.toEqual({ ok: true, value: { language: null } });
+    expect(JSON.parse(fs.readFileSync(prefsFile, 'utf8'))).toEqual({ language: null });
+    jest.restoreAllMocks();
+  });
+});

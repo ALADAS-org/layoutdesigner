@@ -7,7 +7,8 @@
 //   - file.quit            alias   Ctrl+Q (as in Illustrator) → Command app.quit
 //   - view.toggleTheme     client  light ↔ dark
 //   - view.toggleDevTools  alias   Ctrl+Shift+I → Command dev.toggleDevTools
-//   - preferences.chooseLanguage client  language dialog → Command prefs.setLanguage → toast
+//   - edit.choosePreferences client Ctrl+K (as Illustrator) — the Preferences dialog (N0.5)
+//   - preferences.chooseLanguage client  the Preferences dialog, on the language
 //   - help.about           client  F1 — opens the About dialog
 //   - view.togglePanel     client  Ctrl+J — folds / unfolds the bottom panel (N0.5)
 //   - view.showOutput      client  Ctrl+Shift+U — unfolds the panel on Output
@@ -27,7 +28,7 @@ import { createMenubar } from '../vizjets/menubar/menubar.js';
 import { createToolbar } from '../vizjets/main_toolbar/main_toolbar.js';
 import { createStatusBar } from '../vizjets/status_bar/status_bar.js';
 import { createAboutDialog } from '../vizjets/about_dialog/about_dialog.js';
-import { createLanguageDialog } from '../vizjets/language_dialog/language_dialog.js';
+import { createPreferencesDialog } from '../vizjets/preferences_dialog/preferences_dialog.js';
 import { createBottomPanel } from '../vizjets/bottom_panel/bottom_panel.js';
 import { output } from './output_sources.js';
 import { createOutputView } from './output_view.js';
@@ -100,8 +101,40 @@ const palette = createCommandPalette(actions, document, {
 });
 const { version } = await (await fetch('../package.json')).json();
 const aboutDialog = createAboutDialog(byId('about_dialog'), { t, version });
-const languageDialog = createLanguageDialog(byId('language_dialog'), { t });
 const toaster = createToaster();
+
+// ---- Preferences (docs/contracts/PREFERENCES.md): one dialog, changes applied at once.
+/** @typedef {{ file: string, status: 'ok' | 'missing' | 'invalid', language: string | null }} PrefsInfo */
+const prefsInfo = async () => /** @type {PrefsInfo} */ (await command('prefs.info'));
+const restartWarning = () =>
+  toaster.modalWarning(t('Language/RestartTitle'), t('Language/RestartMessage'), t('Dialog/OK', 'OK'));
+/** Resets with no confirmation; shows the restart warning when the language changed. */
+async function resetPreferences() {
+  const before = (await prefsInfo()).language;
+  const state = /** @type {{ language: string | null }} */ (await command('prefs.reset'));
+  if (state.language !== before) await restartWarning();
+  return state;
+}
+const preferencesDialog = createPreferencesDialog(byId('preferences_dialog'), {
+  t,
+  onLanguage: async (language) => {
+    await command('prefs.setLanguage', { language });
+    await restartWarning();
+  },
+  onReset: async () => {
+    const answer = await toaster.modalChoice(t('Preferences/ResetTitle', 'Reset preferences'),
+      t('Preferences/ResetMessage', 'Reset all preferences to their defaults?'), [
+        { label: t('Dialog/OK', 'OK'), value: 'ok' },
+        { label: t('Dialog/Cancel', 'Cancel'), value: 'cancel', primary: false }
+      ]);
+    return answer === 'ok' ? resetPreferences() : null;
+  }
+});
+/** @param {{ category?: 'interface' | 'system', focusLanguage?: boolean }} [options] */
+async function openPreferences(options) {
+  const { file, language } = await prefsInfo();
+  preferencesDialog.open({ languages, language, file }, options);
+}
 const bottomPanel = createBottomPanel(byId('bottom_panel'), { workspace: byId('workspace') });
 createOutputView(bottomPanel.view('output'), output);
 // Main-side lines (start-up, preferences…): those written so far, then every new one.
@@ -154,15 +187,16 @@ actions.register({
   label: 'Choose Language…',
   labelKey: 'Language/Choose',
   categoryKey: 'Preferences',
-  // Saved in the preferences; the new language applies at the next start.
-  run: async () => {
-    const choice = await languageDialog.choose(languages, lang);
-    if (choice === null) return;
-    await command('prefs.setLanguage', { language: choice });
-    if (choice !== lang) {
-      await toaster.modalWarning(t('Language/RestartTitle'), t('Language/RestartMessage'), t('Dialog/OK', 'OK'));
-    }
-  }
+  // As VS Code's « Configure Display Language »: the Preferences dialog, on the language.
+  run: async () => openPreferences({ category: 'interface', focusLanguage: true })
+});
+actions.register({
+  id: 'edit.choosePreferences',
+  label: 'Preferences…',
+  labelKey: 'Edit/Preferences',
+  categoryKey: 'Edit',
+  shortcut: 'Ctrl+K',
+  run: async () => openPreferences({ category: 'interface' })
 });
 actions.register({
   id: 'help.about',
@@ -227,3 +261,17 @@ createMenubar(byId('menubar'), { actions, labelOf });
 createToolbar(byId('main_toolbar'), { actions, labelOf });
 installShortcuts(actions, window);
 log('info', `${actions.list().length} Actions registered`);
+
+// An invalid preferences file: say so, and offer the reset (PREFERENCES.md §3 bis).
+if ((await prefsInfo()).status === 'invalid') {
+  toaster
+    .modalChoice(t('Preferences/InvalidTitle', 'Invalid preferences'),
+      t('Preferences/InvalidMessage', 'The preferences file cannot be read; the defaults are used.'), [
+        { label: t('Dialog/Reset', 'Reset'), value: 'reset' },
+        { label: t('Dialog/Ignore', 'Ignore'), value: 'ignore', primary: false }
+      ])
+    .then(async (answer) => {
+      if (answer === 'reset') await resetPreferences();
+      else log('info', 'Invalid preferences ignored; the warning comes back at the next launch');
+    });
+}

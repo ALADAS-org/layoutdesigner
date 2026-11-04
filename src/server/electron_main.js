@@ -15,6 +15,7 @@ const { CommandRegistry } = require('./command_registry.js');
 const { registerAppCommands } = require('./app_commands.js');
 const { registerLanguageCommands } = require('./language_commands.js');
 const { registerFileCommands } = require('./file_commands.js');
+const { registerPreferencesCommands } = require('./preferences_commands.js');
 const { journal, log } = require('./journal.js');
 const { preferencesPath } = require('./preferences.js');
 const { version } = require('../../package.json');
@@ -33,6 +34,7 @@ const commands = new CommandRegistry();
 registerAppCommands(commands);
 registerLanguageCommands(commands);
 registerFileCommands(commands);
+registerPreferencesCommands(commands);
 
 function createMainWindow() {
   const win = new BrowserWindow(buildMainWindowOptions());

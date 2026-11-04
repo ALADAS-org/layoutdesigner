@@ -133,8 +133,8 @@ body {
   margin-bottom: 6px; /* a little air between title and message */
 }
 
-/* OK: lighter than the warning's background (PO decision), low height. */
-.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk {
+/* Buttons (OK, Reset, Ignore…): lighter than the warning's background (PO decision), low height. */
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastButton {
   min-width: 72px;
   height: 22px;
   padding: 0 16px;
@@ -146,11 +146,19 @@ body {
   cursor: pointer;
 }
 
-.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:hover {
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastButton + button.LdToastButton {
+  margin-left: 8px;
+}
+
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastButton.LdSecondary {
+  background: transparent;
+}
+
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastButton:hover {
   background: #ffffff;
 }
 
-.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastOk:focus-visible {
+.iziToast.LdModalToast > .iziToast-body .iziToast-buttons > button.LdToastButton:focus-visible {
   outline: 2px solid rgba(110, 70, 30, 0.6);
   outline-offset: 1px;
 }

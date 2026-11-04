@@ -16,6 +16,9 @@ test.describe('Output', () => {
     const prefsFile = tempPreferencesPath();
     fs.writeFileSync(prefsFile, '{ not json');
     ({ app, win } = await launch({ prefsFile }));
+    // N0.5 step 6: an invalid file also gives a start-up warning — leave the file as it is.
+    await win.locator('.iziToast.LdModalToast button[data-value="ignore"]').click();
+    await expect(win.locator('.iziToast.LdModalToast')).toHaveCount(0);
     await win.keyboard.press('Control+Shift+U');
   });
 
@@ -48,7 +51,7 @@ test.describe('Output', () => {
   });
 
   test('an invalid preferences file gives a warn line, in the warn colour', async () => {
-    const warn = lines().filter({ hasText: 'Invalid preferences' });
+    const warn = lines().filter({ hasText: "Invalid preferences '" });
     await expect(warn).toHaveCount(1);
     await expect(warn).toHaveClass(/is-warn/);
     await expect(warn).toHaveText(new RegExp(`^\\[warn\\]  ${TIME}  `));
@@ -75,7 +78,7 @@ test('a line written by main after start-up reaches the Output tab', async () =>
   fs.writeFileSync(prefsFile, '{ not json');
   const { app, win } = await launch({ prefsFile });
   try {
-    const warns = win.locator('#panel_output .OutputLine', { hasText: 'Invalid preferences' });
+    const warns = win.locator('#panel_output .OutputLine', { hasText: "Invalid preferences '" });
     await expect(warns).toHaveCount(1); // at start-up, from the history
     // prefs.setLanguage reads the (still invalid) file again: main's journal writes a
     // second warn line, sent live to the renderer.

@@ -22,9 +22,9 @@ test.describe('menu bar', () => {
   const dropdownOf = (name) => win.locator('.MenubarMenu', { has: title(name) }).locator('.MenubarDropdown');
   const item = (actionId) => win.locator(`.MenubarItem[data-action="${actionId}"]`);
 
-  test('replaces the native menu, with File, View and Help — Help on the right', async () => {
+  test('replaces the native menu, with File, Edit, View and Help — Help on the right', async () => {
     expect(await app.evaluate(({ Menu }) => Menu.getApplicationMenu())).toBeNull();
-    await expect(win.locator('.MenubarTitle')).toHaveText(['File', 'View', 'Help']);
+    await expect(win.locator('.MenubarTitle')).toHaveText(['File', 'Edit', 'View', 'Help']);
     const view = await title('View').boundingBox();
     const help = await title('Help').boundingBox();
     const width = await win.evaluate(() => document.documentElement.clientWidth);
@@ -67,6 +67,8 @@ test.describe('menu bar', () => {
     await win.keyboard.press('F10');
     await expect(title('File')).toBeFocused();
     await win.keyboard.press('ArrowRight');
+    await expect(title('Edit')).toBeFocused();
+    await win.keyboard.press('ArrowRight');
     await expect(title('View')).toBeFocused();
     await expect(dropdownOf('View')).toBeHidden();
     await win.keyboard.press('ArrowDown');
@@ -78,6 +80,9 @@ test.describe('menu bar', () => {
     await win.keyboard.press('ArrowUp'); // wraps to the last entry
     await expect(item('view.toggleDevTools')).toBeFocused();
     await win.keyboard.press('ArrowLeft'); // previous menu, opened, first entry focused
+    await expect(dropdownOf('Edit')).toBeVisible();
+    await expect(item('edit.choosePreferences')).toBeFocused();
+    await win.keyboard.press('ArrowLeft');
     await expect(dropdownOf('File')).toBeVisible();
     await expect(item('file.quit')).toBeFocused();
     await win.keyboard.press('ArrowLeft'); // wraps to Help
@@ -98,6 +103,7 @@ test.describe('menu bar', () => {
 
   test('keyboard: Enter on an entry runs its Action once', async () => {
     await win.keyboard.press('F10');
+    await win.keyboard.press('ArrowRight');
     await win.keyboard.press('ArrowRight');
     await win.keyboard.press('Enter');
     await expect(item('view.commandPalette')).toBeFocused();

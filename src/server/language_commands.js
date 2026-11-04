@@ -6,7 +6,8 @@
 // Language at start-up, first found: --lang switch (used by the tests) → preferences
 // file → system locale. A change is saved in the preferences and applies at restart.
 //   - i18n.startupInfo   → { locale, languages: [{ code, name }] }  (read at start-up)
-//   - prefs.setLanguage  ({ language }) → saves it; unknown language → error
+//   - prefs.setLanguage  ({ language }) → saves it; null = the system language (N0.5
+//                        step 6); unknown language → error
 // =====================================================================================
 'use strict';
 
@@ -52,7 +53,7 @@ function registerLanguageCommands(registry, { i18nDir = I18N_DIR, prefsFile = pr
     run: async (_args, context) => ({
       locale: resolveStartupLocale({
         switchLang: context.app.commandLine.getSwitchValue('lang'),
-        preferred: readPreferences(prefsFile).language,
+        preferred: readPreferences(prefsFile).language ?? undefined,
         systemLocale: context.app.getLocale()
       }),
       languages: listLanguages(i18nDir)
@@ -63,7 +64,7 @@ function registerLanguageCommands(registry, { i18nDir = I18N_DIR, prefsFile = pr
     id: 'prefs.setLanguage',
     run: async (args) => {
       const language = /** @type {{ language?: unknown } | undefined} */ (args)?.language;
-      if (typeof language !== 'string' || !listLanguages(i18nDir).some((l) => l.code === language)) {
+      if (language !== null && (typeof language !== 'string' || !listLanguages(i18nDir).some((l) => l.code === language))) {
         throw new Error(`Unknown language '${language}'`);
       }
       const prefs = readPreferences(prefsFile);
