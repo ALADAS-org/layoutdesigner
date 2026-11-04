@@ -102,7 +102,9 @@ Tab completion, errors in red with a line in Output. Step 5 validated by the PO 
 delivered — *Edit › Preferences…* (Ctrl+K), dialog after Inkscape (*Interface* /
 *System*), language applied at once, reset with confirmation and `.bak`, start-up
 warning with Reset / Ignore for an invalid file, `preferences.default.json`.
-**Next: step 7 — Terminal.**
+Step 6 validated by the PO (2026-11-04), with the error icon and a
+pale red background for error toasts. **Next: step 7 — Terminal** (PowerShell only on
+Windows, no shell preference — PO, 2026-11-04).
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a

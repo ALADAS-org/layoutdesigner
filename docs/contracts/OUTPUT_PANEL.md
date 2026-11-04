@@ -188,11 +188,10 @@ output.source('Layout Designer').append('info', 'Labels loaded: fr');
 - **Shell process in main** (node-pty), one per Terminal tab in N0.5. Default shell by
   platform: **Windows: PowerShell** (as VS Code), Linux / macOS: `$SHELL` (PO decision
   2026-10-31).
-- **Windows shell is a preference** (PO decision 2026-10-31): key
-  `terminal.windowsShell` in `preferences.json`, values `powershell` (default) or
-  `cmd` (`cmd.exe`). Read when a Terminal starts — no application restart needed.
-  How the user changes it from the GUI is not settled (a dialog, or the Debug Console
-  with a `preferences.set…` Action: proposal, not built).
+- ~~Windows shell is a preference (`terminal.windowsShell`: `powershell` / `cmd`).~~
+  **Revised (PO, 2026-11-04): PowerShell only on Windows**, no preference — simpler
+  than a *Terminal* category of the Preferences dialog that only Windows would use.
+  Choosing the shell goes to the backlog.
 - **Working directory at start: the application folder**, as the Debug Console — the
   application folder is the root folder (PO decision 2026-10-31).
 - **Display in the renderer** with xterm.js, resized to the body (fit add-on).
@@ -363,6 +362,8 @@ Consequences, to settle (§13):
 **2026-11-04:**
 26. **Debug Console short words are Actions** of the category « Debug Console »,
     listed in the palette (§5).
+27. **Terminal: PowerShell only on Windows** — the `cmd.exe` preference of decision 16
+    is dropped (backlog) (§6).
 
 1. ~~Tab order and the tab active at first launch.~~ Settled (§12, 4).
 2. ~~Default panel state at first launch, minimum and maximum heights.~~ Settled
