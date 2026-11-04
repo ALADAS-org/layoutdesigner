@@ -259,8 +259,41 @@ message (a broken plugin dropped into `plugins/`).
 - **Dependencies:** none new.
 - **Size:** ≈ 550–650 lines of code (submenus add ≈ 120 to `menubar.js` / `.css`),
   about as much in tests.
-- **Debt to record:** TD-3 — plugins folder inside the application folder (repaid with
-  TD-2 at packaging).
+- **Debt to record:** TD-4 — plugins folder inside the application folder (repaid with
+  TD-2 at packaging). *(Was TD-3 in the first draft; TD-3 was taken by N0.5.)*
+- **Debt to repay:** TD-3 — Output lines kept without limit, view fully re-rendered
+  (N0.5): a cap per source and rows appended instead of rebuilt, now that plugins make
+  several sources.
+
+## 14. Alignment with N0.5 (2026-11-05)
+
+What N0.5 decided or built since this draft, and what it changes here — to validate
+with the rest of the contract.
+
+1. **Output sources** (`OUTPUT_PANEL.md` §4): each plugin is a source; N0.6 builds the
+   **source selector** — shown only on the Output tab, closed value « n / m sources »,
+   check boxes in its list, a new source checked by default, at least one checked —
+   and the source tags on lines when several sources are shown. Its ergonomics are
+   checked by the PO at the N0.6 Design gate.
+2. **Server plugins write in Output through main's journal**, which today has a single
+   source (`Layout Designer`): the journal gains a source per line
+   (`journal.source(name).log(level, message)`), so that `api.output` of a server
+   plugin writes under the plugin's name and its lines reach the renderer like the
+   application's (`ld.onOutput`, history included).
+3. **Types** (decision 2026-11-03): the two plugin APIs are typed in
+   `src/types/contracts.d.ts` (`ServerPluginApi`, `RendererPluginApi`), so that a plugin
+   written in JavaScript gets the same JSDoc checks and completion as the core; the
+   dummy plugins are type-checked too.
+4. **Ids and verbs**: plugin Action ids keep the plugin-name prefix (§4,
+   `ACTION_COMMAND.md` §13.9); the verb vocabulary of §13.10 is recommended for their
+   names. The **palette filter matches ids** (§13.11): typing a plugin's name lists all
+   its Actions.
+5. **Debug Console** (`OUTPUT_PANEL.md` §5): plugin Actions run by their id there and are
+   listed by `help`, with no extra work.
+6. **CSP**: renderer plugins are loaded from `plugin://`; the CSP of `index.html`
+   (`style-src 'self' 'unsafe-inline'` since step 7) gains `script-src 'self' plugin:`.
+7. **Preferences**: no *Plugins* category in the Preferences dialog in N0.6 (no real
+   preference yet — `PREFERENCES.md` §1 rule); enable / disable stays in the backlog.
 
 ---
 

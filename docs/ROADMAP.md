@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (steps 1–7 validated; theme preference to validate) · N0.6 contract in draft (plugins) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 next (plugins, contract in draft) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -108,8 +108,9 @@ xterm.js + node-pty, PowerShell on Windows / `$SHELL` elsewhere, started in the
 application folder, follows the panel size and the theme; a shell that ends is replaced,
 screen cleared, with a loop guard; CSP allows inline styles. Step 7 validated by the PO
 (2026-11-05). Added the same day at the PO's request: the **theme as a preference**
-(*Preferences › Interface › Theme*, remembered, applied at once). **N0.5 is complete
-once this addition is validated**; then N0.6 (plugins, contract in draft).
+(*Preferences › Interface › Theme*, remembered, applied at once). Validated by the PO
+(2026-11-05): **N0.5 is complete.** **Next: N0.6 — plugins**: the draft contract
+`docs/contracts/PLUGIN_API.md` is aligned with N0.5 (§14, to validate with the rest).
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a
@@ -245,8 +246,8 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.2 | Action / Command registries, aliasing, command palette | Action / Command ✅ | ✅ 2026-10-29 |
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
-| N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ⏳ in progress |
-| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector** | Plugin API (draft) | — |
+| N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ✅ 2026-11-05 |
+| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector** | Plugin API (draft) | ⏳ next |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
 | N0.9 | Selection + copy / paste | — | — |
