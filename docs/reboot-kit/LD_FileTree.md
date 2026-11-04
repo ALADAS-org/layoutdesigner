@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (691 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (697 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -622,6 +622,7 @@
     - ACTION_COMMAND.md
     - OUTPUT_PANEL.md
     - PLUGIN_API.md
+    - PREFERENCES.md
   - **mockups/**
     - output_panel_prototype.html
   - **reboot-kit/**
@@ -644,6 +645,7 @@
     - app.css
     - command_palette.css
     - command_palette.js
+    - debug_console.js
     - i18n.js
     - journal.js
     - main.js
@@ -660,6 +662,7 @@
     - app_commands.js
     - command_registry.js
     - electron_main.js
+    - file_commands.js
     - journal.js
     - language_commands.js
     - preferences.js
@@ -703,6 +706,7 @@
       - **renderer/**
         - action_registry.test.mjs
         - command_palette.test.mjs
+        - debug_console.test.mjs
         - i18n.test.mjs
         - output_sources.test.mjs
         - shortcuts.test.mjs
@@ -712,6 +716,7 @@
         - vizjet_loader.test.mjs
       - **server/**
         - command_registry.test.js
+        - file_commands.test.js
         - journal.test.js
         - language_commands.test.js
         - node_pty_electron.test.js
@@ -724,6 +729,7 @@
       - app_launch.spec.js
       - bottom_panel.spec.js
       - command_palette.spec.js
+      - debug_console.spec.js
       - gui.spec.js
       - i18n.spec.js
       - language_choice.spec.js

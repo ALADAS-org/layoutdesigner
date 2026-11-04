@@ -1,13 +1,19 @@
 # Contract — Preferences dialog and reset (N0.5 step 6)
 
-**Status:** DRAFT — to be validated by the Product Owner before any code. Open points
-are listed in §6 and settled **one at a time**; each answer is recorded in §5.
+**Status:** DRAFT — accepted on principle by the Product Owner (2026-11-04), to be
+confirmed **in use** on the mock-up `docs/mockups/preferences_prototype.html` (reference
+target of the Design gate) before any code. Open points are settled one at a time; each
+answer is recorded in §5.
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-11-04
 
 Prompted by an invalid `preferences.json`, which today only gives a `warn` line in
 Output (step 4): the user should be able to repair it. This contract builds on
 `ACTION_COMMAND.md` (§13.8 language choice, §13.9 ids, §13.10 verbs) and on the
 preferences file of N0.3 (`src/server/preferences.js`, TD-2).
+
+Reference target: the interactive mock-up `docs/mockups/preferences_prototype.html` —
+*Edit* menu, the dialog (*Interface* / *System*), immediate language change with the
+restart warning, reset with confirmation, the start-up warning for an invalid file.
 
 References: **Inkscape** *Edit › Preferences…* (one dialog, the language in it);
 **Illustrator** *Edit › Preferences* (dialog, « Reset Preferences » button);

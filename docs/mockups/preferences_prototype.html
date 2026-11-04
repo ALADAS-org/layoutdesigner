@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype dialogue Préférences</title>
+<!-- Reference target of N0.5 step 6 (docs/contracts/PREFERENCES.md). Static mock-up, not
+     the implementation: nothing is saved, the restart is simulated. -->
+<style>
+:root{--chrome:#323232;--fg:#e6e6e6;--border:#1f1f1f;--menu:#3c3c3c;--muted:#a0a0a0;--hl:#1473e6;--hover:#4a4a4a;--ws:#535353;--input:#2b2b2b;--warn:#e8a33d;--panel:#262626;--backdrop:rgba(0,0,0,.45)}
+:root[data-theme="light"]{--chrome:#eeeeee;--fg:#1e1e1e;--border:#c6c6c6;--menu:#ffffff;--muted:#6e6e6e;--hl:#1473e6;--hover:#dcdcdc;--ws:#d4d4d4;--input:#ffffff;--warn:#b86e00;--panel:#f8f8f8;--backdrop:rgba(0,0,0,.25)}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:#1a1a1a;color:var(--fg);font:13px system-ui,sans-serif}
+:root[data-theme="light"] body{background:#bbb}
+.note{max-width:980px;margin:0 auto 10px;padding:6px 10px;border:1px dashed #777;color:#aaa;font-size:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.win{max-width:980px;height:600px;margin:auto;border:1px solid var(--border);display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--ws)}
+.bar{display:flex;align-items:center;gap:2px;padding:0 4px;height:26px;background:var(--chrome);border-bottom:1px solid var(--border);position:relative;z-index:3}
+.title{padding:3px 8px;cursor:pointer;border-radius:2px}
+.title:hover,.title.open{background:var(--hover)}
+.right{margin-left:auto}
+.dd{position:absolute;top:26px;min-width:280px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.5);padding:4px 0}
+.item{display:flex;justify-content:space-between;gap:24px;padding:4px 14px;cursor:pointer}
+.item:hover{background:var(--hl);color:#fff}
+.item .k{color:var(--muted)}.item:hover .k{color:#fff}
+.sep{height:1px;background:var(--border);margin:4px 0}
+.tool{height:38px;background:var(--chrome);border-bottom:1px solid var(--border);display:flex;align-items:center}
+.cc{width:480px;margin:auto;border:1px solid var(--border);border-radius:5px;padding:3px 10px;color:var(--muted);display:flex;justify-content:space-between;background:var(--input)}
+.doc{flex:1;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.status{height:22px;background:var(--chrome);border-top:1px solid var(--border);padding:0 8px;font-size:12px;display:flex;align-items:center;color:var(--muted)}
+.back{position:absolute;inset:0;background:var(--backdrop);display:flex;align-items:center;justify-content:center;z-index:5}
+.back[hidden]{display:none}
+.dlg{width:620px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.dlg-t{background:var(--chrome);padding:6px 10px;display:flex;justify-content:space-between;align-items:center}
+.dlg-t button{background:none;border:none;color:var(--fg);cursor:pointer;font-size:14px}
+.dlg-b{display:flex;height:300px}
+.cats{width:150px;border-right:1px solid var(--border);padding:6px 0;background:var(--panel)}
+.cat{padding:5px 12px;cursor:pointer}
+.cat.on{background:var(--hl);color:#fff}
+.page{flex:1;padding:12px 18px;overflow:auto}
+.page h3{margin:0 0 12px;font-size:14px}
+.row{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;margin-bottom:10px}
+select,.path{background:var(--input);color:var(--fg);border:1px solid var(--border);height:24px;font:inherit;padding:0 4px}
+.path{display:flex;align-items:center;font:12px Consolas,monospace;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.help{color:var(--muted);font-size:12px;margin:4px 0 0}
+.btn{min-width:72px;padding:4px 12px;background:var(--hl);color:#fff;border:none;cursor:pointer;font:inherit}
+.btn.sec{background:var(--hover);color:var(--fg)}
+.dlg-f{display:flex;justify-content:flex-end;gap:8px;padding:8px 10px;border-top:1px solid var(--border)}
+.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);min-width:380px;max-width:520px;background:#fff;color:#222;border-left:4px solid var(--warn);box-shadow:0 6px 20px rgba(0,0,0,.6);padding:14px 16px;z-index:8}
+.toast b{display:block;margin-bottom:4px}
+.toast .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.toastback{position:absolute;inset:0;background:var(--backdrop);z-index:7}
+.log{position:absolute;right:8px;bottom:30px;width:460px;background:var(--panel);border:1px solid var(--border);font:11px/1.6 Consolas,monospace;padding:4px 8px;color:var(--muted);z-index:2}
+.log .w{color:var(--warn)}
+</style>
+</head>
+<body>
+<p class="note"><strong>Aperçus :</strong>
+  <button id="theme">Thème clair / sombre</button>
+  <button id="invalid">Simuler un démarrage avec un fichier invalide</button>
+  <span>· Ouvrir : menu <b>Edit › Preferences…</b>, <b>Ctrl+K</b>, ou la palette « Preferences: Choose Language… » (bouton ci-dessous)</span>
+  <button id="chooseLang">Palette : Choose Language…</button>
+</p>
+
+<div class="win" id="win">
+  <div class="bar">
+    <span class="title" data-m="file">File</span>
+    <span class="title" data-m="edit">Edit</span>
+    <span class="title" data-m="view">View</span>
+    <span class="title right" data-m="help">Help</span>
+  </div>
+  <div class="dd" id="dd-edit" style="left:44px" hidden>
+    <div class="item" id="openPrefs"><span>Preferences…</span><span class="k">Ctrl+K</span></div>
+  </div>
+  <div class="tool"><div class="cc"><span>Search commands</span><span>Ctrl+Shift+P</span></div></div>
+  <div class="doc">Contenu visuel du document</div>
+  <div class="log" id="log"></div>
+  <div class="status" id="status"></div>
+
+  <div class="back" id="back" hidden>
+    <div class="dlg" role="dialog" aria-label="Preferences">
+      <div class="dlg-t"><span>Preferences</span><button id="x" aria-label="Close">✕</button></div>
+      <div class="dlg-b">
+        <div class="cats">
+          <div class="cat on" data-c="interface">Interface</div>
+          <div class="cat" data-c="system">System</div>
+        </div>
+        <div class="page" id="p-interface">
+          <h3>Interface</h3>
+          <div class="row"><label for="lang">Language</label>
+            <select id="lang"><option value="">System language</option><option value="en">English</option><option value="fr">Français</option></select></div>
+          <p class="help">Saved at once; applied when Layout Designer restarts.</p>
+        </div>
+        <div class="page" id="p-system" hidden>
+          <h3>System</h3>
+          <div class="row"><span>Preferences file</span><span class="path" title="E:\_00_Michel\_00_Lab\_00_GitHub\layoutdesigner\src\config\preferences.json">E:\_00_Michel\…\src\config\preferences.json</span></div>
+          <div class="row"><span></span><span><button class="btn sec" id="reset">Reset preferences</button></span></div>
+          <p class="help">Restores the defaults of preferences.default.json. The current file is kept as preferences.json.bak.</p>
+        </div>
+      </div>
+      <div class="dlg-f"><button class="btn" id="close">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const hms=()=>new Date().toTimeString().slice(0,8);
+let saved={language:"fr"};
+function log(lvl,msg){const d=document.createElement('div');if(lvl==='warn')d.className='w';d.textContent=`[${lvl}]  ${hms()}  ${msg}`;$('log').append(d);}
+function toast(title,msg,buttons){
+  const back=document.createElement('div');back.className='toastback';
+  const t=document.createElement('div');t.className='toast';
+  t.innerHTML=`<b>${title}</b><div>${msg}</div><div class="btns"></div>`;
+  for(const [label,fn,primary] of buttons){const b=document.createElement('button');b.className='btn'+(primary?'':' sec');b.textContent=label;b.onclick=()=>{back.remove();t.remove();fn&&fn();};t.querySelector('.btns').append(b);}
+  $('win').append(back,t);t.querySelector('.btn').focus();
+}
+const restartWarning=()=>toast('Restart required','The new language will be applied<br>when Layout Designer restarts.',[['OK',null,true]]);
+function openDialog(cat='interface',focusLang=false){
+  $('dd-edit').hidden=true;document.querySelectorAll('.title').forEach(x=>x.classList.remove('open'));
+  $('lang').value=saved.language??'';showCat(cat);$('back').hidden=false;
+  (focusLang?$('lang'):$('close')).focus();
+}
+function showCat(c){document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('on',x.dataset.c===c));$('p-interface').hidden=c!=='interface';$('p-system').hidden=c!=='system';}
+function closeDialog(){$('back').hidden=true;}
+function doReset(){saved={language:null};$('lang').value='';log('info','Preferences reset; previous file kept as …\\src\\config\\preferences.json.bak');restartWarning();}
+document.querySelectorAll('.cat').forEach(c=>c.onclick=()=>showCat(c.dataset.c));
+$('lang').onchange=e=>{saved.language=e.target.value||null;log('info',`Preferences: language = ${saved.language??'system'}`);restartWarning();};
+$('reset').onclick=()=>toast('Reset preferences','Reset all preferences to their defaults?',[['OK',doReset,true],['Cancel',null,false]]);
+$('close').onclick=closeDialog;$('x').onclick=closeDialog;
+$('back').onclick=e=>{};
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey&&!e.shiftKey&&e.key.toLowerCase()==='k'){e.preventDefault();openDialog();}
+  else if(e.key==='Escape'&&!$('back').hidden&&!document.querySelector('.toast'))closeDialog();
+});
+document.querySelector('[data-m="edit"]').onclick=e=>{const dd=$('dd-edit');dd.hidden=!dd.hidden;e.target.classList.toggle('open',!dd.hidden);};
+$('openPrefs').onclick=()=>openDialog();
+$('chooseLang').onclick=()=>openDialog('interface',true);
+$('theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';};
+$('invalid').onclick=()=>{
+  closeDialog();log('warn',"Invalid preferences '…\\src\\config\\preferences.json': Unexpected end of JSON input");
+  toast('Invalid preferences','The preferences file cannot be read;<br>the defaults are used.',[
+    ['Reset',()=>{saved={language:null};log('info','Preferences reset; previous file kept as …\\src\\config\\preferences.json.bak');},true],
+    ['Ignore',()=>log('info','Invalid preferences ignored; the warning will come back at the next launch'),false]]);
+};
+log('info','Layout Designer 0.0.0 started (Electron 45.1.0)');
+</script>
+</body>
+</html>
