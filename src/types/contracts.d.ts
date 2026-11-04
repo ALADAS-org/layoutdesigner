@@ -63,6 +63,18 @@ export interface LdBridge {
   invokeCommand(id: string, args?: unknown): Promise<CommandReply>;
   /** The main-side lines written so far, then every new one. */
   onOutput(listener: (line: OutputLine) => void): Promise<void>;
+  /** The Terminal's shell (OUTPUT_PANEL.md §6, §7). */
+  pty: PtyBridge;
+}
+
+export interface PtyBridge {
+  /** Starts a shell; resolves with its session id. */
+  start(size: { cols: number; rows: number }): Promise<number>;
+  write(id: number, data: string): void;
+  resize(id: number, cols: number, rows: number): void;
+  kill(id: number): void;
+  onData(listener: (id: number, data: string) => void): void;
+  onExit(listener: (id: number, exitCode: number) => void): void;
 }
 
 export interface LanguageInfo {

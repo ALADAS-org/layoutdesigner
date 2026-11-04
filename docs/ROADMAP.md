@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — steps 1–6 delivered) · N0.6 contract in draft (plugins) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 in progress (bottom panel — steps 1–7 delivered, step 7 to validate) · N0.6 contract in draft (plugins) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -103,8 +103,11 @@ delivered — *Edit › Preferences…* (Ctrl+K), dialog after Inkscape (*Interf
 *System*), language applied at once, reset with confirmation and `.bak`, start-up
 warning with Reset / Ignore for an invalid file, `preferences.default.json`.
 Step 6 validated by the PO (2026-11-04), with the error icon and a
-pale red background for error toasts. **Next: step 7 — Terminal** (PowerShell only on
-Windows, no shell preference — PO, 2026-11-04).
+pale red background for error toasts. **Step 7 — Terminal** delivered (2026-11-04):
+xterm.js + node-pty, PowerShell on Windows / `$SHELL` elsewhere, started in the
+application folder, follows the panel size and the theme; a shell that ends is replaced,
+screen cleared, with a loop guard; CSP allows inline styles. **N0.5 is complete pending
+the PO's validation of step 7**; then N0.6 (plugins, contract in draft).
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a

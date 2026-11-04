@@ -34,6 +34,7 @@ import { output } from './output_sources.js';
 import { createOutputView } from './output_view.js';
 import { log } from './journal.js';
 import { createDebugConsole } from './debug_console.js';
+import { createTerminalView } from './terminal_view.js';
 import { createToaster } from './toast.js';
 
 /** @typedef {import('../types/contracts').Action} Action */
@@ -147,8 +148,10 @@ const debugConsole = createDebugConsole(bottomPanel.view('debugConsole'), {
   invokeCommand: (id, args) => window.ld.invokeCommand(id, args),
   appFolder: /** @type {string} */ (await command('fs.appFolder'))
 });
+const terminalView = createTerminalView(bottomPanel.view('terminal'), { pty: window.ld.pty });
 bottomPanel.onShow((tab) => {
   if (tab === 'debugConsole') debugConsole.focus();
+  if (tab === 'terminal') terminalView.show();
 });
 
 actions.register({

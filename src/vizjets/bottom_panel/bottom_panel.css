@@ -97,6 +97,11 @@
   overflow: auto;
 }
 
+/* A tab's own display (flex for the Debug Console) must not show a hidden view. */
+.BottomPanelView[hidden] {
+  display: none;
+}
+
 /* Output tab (N0.5 step 4): level colours — info muted, warn orange, error red (PO). */
 .OutputView {
   padding: 6px 12px;
@@ -157,4 +162,16 @@
 
 .DebugConsoleInput:focus {
   outline: 1px solid var(--ld-tab-accent);
+}
+
+/* Terminal tab (N0.5 step 7): xterm.js fills the body. */
+.TerminalView {
+  overflow: hidden;
+  padding: 4px 0 0 8px;
+  box-sizing: border-box;
+}
+
+.TerminalHost {
+  width: 100%;
+  height: 100%;
 }

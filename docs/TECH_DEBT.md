@@ -21,13 +21,15 @@ Entry format:
 The register started empty with N0 (2026-10-28): the improvised prototype was
 abandoned rather than carried as debt (tag `proto-improvise-2026-10`).
 
-## TD-1 — jQuery / jQuery UI loaded from `../node_modules/`
+## TD-1 — jQuery / jQuery UI (and since N0.5, iziToast and xterm.js) loaded from `../node_modules/`
 - Date / level: 2026-10-29 / N0.3
 - What: `src/index.html` loads jQuery, jQuery UI and its CSS by relative path into
   `node_modules/`. Works with `npm start`; not verified for a packaged build.
 - Why: no packaging exists yet; copying the files into `src/` would duplicate versioned
   third-party code.
 - Cost if left: a packaged build could miss these files (no dialogs, broken start-up).
+  N0.5 step 7 adds xterm.js and its fit add-on (`@xterm/xterm`, `@xterm/addon-fit`),
+  loaded the same way; node-pty is required by main from `node_modules` too.
 - Repayment: when packaging is introduced, check the layout or copy the files at build
   time; add an end-to-end test on the packaged app.
 - Status: open

@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <!-- Only local resources; no inline scripts or styles. Images may also be data: URIs
        (iziToast embeds its icons in its CSS). -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:">
+  <!-- N0.5 step 7: inline styles allowed for xterm.js, as VS Code (OUTPUT_PANEL.md §10);
+       inline scripts stay forbidden. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
   <title>Layout Designer</title>
 
   <!-- Third-party: jQuery + jQuery UI (dialogs, as in Cryptocalc), iziToast (notifications) -->
@@ -13,6 +15,10 @@
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script src="../node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
   <script src="../node_modules/izitoast/dist/js/iziToast.min.js"></script>
+  <!-- Third-party: xterm.js and its fit add-on (Terminal tab, N0.5 step 7) -->
+  <link rel="stylesheet" href="../node_modules/@xterm/xterm/css/xterm.css">
+  <script src="../node_modules/@xterm/xterm/lib/xterm.js"></script>
+  <script src="../node_modules/@xterm/addon-fit/lib/addon-fit.js"></script>
 
   <!-- Theme tokens, window layout, components -->
   <link rel="stylesheet" href="renderer/theme.css">

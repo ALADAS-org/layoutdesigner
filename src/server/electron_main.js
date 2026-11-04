@@ -16,6 +16,7 @@ const { registerAppCommands } = require('./app_commands.js');
 const { registerLanguageCommands } = require('./language_commands.js');
 const { registerFileCommands } = require('./file_commands.js');
 const { registerPreferencesCommands } = require('./preferences_commands.js');
+const { createPtyService } = require('./pty_service.js');
 const { journal, log } = require('./journal.js');
 const { preferencesPath } = require('./preferences.js');
 const { version } = require('../../package.json');
@@ -26,6 +27,12 @@ const INDEX_HTML = path.join(__dirname, '..', 'index.html');
 const COMMAND_INVOKE_CHANNEL = 'ld:command:invoke';
 const OUTPUT_APPEND_CHANNEL = 'ld:output:append';
 const OUTPUT_HISTORY_CHANNEL = 'ld:output:history';
+// Terminal (OUTPUT_PANEL.md §7): start is an invoke; the rest are one-way messages.
+const PTY = {
+  start: 'ld:pty:start', write: 'ld:pty:write', resize: 'ld:pty:resize', kill: 'ld:pty:kill',
+  data: 'ld:pty:data', exit: 'ld:pty:exit'
+};
+const ptys = createPtyService();
 
 log('info', `Layout Designer ${version} started (Electron ${process.versions.electron})`);
 log('info', `Preferences file: ${preferencesPath()}`);
@@ -61,6 +68,35 @@ app.whenReady().then(() => {
     wc.once('destroyed', unsubscribe);
     return journal.history();
   });
+
+  // Terminal: shells belong to the window that started them, and end with it.
+  /** @type {Map<number, Set<number>>} webContents id → its session ids */
+  const ptysOf = new Map();
+  ipcMain.handle(PTY.start, (event, size) => {
+    const wc = event.sender;
+    const { cols = 80, rows = 24 } = size || {};
+    const id = ptys.start({ cols, rows }, {
+      data: (sid, data) => { if (!wc.isDestroyed()) wc.send(PTY.data, { id: sid, data }); },
+      exit: (sid, exitCode) => {
+        ptysOf.get(wc.id)?.delete(sid);
+        if (!wc.isDestroyed()) wc.send(PTY.exit, { id: sid, exitCode });
+      }
+    });
+    if (!ptysOf.has(wc.id)) {
+      ptysOf.set(wc.id, new Set());
+      const wcId = wc.id;
+      wc.once('destroyed', () => {
+        ptys.killAll([...(ptysOf.get(wcId) ?? [])]);
+        ptysOf.delete(wcId);
+      });
+    }
+    ptysOf.get(wc.id)?.add(id);
+    log('info', `Terminal: ${ptys.shell()} started in ${ptys.cwd()}`);
+    return id;
+  });
+  ipcMain.on(PTY.write, (_event, { id, data }) => ptys.write(id, data));
+  ipcMain.on(PTY.resize, (_event, { id, cols, rows }) => ptys.resize(id, cols, rows));
+  ipcMain.on(PTY.kill, (_event, { id }) => ptys.kill(id));
 
   createMainWindow();
 

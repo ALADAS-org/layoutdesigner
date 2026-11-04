@@ -192,6 +192,12 @@ output.source('Layout Designer').append('info', 'Labels loaded: fr');
   **Revised (PO, 2026-11-04): PowerShell only on Windows**, no preference — simpler
   than a *Terminal* category of the Preferences dialog that only Windows would use.
   Choosing the shell goes to the backlog.
+- **A shell that ends is replaced at once** (PO decision 2026-11-04): `exit` means « a
+  new context » — the screen is cleared (as `clear`) and a new shell starts in the
+  application folder, with an `info` line in Output; the tab stays. **Loop guard**: a
+  shell that ends less than a second after its start, twice in a row, is not restarted —
+  the error is shown in red in the Terminal and as an `error` line in Output.
+- The shell starts the first time the tab is shown (xterm.js needs a visible size).
 - **Working directory at start: the application folder**, as the Debug Console — the
   application folder is the root folder (PO decision 2026-10-31).
 - **Display in the renderer** with xterm.js, resized to the body (fit add-on).
@@ -364,6 +370,7 @@ Consequences, to settle (§13):
     listed in the palette (§5).
 27. **Terminal: PowerShell only on Windows** — the `cmd.exe` preference of decision 16
     is dropped (backlog) (§6).
+28. **A shell that ends is replaced at once**, screen cleared, with a loop guard (§6).
 
 1. ~~Tab order and the tab active at first launch.~~ Settled (§12, 4).
 2. ~~Default panel state at first launch, minimum and maximum heights.~~ Settled
