@@ -13,10 +13,15 @@ const SERVER = 'LayoutDesigner.dummy-server';
 const RENDERER = 'LayoutDesigner.dummy-renderer';
 const BROKEN = 'LayoutDesigner.broken-demo';
 
-/** A temporary plugins folder: the repo's plugins, plus a broken one if asked. */
+/**
+ * A temporary plugins folder: the two witnesses of plugins/ only (a developer may have
+ * other plugins there), plus a broken one if asked.
+ */
 function pluginsFolder({ broken = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ld-plugins-'));
-  fs.cpSync(PLUGINS_DIR, dir, { recursive: true });
+  for (const witness of ['dummy-server', 'dummy-renderer']) {
+    fs.cpSync(path.join(PLUGINS_DIR, witness), path.join(dir, witness), { recursive: true });
+  }
   if (broken) {
     // Its entry file is missing: rejected at discovery.
     fs.mkdirSync(path.join(dir, 'broken-demo'));
