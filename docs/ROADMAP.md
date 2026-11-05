@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis next (plugin dependencies) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis in progress (plugin dependencies: contract drafted) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -121,6 +121,13 @@ witnesses), `plugin://`, *Plugins* menu with submenus (*Plugins › Demo*), pale
 TD-4 recorded. **Validated by the PO (2026-11-05)** at the Design gate — fixed on the
 way: a failed plugin that is disabled is no longer reported. **Next: N0.6 bis**
 (dependencies).
+**N0.6 bis — plugin dependencies** (2026-11-05): contract
+`docs/contracts/PLUGIN_DEPENDENCIES.md` **drafted** with the PO, one point at a time
+(its §12): `pluginDependencies` with semver ranges (`semver` approved), the process
+rule (server → renderer refused, to keep a future batch mode), `exports` and
+`api.getExports`, state `blocked` with reasons after VS Code, confirmations in
+*Preferences › Plugins*, topological order, witness `dummy-greeter`. **To validate**
+after its mock-up `docs/mockups/plugin_dependencies_prototype.html`.
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a
@@ -258,7 +265,7 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
 | N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ✅ 2026-11-05 |
 | N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector**; **enable / disable** each plugin (Preferences › Plugins) | Plugin API (validated 2026-11-05) | ✅ 2026-11-05 |
-| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies | ⏳ next |
+| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies (draft 2026-11-05) | ⏳ in progress |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
 | N0.9 | Selection + copy / paste | — | — |
@@ -299,11 +306,39 @@ promotes it to a step, with its reference target.
 - SVG / `.lypart` / PDF export; SVG import (interoperability)
 - Millimetres and print formats (interoperability)
 - Multiple Trame / Scene calques in practice
-- Scripting language
+- Scripting language — merged into **Scripts** below (PO, 2026-11-05)
 - Composition templates, predefined patterns, tutorials (guiding)
 - Search plugins by tag (`keywords`), in *Preferences › Plugins* or the palette (N0.6)
 - Enable / disable plugins without a restart (VS Code does it since 1.31) (N0.6)
+- **Test batches** (PO, 2026-11-05): run only part of the unit / end-to-end tests by a
+  criterion — a category, or the version / sub-step that introduced them (e.g. a
+  `@N0.6` tag; the 4-number `xx.yy.zz.tt` idea needs care, since `package.json`
+  versions must be semver). Jest (`-t`, paths) and Playwright (`--grep` on tags) can
+  filter already, no new dependency. To place: a small sub-step before N0.7, or later.
+- **Scripts** (PO, 2026-11-05) — automation after MS Office *macros*: record, edit and
+  replay a sequence of Actions / Commands, also in a **batch mode** (main without a
+  window; kept possible by `PLUGIN_DEPENDENCIES.md` §2). Merges the « scripting
+  language » item above. Language: **Python** wanted, **embedded** so that the
+  installed Python does not matter — options: a standalone CPython shipped with the
+  app (child process of main, JSON over stdio), or Pyodide (WebAssembly). Name:
+  *Scripts*, not Illustrator's *Actions*, which would clash with our *Action*.
+- **Node editor** (PO, 2026-11-05): intuition that it will serve the specification of
+  document templates (with N4). A read-only first witness could be the plugin
+  dependency graph (`PLUGIN_DEPENDENCIES.md` §8).
+- **Document templates and wizards** (PO, 2026-11-05): ATC, fantasy banknote, stamp,
+  playing card…, and wizards to create a document from them (guiding).
 
+- **NFT mode** (requested by the **sponsor and first user**; recorded by the PO,
+  2026-11-06) — optional, **inactive by default**: a set of plugins, disabled by
+  default (`PLUGIN_DEPENDENCIES.md` §8, `ld-enabled-by-default`). Factored after
+  N0.6 bis: `nft-core` (artwork metadata — name, description, attributes, image,
+  edition, royalties —, generated collections from a seed, export of images and
+  metadata, one menu entry and dialog with the chain choice) ← `nft-evm` (ERC-721 /
+  ERC-1155) ← `nft-base`, `nft-polygon`, `nft-immutable`; and `nft-solana`,
+  `nft-sui`, `nft-aptos`, `nft-tezos` on `nft-core`. Chains: Solana, Sui, Base,
+  Polygon, Tezos, Aptos, Immutable — *Immutable X has been merged into Immutable
+  zkEVM; check the target when promoted*. Keys and signing in main only (as
+  Cryptocalc), never in the renderer; compatible with the batch mode.
 ## Quality axes (every delivery reports on them)
 
 Reliable · Intuitive · Guiding · Evolvable · Interoperable.

@@ -350,6 +350,7 @@ keeps its dependents unloaded, with the reason; cycles are refused; a plugin reu
 another through what that one **exports** (same process only — across processes, through
 its Commands). Witness: a third dummy plugin depending on another. The sub-step is
 named « N0.6 bis » so that the later sub-steps keep their numbers.
+**Contract:** `docs/contracts/PLUGIN_DEPENDENCIES.md` (drafted 2026-11-05).
 
 ## 16. Implementation notes (N0.6, 2026-11-05)
 

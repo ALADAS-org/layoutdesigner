@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype plugin dependencies</title>
+<!-- Reference target of N0.6 bis (docs/contracts/PLUGIN_DEPENDENCIES.md). Static
+     mock-up, not the implementation: the three dummy plugins are simulated, nothing is
+     loaded. Style taken from plugins_prototype.html (N0.6). -->
+<style>
+:root{--chrome:#323232;--fg:#e6e6e6;--border:#1f1f1f;--menu:#3c3c3c;--muted:#a0a0a0;--hl:#1473e6;--hover:#4a4a4a;--ws:#535353;--input:#2b2b2b;--warn:#e8a33d;--err:#ff7b7b;--panel:#262626;--splitter:#888780;--backdrop:rgba(0,0,0,.45)}
+:root[data-theme="light"]{--chrome:#eeeeee;--fg:#1e1e1e;--border:#c6c6c6;--menu:#ffffff;--muted:#6e6e6e;--hl:#1473e6;--hover:#dcdcdc;--ws:#d4d4d4;--input:#ffffff;--warn:#b86e00;--err:#c9252d;--panel:#f8f8f8;--splitter:#888780;--backdrop:rgba(0,0,0,.25)}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:#1a1a1a;color:var(--fg);font:13px system-ui,sans-serif}
+:root[data-theme="light"] body{background:#bbb}
+.note{max-width:1000px;margin:0 auto 10px;padding:6px 10px;border:1px dashed #777;color:#aaa;font-size:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.note b{color:#ccc}
+.win{max-width:1000px;height:640px;margin:auto;border:1px solid var(--border);display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--ws);user-select:none}
+.bar{display:flex;align-items:center;gap:2px;padding:0 4px;height:26px;background:var(--chrome);border-bottom:1px solid var(--border);position:relative;z-index:4}
+.title{padding:3px 8px;border:none;background:none;color:inherit;font:inherit;cursor:pointer;border-radius:2px;position:relative}
+.title:hover,.title.open{background:var(--hover);outline:none}
+.right{margin-left:auto}
+.dd{position:absolute;top:24px;left:0;min-width:260px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.5);padding:4px 0;z-index:5}
+.dd[hidden],.sub[hidden]{display:none}
+.item{display:flex;justify-content:space-between;gap:24px;width:100%;padding:4px 14px;border:none;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;position:relative}
+.item:hover{background:var(--hl);color:#fff}
+.item .k{color:var(--muted)}.item:hover .k{color:#fff}
+.sub{position:absolute;left:100%;top:-5px;min-width:260px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.5);padding:4px 0}
+.tool{height:38px;background:var(--chrome);border-bottom:1px solid var(--border)}
+.doc{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.split{height:4px;background:var(--splitter)}
+.tabs{display:flex;align-items:center;gap:4px;padding:0 8px;background:var(--chrome);border-bottom:1px solid var(--border)}
+.fold{width:20px;height:20px;border:1px solid var(--muted);display:flex;align-items:center;justify-content:center}
+.tab{padding:6px 12px;color:var(--muted);border-bottom:2px solid transparent}
+.tab.on{color:var(--fg);border-bottom-color:#4a9eff}
+.srcsel{margin-left:auto;position:relative}
+.srcsel[hidden]{display:none}
+.srcsel>button{background:var(--chrome);color:var(--fg);border:1px solid var(--border);height:22px;font:12px system-ui;cursor:pointer}
+.srcmenu{position:absolute;right:0;bottom:26px;background:var(--chrome);border:1px solid var(--border);padding:4px 0;min-width:240px;z-index:3;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.srcmenu[hidden]{display:none}
+.srcmenu label{display:flex;gap:6px;align-items:center;padding:3px 10px;white-space:nowrap;cursor:pointer}
+.body{height:170px;background:var(--panel);overflow:auto;padding:6px 12px;font:12px/1.6 Consolas,monospace;white-space:pre;user-select:text}
+.l-info{color:var(--muted)}.l-warn{color:var(--warn)}.l-error{color:var(--err)}
+.src{color:var(--fg);opacity:.75}
+.status{height:22px;background:var(--chrome);border-top:1px solid var(--border);padding:0 8px;font-size:12px;display:flex;align-items:center;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status.warn{color:var(--warn)}
+.back{position:absolute;inset:0;background:var(--backdrop);display:flex;align-items:center;justify-content:center;z-index:7}
+.back[hidden]{display:none}
+.dlg{width:660px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.dlg-t{background:var(--chrome);padding:6px 10px;display:flex;justify-content:space-between}
+.dlg-t button{background:none;border:none;color:var(--fg);cursor:pointer}
+.dlg-b{display:flex;height:330px}
+.cats{width:150px;border-right:1px solid var(--border);padding:6px 0;background:var(--panel)}
+.cat{padding:5px 12px}.cat.on{background:var(--hl);color:#fff}
+.page{flex:1;padding:10px 16px;overflow:auto}.page h3{margin:0 0 10px;font-size:14px}
+.prow{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:start;padding:6px 0;border-bottom:1px solid var(--border)}
+.pname{font-weight:600}.pid{color:var(--muted);font:11px Consolas,monospace}
+.tags{margin-top:3px}.tag{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:0 5px;margin-right:4px}
+.state{font-size:12px;color:var(--muted);cursor:default}.state.failed{color:var(--err)}.state.disabled{font-style:italic}
+.state.blocked{color:var(--warn);text-decoration:underline dotted}
+.help{color:var(--muted);font-size:12px;margin:8px 0 0}
+.bulk{display:flex;align-items:center;gap:8px;padding:4px 0 8px;border-bottom:1px solid var(--border)}
+.bulk select{background:var(--input);color:var(--fg);border:1px solid var(--border);height:24px;font:inherit}
+.bulk .btn:disabled{opacity:.45;cursor:default}
+.bulk .count{color:var(--muted);font-size:12px;margin-left:auto}
+.prow.sel{background:rgba(20,115,230,.18)}
+.cdlg label{display:flex;gap:6px;align-items:center;margin-top:8px}
+.dlg-f{display:flex;justify-content:flex-end;gap:8px;padding:8px 10px;border-top:1px solid var(--border)}
+.btn{min-width:72px;padding:4px 12px;background:var(--hl);color:#fff;border:none;cursor:pointer}
+.btn.sec{background:transparent;color:var(--fg);border:1px solid var(--muted)}
+.conf{position:absolute;inset:0;background:var(--backdrop);display:flex;align-items:center;justify-content:center;z-index:8}
+.conf[hidden]{display:none}
+.cdlg{width:460px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.7)}
+.cdlg .msg{padding:14px 16px;line-height:1.5}
+.cdlg .msg ul{margin:6px 0 0;padding-left:20px}
+.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);min-width:360px;background:rgba(255,207,165,.95);color:#222;padding:14px 16px;z-index:9;box-shadow:0 6px 20px rgba(0,0,0,.6);text-align:center}
+.toast button{margin-top:10px;padding:2px 16px}
+.tip{position:absolute;z-index:10;max-width:420px;background:#111;color:#eee;border:1px solid #555;padding:6px 8px;font-size:12px;line-height:1.4;pointer-events:none}
+.tip[hidden]{display:none}
+</style>
+</head>
+<body>
+<p class="note"><b>Scénarios :</b>
+  <button data-scn="all">Tout chargé</button>
+  <button data-scn="off">dummy-server désactivé</button>
+  <button id="restart">Redémarrer (simulé) avec les préférences actuelles</button>
+  <button id="theme">Thème clair / sombre</button>
+  <span>· <i>Edit › Preferences…</i> (Ctrl+K) pour <i>Préférences › Plugins</i> · <i>Plugins › Demo</i> pour les entrées</span>
+</p>
+
+<div class="win" id="win">
+  <div class="bar" id="bar"></div>
+  <div class="tool"></div>
+  <div class="doc">Contenu visuel du document</div>
+  <div class="split"></div>
+  <div class="tabs">
+    <span class="fold">▾</span><span class="tab on">Output</span><span class="tab">Debug Console</span><span class="tab">Terminal</span>
+    <div class="srcsel" id="srcsel" hidden><button id="srcbtn"></button><div class="srcmenu" id="srcmenu" hidden></div></div>
+  </div>
+  <div class="body" id="out"></div>
+  <div class="status" id="status"></div>
+
+  <div class="back" id="prefs" hidden><div class="dlg">
+    <div class="dlg-t"><span>Preferences</span><button id="px">✕</button></div>
+    <div class="dlg-b">
+      <div class="cats"><div class="cat">Interface</div><div class="cat on">Plugins</div><div class="cat">System</div></div>
+      <div class="page"><h3>Plugins</h3>
+        <div class="bulk"><input type="checkbox" id="selall" title="Select all / none">
+          <select id="bulkact"><option value="disable">Disable</option><option value="enable">Enable</option></select>
+          <button class="btn" id="bulkapply">Apply</button><span class="count" id="selcount"></span></div>
+        <div id="plist"></div>
+        <p class="help">Saved at once; applied when Layout Designer restarts.</p></div>
+    </div>
+    <div class="dlg-f"><button class="btn" id="pclose">Close</button></div>
+  </div></div>
+
+  <div class="conf" id="conf" hidden><div class="cdlg">
+    <div class="dlg-t"><span id="ctitle"></span></div>
+    <div class="msg" id="cmsg"></div>
+    <div class="dlg-f" id="cbtns"></div>
+  </div></div>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const hms=t=>new Date(t).toTimeString().slice(0,8);
+const LD='Layout Designer';
+const NODE='24.22.1';
+// The three witnesses (PLUGIN_DEPENDENCIES.md §9), in folder (alphabetical) order.
+const catalogue=[
+  {id:'LayoutDesigner.dummy-greeter',folder:'dummy-greeter',name:'Dummy Greeter',kind:'server',version:'1.0.0',tags:['demo','dependency'],deps:{'LayoutDesigner.dummy-server':'^1.0.0'},
+   action:{id:'LayoutDesigner.dummy-greeter.hello',label:'Hello from a dependent plugin',msg:`Hello from a plugin that depends on dummy-server (Node.js ${NODE})`}},
+  {id:'LayoutDesigner.dummy-renderer',folder:'dummy-renderer',name:'Dummy Renderer',kind:'renderer',version:'1.0.0',tags:['demo','hello'],deps:{},
+   action:{id:'LayoutDesigner.dummy-renderer.hello',label:'Hello from the renderer',msg:'Hello from a renderer plugin'}},
+  {id:'LayoutDesigner.dummy-server',folder:'dummy-server',name:'Dummy Server',kind:'server',version:'1.0.0',tags:['demo','hello','node'],deps:{},
+   action:{id:'LayoutDesigner.dummy-server.hello',label:'Hello from the server',msg:`Hello from a server plugin (Node.js ${NODE})`}}];
+const byId=id=>catalogue.find(p=>p.id===id);
+const nameOf=id=>byId(id)?.name??id;
+
+let disabled=new Set();          // what preferences.json says now
+let state=new Map();             // id → {state, reason} at this (simulated) start
+let pending=new Map();           // id → 'disabled'|'enabled' changed since this start
+
+// ---- resolution: one graph per process, roots → leaves, alphabetical ties (§5)
+function resolve(){
+  state=new Map();
+  for(const p of catalogue) if(disabled.has(p.id)) state.set(p.id,{state:'disabled'});
+  const order=[];
+  for(const kind of ['server','renderer']){
+    const todo=catalogue.filter(p=>p.kind===kind&&!disabled.has(p.id));
+    while(todo.length){
+      // first plugin (alphabetical) whose prerequisites are all settled
+      const i=todo.findIndex(p=>Object.keys(p.deps).every(d=>state.has(d)||!byId(d)));
+      const p=todo.splice(i<0?0:i,1)[0];
+      let reason=null;
+      for(const d of Object.keys(p.deps)){
+        const s=state.get(d)?.state;
+        if(!byId(d)) reason=`which is not installed`;
+        else if(s==='disabled') reason=`which is disabled`;
+        else if(s!=='loaded') reason=`which was not loaded`;
+        if(reason){reason=`Cannot load '${p.id}' because it depends on '${d}', ${reason}.`;break;}
+      }
+      state.set(p.id,reason?{state:'blocked',reason}:{state:'loaded'});
+      order.push(p.id);
+    }
+  }
+  return order;
+}
+
+// ---- Output and status bar
+let log=[],sources=[LD],checked=new Set([LD]);
+function line(src,lvl,msg){log.push({src,lvl,msg,t:Date.now()+log.length});if(!sources.includes(src)){sources.push(src);checked.add(src);}renderOut();}
+function renderOut(){
+  const m=sources.length>1;$('srcsel').hidden=!m;
+  const n=[...checked].filter(s=>sources.includes(s)).length;
+  $('srcbtn').textContent=`${n} / ${sources.length} sources ▾`;
+  $('srcmenu').innerHTML=sources.map(s=>`<label><input type="checkbox" value="${s}" ${checked.has(s)?'checked':''}> ${s}</label>`).join('');
+  $('srcmenu').querySelectorAll('input').forEach(c=>c.onchange=()=>{if(c.checked)checked.add(c.value);else if(checked.size>1)checked.delete(c.value);else c.checked=true;renderOut();});
+  const tag=m&&checked.size>1;
+  $('out').innerHTML=log.filter(l=>checked.has(l.src)).map(l=>`<div class="l-${l.lvl}">[${l.lvl}]  ${hms(l.t)}  ${tag?`<span class="src">[${l.src}]</span>  `:''}${l.msg}</div>`).join('');
+  $('out').scrollTop=1e9;
+}
+function status(msg,cls){$('status').textContent=msg||'';$('status').className='status'+(cls?' '+cls:'');$('status').title=msg||'';}
+$('srcbtn').onclick=e=>{e.stopPropagation();$('srcmenu').hidden=!$('srcmenu').hidden;};
+$('srcmenu').onclick=e=>e.stopPropagation();
+document.addEventListener('click',()=>{$('srcmenu').hidden=true;});
+
+// ---- menu bar: File · Edit · View · Plugins … Help
+function loadedActions(){return catalogue.filter(p=>state.get(p.id)?.state==='loaded').map(p=>({...p.action,source:p.id}));}
+function buildBar(){
+  const acts=loadedActions().sort((a,b)=>a.label.localeCompare(b.label));
+  const menus=[{name:'File',items:[['Quit','Ctrl+Q',null]]},{name:'Edit',items:[['Preferences…','Ctrl+K',openPrefs]]},{name:'View',items:[['Light / Dark Theme','',toggleTheme]]}];
+  if(acts.length)menus.push({name:'Plugins',sub:{name:'Demo',items:acts}});
+  menus.push({name:'Help',items:[['About Layout Designer…','F1',null]],right:true});
+  $('bar').innerHTML='';
+  for(const m of menus){
+    const t=document.createElement('button');t.className='title'+(m.right?' right':'');t.textContent=m.name;
+    const dd=document.createElement('div');dd.className='dd';dd.hidden=true;if(m.right){dd.style.left='auto';dd.style.right='0';}
+    if(m.sub){
+      const b=document.createElement('button');b.className='item';b.innerHTML=`<span>${m.sub.name}</span><span class="k">›</span>`;
+      const sub=document.createElement('div');sub.className='sub';sub.hidden=true;
+      for(const a of m.sub.items){const e=document.createElement('button');e.className='item';e.innerHTML=`<span>${a.label}</span><span class="k"></span>`;e.onclick=ev=>{ev.stopPropagation();closeAll();line(a.source,'info',a.msg);};sub.append(e);}
+      b.append(sub);b.onmouseenter=()=>{sub.hidden=false;};b.onmouseleave=()=>{sub.hidden=true;};b.onclick=ev=>{ev.stopPropagation();sub.hidden=false;};
+      dd.append(b);
+    }else for(const [label,k,fn] of m.items){const e=document.createElement('button');e.className='item';e.innerHTML=`<span>${label}</span><span class="k">${k}</span>`;e.onclick=ev=>{ev.stopPropagation();closeAll();if(fn)fn();};dd.append(e);}
+    t.append(dd);
+    t.onclick=ev=>{if(ev.target!==t)return;const open=!dd.hidden;closeAll();if(!open){dd.hidden=false;t.classList.add('open');}};
+    t.onmouseenter=()=>{if(document.querySelector('.dd:not([hidden])')&&dd.hidden){closeAll();dd.hidden=false;t.classList.add('open');}};
+    $('bar').append(t);
+  }
+}
+function closeAll(){document.querySelectorAll('.dd,.sub').forEach(d=>d.hidden=true);document.querySelectorAll('.title').forEach(t=>t.classList.remove('open'));}
+document.addEventListener('mousedown',e=>{if(!$('bar').contains(e.target))closeAll();});
+
+// ---- start-up (simulated): lines in topological order (§5), blocked = warn (§4)
+function start(){
+  log=[];sources=[LD];checked=new Set([LD]);pending=new Map();status('');
+  line(LD,'info','Layout Designer 0.0.0 started (Electron 45.1.0)');
+  const order=resolve();
+  for(const p of catalogue) if(disabled.has(p.id)) line(LD,'info',`Plugin ${p.id} disabled`);
+  let last=null;
+  for(const id of order){
+    const s=state.get(id),p=byId(id);
+    if(s.state==='loaded') line(LD,'info',`Plugin ${id} loaded (${p.kind})`);
+    else if(s.state==='blocked'){line(LD,'warn',s.reason);last=s.reason;}
+  }
+  if(last)status(last,'warn');
+  buildBar();
+  if(!$('prefs').hidden)renderPrefs();
+}
+
+// ---- Preferences › Plugins (§6)
+const labels={loaded:'loaded',disabled:'disabled',failed:'failed',blocked:'blocked'};
+// Gmail-like (PO, 2026-11-06): the row check box SELECTS; the bulk bar above acts on
+// the selection — select-all box, then the action combo, then Apply on its right.
+let selection=new Set();
+function renderPrefs(){
+  $('plist').innerHTML=catalogue.map(p=>{
+    const s=state.get(p.id);const ch=pending.get(p.id);
+    const text=ch==='disabled'?'disabled (at the next start)':ch==='enabled'?'enabled (at the next start)':labels[s.state];
+    return `<div class="prow${selection.has(p.id)?' sel':''}"><input type="checkbox" data-id="${p.id}" ${selection.has(p.id)?'checked':''}>
+      <div><div class="pname">${p.name}</div><div class="pid">${p.id} · ${p.kind}</div>
+      <div class="tags">Tags: ${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>
+      <span class="state ${ch?'':s.state}" data-tip="${s.reason??''}">${text}</span></div>`;}).join('');
+  $('plist').querySelectorAll('input').forEach(c=>c.onchange=()=>{c.checked?selection.add(c.dataset.id):selection.delete(c.dataset.id);renderPrefs();});
+  $('plist').querySelectorAll('.state').forEach(s=>{s.onmouseenter=e=>{if(!s.dataset.tip)return;const r=s.getBoundingClientRect();$('tip').textContent=s.dataset.tip;$('tip').hidden=false;$('tip').style.left=Math.max(8,r.right-420+window.scrollX)+'px';$('tip').style.top=(r.bottom+6+window.scrollY)+'px';};s.onmouseleave=()=>{$('tip').hidden=true;};});
+  const n=selection.size;
+  $('selall').checked=n===catalogue.length;$('selall').indeterminate=n>0&&n<catalogue.length;
+  $('bulkapply').disabled=n===0;$('selcount').textContent=n?`${n} selected`:'';
+}
+$('selall').onchange=()=>{selection=$('selall').checked?new Set(catalogue.map(p=>p.id)):new Set();renderPrefs();};
+$('bulkapply').onclick=()=>{const ids=[...selection];$('bulkact').value==='disable'?askDisable(ids):askEnable(ids);};
+// transitive dependents / prerequisites
+const dependentsOf=id=>{const out=[];const walk=x=>catalogue.filter(p=>x in p.deps).forEach(p=>{if(!out.includes(p.id)){out.push(p.id);walk(p.id);}});walk(id);return out;};
+const prereqsOf=id=>{const out=[];const walk=x=>Object.keys(byId(x)?.deps??{}).forEach(d=>{if(byId(d)&&!out.includes(d)){out.push(d);walk(d);}});walk(id);return out;};
+const uniq=a=>[...new Set(a)];
+function setEnabled(ids,on){
+  let changed=false;
+  for(const id of ids){
+    if(on===!disabled.has(id))continue;
+    changed=true;
+    if(on)disabled.delete(id);else disabled.add(id);
+    const back=(state.get(id).state==='disabled')===!on;     // back to what this start used
+    if(back)pending.delete(id);else pending.set(id,on?'enabled':'disabled');
+  }
+  selection=new Set();renderPrefs();if(changed)restartToast();
+}
+const names=ids=>`<ul>${ids.map(d=>`<li>${nameOf(d)}</li>`).join('')}</ul>`;
+// Dependency confirmation (VS Code): only when the selection would leave a plugin
+// blocked; the extra plugins are offered with a check box, checked by default.
+function askDisable(ids){
+  const deps=uniq(ids.flatMap(dependentsOf)).filter(d=>!disabled.has(d)&&!ids.includes(d));
+  if(!deps.length){setEnabled(ids,false);return;}
+  confirmBox('Disable plugins',
+    `Disabling ${ids.map(i=>`« ${nameOf(i)} »`).join(', ')} will keep these plugins from loading:${names(deps)}
+     <label><input type="checkbox" id="cextra" checked> Disable them too</label>`,
+    [['Apply',()=>setEnabled($('cextra').checked?[...ids,...deps]:ids,false)],['Cancel',null,true]]);
+}
+function askEnable(ids){
+  const pre=uniq(ids.flatMap(prereqsOf)).filter(d=>disabled.has(d)&&!ids.includes(d));
+  if(!pre.length){setEnabled(ids,true);return;}
+  confirmBox('Enable plugins',
+    `${ids.map(i=>`« ${nameOf(i)} »`).join(', ')} ${ids.length>1?'depend':'depends'} on these disabled plugins:${names(pre)}
+     Without them, ${ids.length>1?'they':'it'} will stay blocked.
+     <label><input type="checkbox" id="cextra" checked> Enable them too</label>`,
+    [['Apply',()=>setEnabled($('cextra').checked?[...pre,...ids]:ids,true)],['Cancel',null,true]]);
+}
+function confirmBox(title,html,buttons){
+  $('ctitle').textContent=title;$('cmsg').innerHTML=html;$('cbtns').innerHTML='';
+  buttons.forEach(([label,fn,sec],i)=>{const b=document.createElement('button');b.className='btn'+(sec?' sec':'');b.textContent=label;b.onclick=()=>{$('conf').hidden=true;if(fn)fn();};$('cbtns').append(b);if(i===0)setTimeout(()=>b.focus());});
+  $('conf').hidden=false;
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('conf').hidden){$('conf').hidden=true;}});
+function restartToast(){const t=document.createElement('div');t.className='toast';t.innerHTML='<b>Restart required</b><br>The change will be applied<br>when Layout Designer restarts.<br><button>OK</button>';$('win').append(t);t.querySelector('button').onclick=()=>t.remove();}
+function openPrefs(){closeAll();selection=new Set();renderPrefs();$('prefs').hidden=false;}
+$('pclose').onclick=()=>$('prefs').hidden=true;$('px').onclick=()=>$('prefs').hidden=true;
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&!e.shiftKey&&e.key.toLowerCase()==='k'){e.preventDefault();openPrefs();}});
+
+// ---- previews
+function toggleTheme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';}
+$('theme').onclick=toggleTheme;
+document.querySelectorAll('[data-scn]').forEach(b=>b.onclick=()=>{disabled=new Set(b.dataset.scn==='off'?['LayoutDesigner.dummy-server']:[]);document.querySelectorAll('.toast').forEach(t=>t.remove());start();});
+$('restart').onclick=()=>{document.querySelectorAll('.toast').forEach(t=>t.remove());start();};
+start();
+</script>
+</body>
+</html>
