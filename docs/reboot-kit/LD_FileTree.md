@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (701 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (706 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -658,6 +658,7 @@
     - package.json
     - shortcuts.js
     - splitter.js
+    - terminal_view.js
     - theme.css
     - theme.js
     - toast.js
@@ -672,6 +673,7 @@
     - preferences.js
     - preferences_commands.js
     - preload.js
+    - pty_service.js
     - window_options.js
   - **types/**
     - contracts.d.ts
@@ -716,6 +718,7 @@
         - output_sources.test.mjs
         - shortcuts.test.mjs
         - splitter.test.mjs
+        - terminal_view.test.mjs
         - theme.test.mjs
         - toast.test.mjs
         - vizjet_loader.test.mjs
@@ -725,6 +728,7 @@
         - journal.test.js
         - language_commands.test.js
         - node_pty_electron.test.js
+        - pty_service.test.js
         - window_options.test.js
       - **vizjets/**
         - bottom_panel.test.mjs
@@ -740,6 +744,7 @@
       - launch.js
       - output.spec.js
       - preferences.spec.js
+      - terminal.spec.js
     - playwright.config.js
 - .gitattributes
 - .gitignore

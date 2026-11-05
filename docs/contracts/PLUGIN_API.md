@@ -1,6 +1,8 @@
 # Contract — Plugins and their API (N0.6)
 
-**Status:** DRAFT — to be validated by the Product Owner before any code. Product Owner
+**Status:** DRAFT — to be validated by the Product Owner before any code, after trying
+the interactive mock-up `docs/mockups/plugins_prototype.html` (reference target of the
+Design gate, 2026-11-05). Product Owner
 answers of 2026-10-30 are recorded in §11.
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-10-30
 
@@ -294,6 +296,13 @@ with the rest of the contract.
    (`style-src 'self' 'unsafe-inline'` since step 7) gains `script-src 'self' plugin:`.
 7. **Preferences**: no *Plugins* category in the Preferences dialog in N0.6 (no real
    preference yet — `PREFERENCES.md` §1 rule); enable / disable stays in the backlog.
+8. **Menu bar order** with the *Edit* menu of N0.5: *File · Edit · View · Plugins …
+   Help* (Plugins still the last menu on the left).
+9. **Mock-up** `docs/mockups/plugins_prototype.html`: *Plugins › Demo* by mouse and
+   keyboard, the palette (« Plugins: … », ids in grey, filter on ids), the source
+   selector, a broken plugin (status bar + `error` line), no plugin → no *Plugins* menu.
+   *Proposal shown in it, not yet decided:* an `info` line in Output for each plugin
+   loaded (« Plugin ld-dummy-server loaded (server) »).
 
 ---
 

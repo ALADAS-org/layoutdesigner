@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype plugins</title>
+<!-- Reference target of N0.6 (docs/contracts/PLUGIN_API.md). Static mock-up, not the
+     implementation: the two dummy plugins are simulated, nothing is loaded. -->
+<style>
+:root{--chrome:#323232;--fg:#e6e6e6;--border:#1f1f1f;--menu:#3c3c3c;--muted:#a0a0a0;--hl:#1473e6;--hover:#4a4a4a;--ws:#535353;--input:#2b2b2b;--warn:#e8a33d;--err:#ff7b7b;--panel:#262626;--splitter:#888780;--backdrop:rgba(0,0,0,.45)}
+:root[data-theme="light"]{--chrome:#eeeeee;--fg:#1e1e1e;--border:#c6c6c6;--menu:#ffffff;--muted:#6e6e6e;--hl:#1473e6;--hover:#dcdcdc;--ws:#d4d4d4;--input:#ffffff;--warn:#b86e00;--err:#c9252d;--panel:#f8f8f8;--splitter:#888780;--backdrop:rgba(0,0,0,.25)}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:#1a1a1a;color:var(--fg);font:13px system-ui,sans-serif}
+:root[data-theme="light"] body{background:#bbb}
+.note{max-width:1000px;margin:0 auto 10px;padding:6px 10px;border:1px dashed #777;color:#aaa;font-size:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.win{max-width:1000px;height:620px;margin:auto;border:1px solid var(--border);display:flex;flex-direction:column;position:relative;overflow:hidden;background:var(--ws);user-select:none}
+.bar{display:flex;align-items:center;gap:2px;padding:0 4px;height:26px;background:var(--chrome);border-bottom:1px solid var(--border);position:relative;z-index:4}
+.title{padding:3px 8px;border:none;background:none;color:inherit;font:inherit;cursor:pointer;border-radius:2px;position:relative}
+.title:hover,.title.open,.title:focus{background:var(--hover);outline:none}
+.right{margin-left:auto}
+.dd{position:absolute;top:24px;left:0;min-width:260px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.5);padding:4px 0;z-index:5}
+.dd[hidden],.sub[hidden]{display:none}
+.item{display:flex;justify-content:space-between;gap:24px;width:100%;padding:4px 14px;border:none;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;position:relative}
+.item:hover,.item:focus{background:var(--hl);color:#fff;outline:none}
+.item .k{color:var(--muted)}.item:hover .k,.item:focus .k{color:#fff}
+.sub{position:absolute;left:100%;top:-5px;min-width:240px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.5);padding:4px 0}
+.tool{height:38px;background:var(--chrome);border-bottom:1px solid var(--border);display:flex;align-items:center}
+.cc{width:480px;margin:auto;border:1px solid var(--border);border-radius:5px;padding:3px 10px;color:var(--muted);display:flex;justify-content:space-between;background:var(--input);cursor:pointer}
+.doc{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.split{height:4px;background:var(--splitter)}
+.tabs{display:flex;align-items:center;gap:4px;padding:0 8px;background:var(--chrome);border-bottom:1px solid var(--border)}
+.fold{width:20px;height:20px;border:1px solid var(--muted);background:transparent;color:var(--fg);display:flex;align-items:center;justify-content:center}
+.tab{padding:6px 12px;color:var(--muted);border-bottom:2px solid transparent}
+.tab.on{color:var(--fg);border-bottom-color:#4a9eff}
+.srcsel{margin-left:auto;position:relative}
+.srcsel[hidden]{display:none}
+.srcsel>button{background:var(--chrome);color:var(--fg);border:1px solid var(--border);height:22px;font:12px system-ui;cursor:pointer}
+.srcmenu{position:absolute;right:0;bottom:26px;background:var(--chrome);border:1px solid var(--border);padding:4px 0;min-width:200px;z-index:3;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.srcmenu[hidden]{display:none}
+.srcmenu label{display:flex;gap:6px;align-items:center;padding:3px 10px;white-space:nowrap;cursor:pointer}
+.body{height:150px;background:var(--panel);overflow:auto;padding:6px 12px;font:12px/1.6 Consolas,monospace;white-space:pre;user-select:text}
+.l-info{color:var(--muted)}.l-warn{color:var(--warn)}.l-error{color:var(--err)}
+.src{color:var(--fg);opacity:.75}
+.status{height:22px;background:var(--chrome);border-top:1px solid var(--border);padding:0 8px;font-size:12px;display:flex;align-items:center;color:var(--muted)}
+.status.err{color:var(--err)}
+.pal{position:absolute;inset:0;z-index:6}
+.pal[hidden]{display:none}
+.palp{position:absolute;top:64px;left:50%;transform:translateX(-50%);width:520px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.palp input{width:100%;border:none;border-bottom:1px solid var(--border);background:var(--input);color:var(--fg);font:inherit;padding:6px 10px;outline:none}
+.palp ul{list-style:none;margin:0;padding:4px 0;max-height:280px;overflow:auto}
+.palp li{display:flex;justify-content:space-between;padding:4px 10px;cursor:pointer}
+.palp li.sel,.palp li:hover{background:var(--hl);color:#fff}
+.palp li .id{color:var(--muted);font:11px Consolas,monospace}.palp li.sel .id,.palp li:hover .id{color:#ddd}
+</style>
+</head>
+<body>
+<p class="note"><strong>Aperçus :</strong>
+  <button id="theme">Thème clair / sombre</button>
+  <label><input type="checkbox" id="broken"> Démarrer avec un plugin cassé (ld-broken-demo)</label>
+  <label><input type="checkbox" id="none"> Aucun plugin</label>
+  <span>· Clavier : F10 puis ← → ↑ ↓, → ouvre le sous-menu, ← le referme · Palette : Ctrl+Shift+P</span>
+</p>
+
+<div class="win" id="win">
+  <div class="bar" id="bar"></div>
+  <div class="tool"><div class="cc" id="cc"><span>Search commands</span><span>Ctrl+Shift+P</span></div></div>
+  <div class="doc">Contenu visuel du document</div>
+  <div class="split"></div>
+  <div class="tabs">
+    <span class="fold">▾</span><span class="tab on">Output</span><span class="tab">Debug Console</span><span class="tab">Terminal</span>
+    <div class="srcsel" id="srcsel" hidden><button id="srcbtn"></button><div class="srcmenu" id="srcmenu" hidden></div></div>
+  </div>
+  <div class="body" id="out"></div>
+  <div class="status" id="status"></div>
+  <div class="pal" id="pal" hidden><div class="palp"><input id="palin" placeholder="Search commands"><ul id="pallist"></ul></div></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const hms=t=>new Date(t).toTimeString().slice(0,8);
+const LD='Layout Designer';
+// Core Actions (a few) and the two dummy plugins' Actions (menuGroup "Demo").
+const core=[['File','Quit','file.quit','Ctrl+Q'],['Edit','Preferences…','edit.choosePreferences','Ctrl+K'],['View','Light / Dark Theme','view.toggleTheme',''],['View','Output','view.showOutput','Ctrl+Shift+U'],['Help','About Layout Designer…','help.about','F1']];
+const pluginActions=[
+  {id:'ld-dummy-server.hello',label:'Hello from the server',group:'Demo',source:'ld-dummy-server',msg:'Hello from a server plugin (Node.js 24.22.1)'},
+  {id:'ld-dummy-renderer.hello',label:'Hello from the renderer',group:'Demo',source:'ld-dummy-renderer',msg:'Hello from a renderer plugin'}];
+let log=[],sources=[LD],checked=new Set([LD]);
+function line(src,lvl,msg){log.push({src,lvl,msg,t:Date.now()+log.length});if(!sources.includes(src)){sources.push(src);checked.add(src);}renderOut();}
+function renderOut(){
+  const m=sources.length>1;$('srcsel').hidden=!m;
+  const n=[...checked].filter(s=>sources.includes(s)).length;
+  $('srcbtn').textContent=`${n} / ${sources.length} sources ▾`;$('srcbtn').title=[...checked].join(', ');
+  $('srcmenu').innerHTML=sources.map(s=>`<label><input type="checkbox" value="${s}" ${checked.has(s)?'checked':''}> ${s}</label>`).join('');
+  $('srcmenu').querySelectorAll('input').forEach(c=>c.onchange=()=>{if(c.checked)checked.add(c.value);else if(checked.size>1)checked.delete(c.value);else c.checked=true;renderOut();});
+  const tag=m&&checked.size>1;
+  $('out').innerHTML=log.filter(l=>checked.has(l.src)).map(l=>`<div class="l-${l.lvl}">[${l.lvl}]  ${hms(l.t)}  ${tag?`<span class="src">[${l.src}]</span>  `:''}${l.msg}</div>`).join('');
+  $('out').scrollTop=1e9;
+}
+function status(msg,err){$('status').textContent=msg||'';$('status').classList.toggle('err',!!err);}
+function run(id){
+  const a=pluginActions.find(p=>p.id===id);
+  if(a){line(a.source,'info',a.msg);return;}
+  if(id==='view.toggleTheme'){const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';}
+  else line(LD,'info',`(simulated) ${id}`);
+}
+// ---- menu bar
+let plugins=true,menus=[];
+function buildBar(){
+  const groups=[...new Set(pluginActions.map(a=>a.group))].sort();
+  const pluginMenu={name:'Plugins',items:groups.map(g=>({sub:g,items:pluginActions.filter(a=>a.group===g).sort((x,y)=>x.label.localeCompare(y.label))}))};
+  menus=[{name:'File',items:[core[0]]},{name:'Edit',items:[core[1]]},{name:'View',items:[core[2],core[3]]}];
+  if(plugins)menus.push(pluginMenu);
+  menus.push({name:'Help',items:[core[4]],right:true});
+  $('bar').innerHTML='';
+  menus.forEach((m,mi)=>{
+    const t=document.createElement('button');t.className='title'+(m.right?' right':'');t.textContent=m.name;t.dataset.i=mi;
+    const dd=document.createElement('div');dd.className='dd';dd.hidden=true;if(m.right){dd.style.left='auto';dd.style.right='0';}
+    for(const it of m.items){
+      if(it.sub){
+        const b=document.createElement('button');b.className='item hassub';b.innerHTML=`<span>${it.sub}</span><span class="k">›</span>`;
+        const sub=document.createElement('div');sub.className='sub';sub.hidden=true;
+        for(const a of it.items){const e=document.createElement('button');e.className='item';e.innerHTML=`<span>${a.label}</span><span class="k"></span>`;e.onclick=ev=>{ev.stopPropagation();closeAll();run(a.id);};sub.append(e);}
+        b.append(sub);b.onmouseenter=()=>{sub.hidden=false;};b.onmouseleave=()=>{sub.hidden=true;};b.onclick=ev=>{ev.stopPropagation();sub.hidden=false;sub.querySelector('.item').focus();};
+        dd.append(b);
+      }else{
+        const [cat,label,id,k]=it;const e=document.createElement('button');e.className='item';e.innerHTML=`<span>${label}</span><span class="k">${k}</span>`;e.onclick=ev=>{ev.stopPropagation();closeAll();run(id);};dd.append(e);
+      }
+    }
+    t.append(dd);
+    t.onclick=ev=>{if(ev.target!==t)return;const open=!dd.hidden;closeAll();if(!open){dd.hidden=false;t.classList.add('open');}};
+    t.onmouseenter=()=>{if(document.querySelector('.dd:not([hidden])')&&dd.hidden){closeAll();dd.hidden=false;t.classList.add('open');}};
+    $('bar').append(t);
+  });
+}
+function closeAll(){document.querySelectorAll('.dd,.sub').forEach(d=>d.hidden=true);document.querySelectorAll('.title').forEach(t=>t.classList.remove('open'));}
+document.addEventListener('mousedown',e=>{if(!$('bar').contains(e.target))closeAll();});
+// keyboard navigation (F10, arrows, → opens a submenu, ← closes it)
+document.addEventListener('keydown',e=>{
+  if(e.key==='F10'){e.preventDefault();$('bar').querySelector('.title').focus();return;}
+  if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='p'){e.preventDefault();openPalette();return;}
+  const a=document.activeElement;if(!$('bar').contains(a))return;
+  const titles=[...$('bar').querySelectorAll('.title')];
+  const title=a.classList.contains('title')?a:a.closest('.title');const ti=titles.indexOf(title);
+  const dd=title.querySelector('.dd');const inSub=a.closest('.sub');
+  const items=inSub?[...inSub.querySelectorAll(':scope > .item')]:[...dd.querySelectorAll(':scope > .item')];
+  const openMenu=i=>{closeAll();const t=titles[(i+titles.length)%titles.length];const d=t.querySelector('.dd');d.hidden=false;t.classList.add('open');d.querySelector('.item').focus();};
+  if(e.key==='ArrowRight'){e.preventDefault();if(a.classList.contains('hassub')){const s=a.querySelector('.sub');s.hidden=false;s.querySelector('.item').focus();}else if(a.classList.contains('title'))titles[(ti+1)%titles.length].focus();else openMenu(ti+1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();if(inSub){inSub.hidden=true;inSub.parentElement.focus();}else if(a.classList.contains('title'))titles[(ti-1+titles.length)%titles.length].focus();else openMenu(ti-1);}
+  else if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(a.classList.contains('title')){openMenu(ti);}else{const i=items.indexOf(a);items[(i+(e.key==='ArrowDown'?1:-1)+items.length)%items.length].focus();}}
+  else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(a.classList.contains('title'))openMenu(ti);else a.click();}
+  else if(e.key==='Escape'){e.preventDefault();if(inSub){inSub.hidden=true;inSub.parentElement.focus();}else{closeAll();title.focus();}}
+});
+// ---- palette (« Category: Label », the id in grey; the filter matches labels and ids)
+function entries(){return [...core.map(([c,l,id])=>({text:`${c}: ${l}`,id})),...(plugins?pluginActions.map(a=>({text:`Plugins: ${a.label}`,id:a.id})):[])].sort((x,y)=>x.text.localeCompare(y.text));}
+let sel=0,shown=[];
+function renderPal(){const q=$('palin').value.trim().toLowerCase();shown=entries().filter(e=>e.text.toLowerCase().includes(q)||e.id.toLowerCase().includes(q));sel=Math.min(sel,shown.length-1);
+  $('pallist').innerHTML=shown.map((e,i)=>`<li class="${i===sel?'sel':''}" data-i="${i}"><span>${e.text}</span><span class="id">${e.id}</span></li>`).join('');
+  $('pallist').querySelectorAll('li').forEach(li=>li.onclick=()=>{closePalette();run(shown[li.dataset.i].id);});}
+function openPalette(){closeAll();$('pal').hidden=false;$('palin').value='';sel=0;renderPal();$('palin').focus();}
+function closePalette(){$('pal').hidden=true;}
+$('palin').oninput=()=>{sel=0;renderPal();};
+$('palin').onkeydown=e=>{if(e.key==='ArrowDown'){sel=Math.min(sel+1,shown.length-1);renderPal();e.preventDefault();}else if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);renderPal();e.preventDefault();}else if(e.key==='Enter'){const x=shown[sel];closePalette();if(x)run(x.id);}else if(e.key==='Escape')closePalette();};
+$('pal').onmousedown=e=>{if(e.target===$('pal'))closePalette();};
+$('cc').onclick=openPalette;
+// ---- source selector
+$('srcbtn').onclick=e=>{e.stopPropagation();$('srcmenu').hidden=!$('srcmenu').hidden;};
+$('srcmenu').onclick=e=>e.stopPropagation();
+document.addEventListener('click',()=>{$('srcmenu').hidden=true;});
+// ---- start-up (simulated)
+function start(){
+  log=[];sources=[LD];checked=new Set([LD]);plugins=!$('none').checked;status('');
+  line(LD,'info','Layout Designer 0.0.0 started (Electron 45.1.0)');
+  if(plugins){line(LD,'info','Plugin ld-dummy-server loaded (server)');line(LD,'info','Plugin ld-dummy-renderer loaded (renderer)');}
+  if($('broken').checked){const m="Plugin 'ld-broken-demo' not loaded: entry 'index.js' not found";line(LD,'error',m);status(m,true);}
+  line(LD,'info',`${core.length+(plugins?pluginActions.length:0)+11} Actions registered`);
+  buildBar();
+}
+$('broken').onchange=start;$('none').onchange=start;
+$('theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';};
+start();
+</script>
+</body>
+</html>
