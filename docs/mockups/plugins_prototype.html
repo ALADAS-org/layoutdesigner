@@ -51,14 +51,33 @@ body{margin:0;padding:16px;background:#1a1a1a;color:var(--fg);font:13px system-u
 .palp li{display:flex;justify-content:space-between;padding:4px 10px;cursor:pointer}
 .palp li.sel,.palp li:hover{background:var(--hl);color:#fff}
 .palp li .id{color:var(--muted);font:11px Consolas,monospace}.palp li.sel .id,.palp li:hover .id{color:#ddd}
+
+.back{position:absolute;inset:0;background:var(--backdrop);display:flex;align-items:center;justify-content:center;z-index:7}
+.back[hidden]{display:none}
+.dlg{width:640px;background:var(--menu);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.dlg-t{background:var(--chrome);padding:6px 10px;display:flex;justify-content:space-between}
+.dlg-t button{background:none;border:none;color:var(--fg);cursor:pointer}
+.dlg-b{display:flex;height:300px}
+.cats{width:150px;border-right:1px solid var(--border);padding:6px 0;background:var(--panel)}
+.cat{padding:5px 12px;cursor:pointer}.cat.on{background:var(--hl);color:#fff}
+.page{flex:1;padding:10px 16px;overflow:auto}.page h3{margin:0 0 10px;font-size:14px}
+.prow{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:start;padding:6px 0;border-bottom:1px solid var(--border)}
+.pname{font-weight:600}.pid{color:var(--muted);font:11px Consolas,monospace}
+.tags{margin-top:3px}.tag{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:0 5px;margin-right:4px}
+.state{font-size:12px;color:var(--muted)}.state.failed{color:var(--err)}.state.disabled{font-style:italic}
+.help{color:var(--muted);font-size:12px;margin:8px 0 0}
+.dlg-f{display:flex;justify-content:flex-end;padding:8px 10px;border-top:1px solid var(--border)}
+.btn{min-width:72px;padding:4px 12px;background:var(--hl);color:#fff;border:none;cursor:pointer}
+.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);min-width:360px;background:rgba(255,207,165,.95);color:#222;padding:14px 16px;z-index:9;box-shadow:0 6px 20px rgba(0,0,0,.6);text-align:center}
+.toast button{margin-top:10px;padding:2px 16px}
 </style>
 </head>
 <body>
 <p class="note"><strong>Aperçus :</strong>
   <button id="theme">Thème clair / sombre</button>
-  <label><input type="checkbox" id="broken"> Démarrer avec un plugin cassé (ld-broken-demo)</label>
+  <label><input type="checkbox" id="broken"> Démarrer avec un plugin cassé (LayoutDesigner.broken-demo)</label>
   <label><input type="checkbox" id="none"> Aucun plugin</label>
-  <span>· Clavier : F10 puis ← → ↑ ↓, → ouvre le sous-menu, ← le referme · Palette : Ctrl+Shift+P</span>
+  <span>· Clavier : F10 puis ← → ↑ ↓, → ouvre le sous-menu, ← le referme · Palette : Ctrl+Shift+P · Préférences : Ctrl+K</span>
 </p>
 
 <div class="win" id="win">
@@ -73,6 +92,15 @@ body{margin:0;padding:16px;background:#1a1a1a;color:var(--fg);font:13px system-u
   <div class="body" id="out"></div>
   <div class="status" id="status"></div>
   <div class="pal" id="pal" hidden><div class="palp"><input id="palin" placeholder="Search commands"><ul id="pallist"></ul></div></div>
+  <div class="back" id="prefs" hidden><div class="dlg">
+    <div class="dlg-t"><span>Preferences</span><button id="px">✕</button></div>
+    <div class="dlg-b">
+      <div class="cats"><div class="cat">Interface</div><div class="cat on">Plugins</div><div class="cat">System</div></div>
+      <div class="page"><h3>Plugins</h3><div id="plist"></div>
+        <p class="help">Saved at once; applied when Layout Designer restarts.</p></div>
+    </div>
+    <div class="dlg-f"><button class="btn" id="pclose">Close</button></div>
+  </div></div>
 </div>
 
 <script>
@@ -82,8 +110,8 @@ const LD='Layout Designer';
 // Core Actions (a few) and the two dummy plugins' Actions (menuGroup "Demo").
 const core=[['File','Quit','file.quit','Ctrl+Q'],['Edit','Preferences…','edit.choosePreferences','Ctrl+K'],['View','Light / Dark Theme','view.toggleTheme',''],['View','Output','view.showOutput','Ctrl+Shift+U'],['Help','About Layout Designer…','help.about','F1']];
 const pluginActions=[
-  {id:'ld-dummy-server.hello',label:'Hello from the server',group:'Demo',source:'ld-dummy-server',msg:'Hello from a server plugin (Node.js 24.22.1)'},
-  {id:'ld-dummy-renderer.hello',label:'Hello from the renderer',group:'Demo',source:'ld-dummy-renderer',msg:'Hello from a renderer plugin'}];
+  {id:'LayoutDesigner.dummy-server.hello',label:'Hello from the server',group:'Demo',source:'LayoutDesigner.dummy-server',msg:'Hello from a server plugin (Node.js 24.22.1)'},
+  {id:'LayoutDesigner.dummy-renderer.hello',label:'Hello from the renderer',group:'Demo',source:'LayoutDesigner.dummy-renderer',msg:'Hello from a renderer plugin'}];
 let log=[],sources=[LD],checked=new Set([LD]);
 function line(src,lvl,msg){log.push({src,lvl,msg,t:Date.now()+log.length});if(!sources.includes(src)){sources.push(src);checked.add(src);}renderOut();}
 function renderOut(){
@@ -100,6 +128,7 @@ function status(msg,err){$('status').textContent=msg||'';$('status').classList.t
 function run(id){
   const a=pluginActions.find(p=>p.id===id);
   if(a){line(a.source,'info',a.msg);return;}
+  if(id==='edit.choosePreferences'){openPrefs();return;}
   if(id==='view.toggleTheme'){const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';}
   else line(LD,'info',`(simulated) ${id}`);
 }
@@ -170,11 +199,30 @@ document.addEventListener('click',()=>{$('srcmenu').hidden=true;});
 function start(){
   log=[];sources=[LD];checked=new Set([LD]);plugins=!$('none').checked;status('');
   line(LD,'info','Layout Designer 0.0.0 started (Electron 45.1.0)');
-  if(plugins){line(LD,'info','Plugin ld-dummy-server loaded (server)');line(LD,'info','Plugin ld-dummy-renderer loaded (renderer)');}
-  if($('broken').checked){const m="Plugin 'ld-broken-demo' not loaded: entry 'index.js' not found";line(LD,'error',m);status(m,true);}
+  if(plugins){line(LD,'info','Plugin LayoutDesigner.dummy-server loaded (server)');line(LD,'info','Plugin LayoutDesigner.dummy-renderer loaded (renderer)');}
+  if($('broken').checked){const m="Plugin 'LayoutDesigner.broken-demo' not loaded: entry 'index.js' not found";line(LD,'error',m);status(m,true);}
   line(LD,'info',`${core.length+(plugins?pluginActions.length:0)+11} Actions registered`);
   buildBar();
 }
+
+// ---- Preferences › Plugins (enable / disable at the next start, tags, state)
+const catalogue=[
+  {id:'LayoutDesigner.dummy-renderer',name:'Dummy Renderer',kind:'renderer',tags:['demo','hello']},
+  {id:'LayoutDesigner.dummy-server',name:'Dummy Server',kind:'server',tags:['demo','hello','node']},
+  {id:'LayoutDesigner.broken-demo',name:'Broken Demo',kind:'server',tags:['demo','test'],broken:true}];
+const disabled=new Set();
+function renderPrefs(){
+  $('plist').innerHTML=catalogue.filter(p=>!p.broken||$('broken').checked).map(p=>{
+    const st=disabled.has(p.id)?['disabled','disabled (at the next start)']:p.broken?['failed','failed']:['loaded','loaded'];
+    return `<div class="prow"><input type="checkbox" data-id="${p.id}" ${disabled.has(p.id)?'':'checked'}>
+      <div><div class="pname">${p.name}</div><div class="pid">${p.id} · ${p.kind}</div><div class="tags">Tags: ${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>
+      <span class="state ${st[0]}" title="${p.broken?"entry 'index.js' not found":''}">${st[1]}</span></div>`;}).join('');
+  $('plist').querySelectorAll('input').forEach(c=>c.onchange=()=>{if(c.checked)disabled.delete(c.dataset.id);else disabled.add(c.dataset.id);renderPrefs();
+    const t=document.createElement('div');t.className='toast';t.innerHTML='<b>Restart required</b><br>The change will be applied<br>when Layout Designer restarts.<br><button>OK</button>';$('win').append(t);t.querySelector('button').onclick=()=>t.remove();});
+}
+function openPrefs(){closeAll();renderPrefs();$('prefs').hidden=false;}
+$('pclose').onclick=()=>$('prefs').hidden=true;$('px').onclick=()=>$('prefs').hidden=true;
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&!e.shiftKey&&e.key.toLowerCase()==='k'){e.preventDefault();openPrefs();}});
 $('broken').onchange=start;$('none').onchange=start;
 $('theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';};
 start();

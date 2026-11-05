@@ -84,6 +84,17 @@ through `ld:command:invoke`, like core Commands.
 
 ## 4. Identifiers
 
+> **Revised 2026-11-05 (PO): plugin identifier after VS Code.** A plugin is identified
+> by **`<publisher>.<name>`**, from two standard `package.json` fields — `publisher`
+> (e.g. `LayoutDesigner`; a third party uses its own) and `name` (lower case, as npm
+> requires, e.g. `dummy-server`) — so `LayoutDesigner.dummy-server`, as VS Code's
+> `GitHub.copilot`. `displayName` (e.g. « Dummy Server ») is what the interface shows.
+> This identifier replaces « plugin name » everywhere below: the id prefix of its
+> Actions and Commands (`LayoutDesigner.dummy-server.hello`), its Output source, its row
+> in *Preferences › Plugins*, error messages. The publisher prefix avoids collisions
+> between authors. The witnesses become `LayoutDesigner.dummy-server` and
+> `LayoutDesigner.dummy-renderer`.
+
 Every Action and Command a plugin registers has an id of the form
 **`<plugin name>.<name>`** — e.g. `ld-dummy-server.hello` (valid under the existing
 `ID_PATTERN`). The API **rejects** any other id; it does not prefix silently, so the id
@@ -196,7 +207,9 @@ chooses which sources the Output view mixes (`OUTPUT_PANEL.md` §4). Its exact m
 | Plugin ↔ plugin messages (TscgOE `sendToRenderer` / `onFromServer`) | A server plugin's Commands already answer its renderer part. |
 | UI contributions (panels, tabs, toolbar buttons) | Added to the API when a witness needs them. |
 | Contributions to documents, calques, EditTransactions | Written with the N0.7 / N0.8 contracts. |
-| Install / uninstall (`.tgz`), enable / disable, plugin list dialog | Backlog. |
+| Install / uninstall (`.tgz`) | Backlog. |
+| **Enable / disable** each plugin | **Promoted into N0.6** (PO, 2026-11-05) — §15. |
+| **Dependencies between plugins** (a plugin reusing another) | **Sub-step N0.6 bis**, right after N0.6, with its own contract and witness (PO, 2026-11-05) — §15. |
 
 ## 10. Departures from TscgOntologyExplorer, and why
 
@@ -301,8 +314,42 @@ with the rest of the contract.
 9. **Mock-up** `docs/mockups/plugins_prototype.html`: *Plugins › Demo* by mouse and
    keyboard, the palette (« Plugins: … », ids in grey, filter on ids), the source
    selector, a broken plugin (status bar + `error` line), no plugin → no *Plugins* menu.
-   *Proposal shown in it, not yet decided:* an `info` line in Output for each plugin
-   loaded (« Plugin ld-dummy-server loaded (server) »).
+   **Decided (PO, 2026-11-05):** an `info` line in Output for each plugin loaded
+   (« Plugin LayoutDesigner.dummy-server loaded (server) ») and for each plugin disabled
+   (« Plugin … disabled »), under the source « Layout Designer », in loading order.
+
+## 15. Enable / disable, and dependencies (PO decisions 2026-11-05)
+
+**In N0.6 — enable / disable each plugin** (Inkscape *Manage Extensions…*, VS Code
+*Enable / Disable*). Proposed shape, points to settle one at a time:
+- a real preference — the list of disabled plugins in `preferences.json` — and hence a
+  **Plugins** category in the Preferences dialog (`PREFERENCES.md` §1 rule): one check
+  box per plugin, with its name, kind and state (loaded, disabled, failed);
+- **a change applies at the next start** (PO decision 2026-11-05), as the language: it
+  is saved at once, the restart warning is shown, and a disabled plugin is **not loaded
+  at all** (no Action, menu entry nor Output source) — an `info` line in Output says so.
+  Same as Inkscape (extensions are read at session start); VS Code enables / disables
+  most extensions without reload since 1.31 — not followed here: unloading at run time
+  (and its dependents, N0.6 bis) is much more complex and fragile;
+- *Preferences › Plugins* (PO, 2026-11-05): **one row per plugin** — a check box
+  (enabled / disabled), the plugin's **name**, its **kind** (server / renderer) and its
+  **state** at this start (loaded, disabled, failed — the reason in a tooltip). A failed
+  plugin stays listed, so that it can be disabled and its error no longer shown at each
+  start;
+- **Tags** (PO, 2026-11-05): a plugin declares tags in the **standard `keywords`
+  field** of its `package.json` (as npm and VS Code); shown as **« Tags »** in the
+  interface, in every language (as VS Code's Marketplace, which shows `keywords` under
+  « Tags »), as small grey labels under the plugin's name in *Preferences › Plugins*.
+  Free words, English, lower case. **Search by tag: backlog**;
+- witness: the two dummy plugins (each declares a few tags).
+
+**In N0.6 bis — dependencies between plugins**, right after N0.6 (after VS Code's
+`extensionDependencies` and `exports`, to settle in its own contract): a plugin declares
+the plugins it needs; loading follows them; a missing, disabled or failed dependency
+keeps its dependents unloaded, with the reason; cycles are refused; a plugin reuses
+another through what that one **exports** (same process only — across processes, through
+its Commands). Witness: a third dummy plugin depending on another. The sub-step is
+named « N0.6 bis » so that the later sub-steps keep their numbers.
 
 ---
 

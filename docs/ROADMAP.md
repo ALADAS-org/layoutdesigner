@@ -110,7 +110,9 @@ screen cleared, with a loop guard; CSP allows inline styles. Step 7 validated by
 (2026-11-05). Added the same day at the PO's request: the **theme as a preference**
 (*Preferences › Interface › Theme*, remembered, applied at once). Validated by the PO
 (2026-11-05): **N0.5 is complete.** **Next: N0.6 — plugins**: the draft contract
-`docs/contracts/PLUGIN_API.md` is aligned with N0.5 (§14, to validate with the rest).
+`docs/contracts/PLUGIN_API.md` is aligned with N0.5 (§14, to validate with the rest). Decided
+2026-11-05 (PO): **enable / disable** each plugin is part of N0.6; **dependencies
+between plugins** form a sub-step **N0.6 bis** right after it (`PLUGIN_API.md` §15).
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a
@@ -247,7 +249,8 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
 | N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ✅ 2026-11-05 |
-| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector** | Plugin API (draft) | ⏳ next |
+| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector**; **enable / disable** each plugin (Preferences › Plugins) | Plugin API (draft) | ⏳ next |
+| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies | — |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
 | N0.9 | Selection + copy / paste | — | — |
@@ -290,6 +293,8 @@ promotes it to a step, with its reference target.
 - Multiple Trame / Scene calques in practice
 - Scripting language
 - Composition templates, predefined patterns, tutorials (guiding)
+- Search plugins by tag (`keywords`), in *Preferences › Plugins* or the palette (N0.6)
+- Enable / disable plugins without a restart (VS Code does it since 1.31) (N0.6)
 
 ## Quality axes (every delivery reports on them)
 
