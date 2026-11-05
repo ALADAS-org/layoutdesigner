@@ -94,12 +94,14 @@ function discoverPlugins(dir, { disabled = [] } = {}) {
       continue;
     }
     Object.assign(info, { id: d.id, displayName: d.displayName, kind: d.kind, keywords: d.keywords, entry: path.join(pluginDir, d.entryName) });
-    if (plugins.some((p) => p !== info && p.id === info.id && p.state !== 'failed')) {
+    // Disabled first: a failed plugin can be disabled so that its error is no longer
+    // shown at each start (PLUGIN_API.md §15). Only a plugin with no valid id cannot be.
+    if (disabled.includes(info.id)) {
+      info.state = 'disabled';
+    } else if (plugins.some((p) => p !== info && p.id === info.id && p.state !== 'failed')) {
       Object.assign(info, { state: 'failed', reason: `another plugin is already named '${info.id}'` });
     } else if (!fs.existsSync(info.entry)) {
       Object.assign(info, { state: 'failed', reason: `entry '${d.entryName}' not found` });
-    } else if (disabled.includes(info.id)) {
-      info.state = 'disabled';
     }
   }
   return plugins;

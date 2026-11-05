@@ -178,6 +178,26 @@ test.describe('plugins: enable / disable at the next start', () => {
   });
 });
 
+test.describe('plugins: a failed plugin, disabled', () => {
+  test('is no longer reported at the next start, and stays listed as disabled', async () => {
+    const plugins = pluginsFolder({ broken: true });
+    const prefsFile = tempPreferencesPath();
+    fs.writeFileSync(prefsFile, JSON.stringify({ disabledPlugins: [BROKEN] }));
+    const { app, win } = await launch({ plugins, prefsFile });
+    try {
+      await win.keyboard.press('Control+Shift+U');
+      await expect(lines(win).filter({ hasText: `Plugin ${BROKEN} disabled` })).toHaveCount(1);
+      await expect(lines(win).filter({ hasText: 'not loaded' })).toHaveCount(0);
+      await expect(win.locator('.StatusBarMessage')).toHaveText('');
+      await win.keyboard.press('Control+K');
+      await win.locator('.PreferencesCategory[data-category="plugins"]').click();
+      await expect(win.locator(`.PreferencesPlugin[data-plugin="${BROKEN}"] .PreferencesPluginState`)).toHaveText('disabled');
+    } finally {
+      await app.close();
+    }
+  });
+});
+
 test.describe('no plugin', () => {
   test('no Plugins menu and no Plugins category', async () => {
     const { app, win } = await launch(); // an empty plugins folder

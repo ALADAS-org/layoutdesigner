@@ -78,6 +78,14 @@ describe('discoverPlugins', () => {
     expect(found[3].reason).toBe("entry 'index.js' not found");
   });
 
+  test('a failed plugin that is disabled is no longer reported (§15)', () => {
+    const dir = tmp();
+    plugin(dir, 'broken', { 'package.json': manifest({ name: 'broken' }) }); // no entry file
+    expect(discoverPlugins(dir)[0]).toMatchObject({ state: 'failed', reason: "entry 'index.js' not found" });
+    expect(discoverPlugins(dir, { disabled: ['Acme.broken'] })[0]).toMatchObject({ state: 'disabled' });
+    expect(discoverPlugins(dir, { disabled: ['Acme.broken'] })[0].reason).toBeUndefined();
+  });
+
   test('a missing folder: no plugin', () => {
     expect(discoverPlugins(path.join(tmp(), 'none'))).toEqual([]);
   });
