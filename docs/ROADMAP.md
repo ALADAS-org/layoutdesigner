@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 delivered 2026-11-05, Design gate pending |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis next (plugin dependencies) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -118,7 +118,9 @@ mock-up (« maquette OK »); **delivered** — server and renderer plugins (two 
 witnesses), `plugin://`, *Plugins* menu with submenus (*Plugins › Demo*), palette
 « Plugins: … » with ids, one Output source per plugin and the **source selector**,
 *Preferences › Plugins* (enable / disable at the next start, tags, state); TD-3 repaid,
-TD-4 recorded. Awaiting the PO's Design gate. **Next: N0.6 bis** (dependencies).
+TD-4 recorded. **Validated by the PO (2026-11-05)** at the Design gate — fixed on the
+way: a failed plugin that is disabled is no longer reported. **Next: N0.6 bis**
+(dependencies).
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a
@@ -255,7 +257,7 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.3 | HTML GUI: menu bar, toolbar, status bar, one dialog; themable | contract §13 | ✅ 2026-10-30 |
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
 | N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ✅ 2026-11-05 |
-| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector**; **enable / disable** each plugin (Preferences › Plugins) | Plugin API (validated 2026-11-05) | ✅ delivered — Design gate pending |
+| N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector**; **enable / disable** each plugin (Preferences › Plugins) | Plugin API (validated 2026-11-05) | ✅ 2026-11-05 |
 | N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies | ⏳ next |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
