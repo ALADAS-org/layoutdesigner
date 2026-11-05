@@ -91,7 +91,10 @@ describe('discoverPlugins', () => {
   });
 
   test('the two witnesses of plugins/ are valid', () => {
-    expect(discoverPlugins(PLUGINS_DIR).map((p) => [p.id, p.kind, p.state])).toEqual([
+    // Only the witnesses: a developer may have other plugins in plugins/ (e.g. a broken
+    // one dropped there for the Design gate).
+    const witnesses = discoverPlugins(PLUGINS_DIR).filter((p) => p.id.startsWith('LayoutDesigner.dummy-'));
+    expect(witnesses.map((p) => [p.id, p.kind, p.state])).toEqual([
       ['LayoutDesigner.dummy-renderer', 'renderer', 'pending'],
       ['LayoutDesigner.dummy-server', 'server', 'pending']
     ]);
