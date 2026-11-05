@@ -19,6 +19,11 @@ describe('filterActions', () => {
     expect(filterActions(actions, ' look ', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['test.quick']);
   });
 
+  test('also matches the Action id (§13.11): a verb, a domain, a plugin id', () => {
+    expect(filterActions(actions, 'FILE.', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['file.quit']);
+    expect(filterActions(actions, 'test', PALETTE_ACTION_ID).map((a) => a.id)).toEqual(['test.quick']);
+  });
+
   test('no match gives an empty list', () => {
     expect(filterActions(actions, 'zzz', PALETTE_ACTION_ID)).toEqual([]);
   });

@@ -59,4 +59,19 @@ abandoned rather than carried as debt (tag `proto-improvise-2026-10`).
   long session.
 - Repayment: with N0.6 (several sources, the selector) — a cap per source (e.g. the last
   N lines) and rows appended instead of rebuilt.
+- Status: repaid (N0.6, 2026-11-05) — 1000 lines per source in main's journal and in the
+  renderer's Output; a new line appends a row; the view is rebuilt only when the choice
+  of sources changes or a line arrives out of time order.
+
+## TD-4 — Plugins folder inside the application folder
+- Date / level: 2026-11-05 / N0.6
+- What: plugins are discovered in `plugins/` at the repo root (`PLUGIN_API.md` §2,
+  Product Owner decision), versioned with the two dummy plugins.
+- Why: simple and visible during development (`npm start` shows the witnesses); no
+  packaging exists yet.
+- Cost if left: a packaged (asar) or installed application cannot have user plugins
+  added there, and an update would replace them — same issue as TD-2.
+- Repayment: with TD-2, when packaging is introduced — a per-user plugins folder
+  (`app.getPath('userData')`), the shipped plugins kept beside the application; only
+  `pluginsPath()` in `plugin_manager.js` changes.
 - Status: open

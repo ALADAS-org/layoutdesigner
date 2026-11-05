@@ -10,6 +10,9 @@
 //   - Left / Right move between menus, Down / Enter / Space open a menu,
 //     Up / Down move between entries, Enter / Space run the entry,
 //     Esc closes the menu (then, pressed again, leaves the bar).
+// Submenus (N0.6, PLUGIN_API.md §8.1 — the Plugins menu is their witness): a submenu
+// entry shows › on the right; it opens on hover, on click, or with → / Enter / Space;
+// ← or Esc closes it and returns to its entry; ↑ / ↓ move inside it. One level only.
 // =====================================================================================
 
 // Pure: index after moving by `delta` in a circular list of `length` entries.
@@ -28,28 +31,48 @@ export function createMenubar(root, { actions, labelOf }) {
   const doc = root.ownerDocument;
   const win = /** @type {Window} */ (doc.defaultView);
   const nav = /** @type {HTMLElement} */ (root.querySelector('.Menubar'));
-  const menus = [...nav.querySelectorAll('.MenubarMenu')].map((el) => ({
-    el,
-    title: /** @type {HTMLElement} */ (el.querySelector('.MenubarTitle')),
-    dropdown: /** @type {HTMLElement} */ (el.querySelector('.MenubarDropdown')),
-    items: /** @type {HTMLElement[]} */ ([...el.querySelectorAll('.MenubarItem')])
-  }));
+  const menus = [...nav.querySelectorAll('.MenubarMenu')].map((el) => {
+    const dropdown = /** @type {HTMLElement} */ (el.querySelector('.MenubarDropdown'));
+    return {
+      el,
+      title: /** @type {HTMLElement} */ (el.querySelector('.MenubarTitle')),
+      dropdown,
+      // The entries the keyboard walks through: the menu's own (leaves and submenu
+      // entries), not those inside its submenus.
+      items: /** @type {HTMLElement[]} */ ([...dropdown.querySelectorAll(':scope > .MenubarItem, :scope > .MenubarSubmenu > .MenubarItem')])
+    };
+  });
+  /** @param {Element | null} el @returns {HTMLElement | null} the submenu dropdown holding el */
+  const subOf = (el) => /** @type {HTMLElement | null} */ (el?.closest('.MenubarSubDropdown') ?? null);
+  /** @param {HTMLElement} entry a submenu entry @returns {HTMLElement} its dropdown */
+  const subDropdownOf = (entry) => /** @type {HTMLElement} */ (entry.nextElementSibling);
+  /** @param {HTMLElement} dropdown */
+  const leavesOf = (dropdown) => /** @type {HTMLElement[]} */ ([...dropdown.querySelectorAll(':scope > .MenubarItem')]);
+  const closeSubmenus = () => {
+    for (const d of /** @type {NodeListOf<HTMLElement>} */ (nav.querySelectorAll('.MenubarSubDropdown'))) d.hidden = true;
+    for (const e of nav.querySelectorAll('.MenubarSubmenuEntry')) e.setAttribute('aria-expanded', 'false');
+  };
+  /** @param {HTMLElement} entry @param {boolean} focusFirst */
+  function openSubmenu(entry, focusFirst) {
+    closeSubmenus();
+    subDropdownOf(entry).hidden = false;
+    entry.setAttribute('aria-expanded', 'true');
+    if (focusFirst) leavesOf(subDropdownOf(entry))[0]?.focus();
+  }
 
   // Fill each entry from its Action: label on the left, shortcut on the right.
-  for (const menu of menus) {
-    for (const item of menu.items) {
-      const action = actions.get(String(item.dataset.action));
-      if (action === undefined) {
-        throw new Error(`Menu entry refers to unknown Action '${item.dataset.action}'`);
-      }
-      const label = doc.createElement('span');
-      label.className = 'MenubarItemLabel';
-      label.textContent = labelOf(action);
-      const shortcut = doc.createElement('span');
-      shortcut.className = 'MenubarItemShortcut';
-      shortcut.textContent = action.shortcut || '';
-      item.replaceChildren(label, shortcut);
+  for (const item of /** @type {NodeListOf<HTMLElement>} */ (nav.querySelectorAll('.MenubarItem[data-action]'))) {
+    const action = actions.get(String(item.dataset.action));
+    if (action === undefined) {
+      throw new Error(`Menu entry refers to unknown Action '${item.dataset.action}'`);
     }
+    const label = doc.createElement('span');
+    label.className = 'MenubarItemLabel';
+    label.textContent = labelOf(action);
+    const shortcut = doc.createElement('span');
+    shortcut.className = 'MenubarItemShortcut';
+    shortcut.textContent = action.shortcut || '';
+    item.replaceChildren(label, shortcut);
   }
 
   let openIndex = -1;
@@ -57,6 +80,7 @@ export function createMenubar(root, { actions, labelOf }) {
   function close() {
     if (openIndex < 0) return;
     const menu = menus[openIndex];
+    closeSubmenus();
     menu.dropdown.hidden = true;
     menu.title.setAttribute('aria-expanded', 'false');
     menu.el.classList.remove('is-open');
@@ -99,17 +123,58 @@ export function createMenubar(root, { actions, labelOf }) {
       if (openIndex >= 0 && openIndex !== index) open(index, false);
     });
     for (const item of menu.items) {
-      item.addEventListener('click', () => activate(item));
-      item.addEventListener('mouseenter', () => item.focus());
+      if (item.classList.contains('MenubarSubmenuEntry')) {
+        item.addEventListener('click', () => openSubmenu(item, true));
+        item.addEventListener('mouseenter', () => { item.focus(); openSubmenu(item, false); });
+      } else {
+        item.addEventListener('click', () => activate(item));
+        item.addEventListener('mouseenter', () => { closeSubmenus(); item.focus(); });
+      }
+    }
+    for (const sub of /** @type {NodeListOf<HTMLElement>} */ (menu.dropdown.querySelectorAll('.MenubarSubDropdown'))) {
+      for (const leaf of leavesOf(sub)) {
+        leaf.addEventListener('click', () => activate(leaf));
+        leaf.addEventListener('mouseenter', () => leaf.focus());
+      }
     }
   });
 
   nav.addEventListener('keydown', (event) => {
     const active = /** @type {HTMLElement} */ (doc.activeElement);
+    // Inside a submenu: ↑ / ↓ move, ← / Esc go back to its entry, Enter / Space run.
+    const sub = subOf(active);
+    if (sub !== null) {
+      const leaves = leavesOf(sub);
+      const entry = /** @type {HTMLElement} */ (sub.previousElementSibling);
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        leaves[cycleIndex(leaves.indexOf(active), event.key === 'ArrowDown' ? 1 : -1, leaves.length)].focus();
+      } else if (event.key === 'ArrowLeft' || event.key === 'Escape') {
+        closeSubmenus();
+        entry.focus();
+      } else if (event.key === 'Enter' || event.key === ' ') {
+        activate(active);
+      } else if (event.key === 'ArrowRight') {
+        // As Windows menus: → in a submenu goes to the next menu.
+        const index = menus.findIndex((m) => m.items.includes(entry));
+        open(cycleIndex(index, 1, menus.length), true);
+      } else {
+        return;
+      }
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
     const titleIndex = menus.findIndex((m) => m.title === active);
     const itemMenuIndex = menus.findIndex((m) => m.items.includes(active));
     const current = titleIndex >= 0 ? titleIndex : itemMenuIndex;
     if (current < 0) return;
+    // A submenu entry: → / Enter / Space open its submenu.
+    if (active.classList.contains('MenubarSubmenuEntry') && ['ArrowRight', 'Enter', ' '].includes(event.key)) {
+      openSubmenu(active, true);
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
 
     switch (event.key) {
       case 'ArrowRight':

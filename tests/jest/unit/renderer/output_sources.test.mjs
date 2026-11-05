@@ -49,3 +49,22 @@ describe('formatLine', () => {
     expect(formatTime(at(7, 3, 9))).toBe('07:03:09');
   });
 });
+
+describe('cap per source (N0.6, TD-3)', () => {
+  test('the oldest line of that source goes; listeners learn it', () => {
+    const output = createOutput({ maxLinesPerSource: 2 });
+    const changes = [];
+    output.onChange((line, change) => changes.push([line.message, change.removed?.message ?? null, change.atEnd]));
+    output.source(APP_SOURCE).append('info', 'app', at(9, 0, 0));
+    output.source('p').append('info', 'p1', at(9, 0, 1));
+    output.source('p').append('info', 'p2', at(9, 0, 2));
+    output.source('p').append('info', 'p3', at(9, 0, 3));
+    output.source('p').append('info', 'early', at(8, 0, 0));
+    // « Oldest » is by time: a late-arriving line older than the kept ones goes at once.
+    expect(output.lines().map((l) => l.message)).toEqual(['app', 'p2', 'p3']);
+    expect(changes).toEqual([
+      ['app', null, true], ['p1', null, true], ['p2', null, true], ['p3', 'p1', true], ['early', 'early', false]
+    ]);
+    expect(output.sources()).toEqual([APP_SOURCE, 'p']);
+  });
+});

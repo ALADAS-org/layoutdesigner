@@ -49,3 +49,24 @@ describe('journal.subscribe', () => {
     expect(sink).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('journal sources (N0.6)', () => {
+  test('source(name).log writes under that source, prefixed in the console', () => {
+    const printed = [];
+    const j = createJournal({ out: { log: (m) => printed.push(m), warn() {}, error() {} }, now: () => 0 });
+    j.source('Acme.demo').log('info', 'hello');
+    expect(j.history()).toEqual([{ source: 'Acme.demo', level: 'info', time: 0, message: 'hello' }]);
+    expect(printed).toEqual(['[Acme.demo] hello']);
+  });
+
+  test('at most MAX_LINES_PER_SOURCE lines per source: the oldest of that source goes', () => {
+    const { MAX_LINES_PER_SOURCE } = require('../../../../src/server/journal.js');
+    const j = createJournal({ out: { log() {}, warn() {}, error() {} }, now: () => 0 });
+    j.log('info', 'app line');
+    for (let i = 0; i <= MAX_LINES_PER_SOURCE; i++) j.source('p').log('info', `p${i}`);
+    const lines = j.history();
+    expect(lines.filter((l) => l.source === 'p')).toHaveLength(MAX_LINES_PER_SOURCE);
+    expect(lines[0].message).toBe('app line');
+    expect(lines[1].message).toBe('p1');
+  });
+});

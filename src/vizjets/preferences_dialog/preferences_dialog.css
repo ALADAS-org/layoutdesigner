@@ -87,3 +87,52 @@
   color: var(--ld-muted-fg);
   font-size: 12px;
 }
+
+/* Plugins category (N0.6, PLUGIN_API.md §15) — one row per plugin. */
+.PreferencesPlugin {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 8px;
+  align-items: start;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ld-border);
+}
+
+.PreferencesPluginName {
+  font-weight: 600;
+}
+
+.PreferencesPluginId {
+  color: var(--ld-muted-fg);
+  font: 11px Consolas, monospace;
+}
+
+.PreferencesPluginTags {
+  margin-top: 3px;
+  color: var(--ld-muted-fg);
+  font-size: 11px;
+}
+
+.PreferencesPluginTag {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 0 5px;
+  border: 1px solid var(--ld-border);
+  border-radius: 3px;
+}
+
+.PreferencesPluginState {
+  color: var(--ld-muted-fg);
+  font-size: 12px;
+}
+
+.PreferencesPluginState.is-failed {
+  color: var(--ld-error-fg);
+}
+
+.PreferencesPluginState.is-disabled {
+  font-style: italic;
+}
+.PreferencesPlugins {
+  margin-bottom: 8px;
+}

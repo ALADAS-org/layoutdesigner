@@ -21,7 +21,7 @@ const DEFAULT_PREFERENCES_PATH = path.join(__dirname, '..', 'config', 'preferenc
 const DEFAULTS_PATH = path.join(__dirname, '..', 'config', 'preferences.default.json');
 
 /** Known keys are typed; other keys are kept as they are. `language: null` = system. */
-/** @typedef {{ language?: string | null, theme?: string, [key: string]: unknown }} Preferences */
+/** @typedef {{ language?: string | null, theme?: string, disabledPlugins?: string[], [key: string]: unknown }} Preferences */
 
 /** The two predefined themes (N0.3), dark by default; remembered since N0.5. */
 const THEMES = ['light', 'dark'];

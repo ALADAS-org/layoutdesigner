@@ -100,7 +100,7 @@ describe('defaults and reset (N0.5 step 6)', () => {
   const { registerPreferencesCommands } = require('../../../../src/server/preferences_commands.js');
 
   test('preferences.default.json is valid JSON and lists every preference', () => {
-    expect(readDefaults(DEFAULTS_PATH)).toEqual({ language: null, theme: 'dark' }); // null = system language
+    expect(readDefaults(DEFAULTS_PATH)).toEqual({ language: null, theme: 'dark', disabledPlugins: [] }); // null = system language
   });
 
   test('inspectPreferences tells ok, missing and invalid apart, without logging', () => {
@@ -117,11 +117,11 @@ describe('defaults and reset (N0.5 step 6)', () => {
 
   test('resetPreferences keeps the replaced file as .bak, then writes the defaults', () => {
     const file = path.join(tmp(), 'preferences.json');
-    expect(resetPreferences(file)).toEqual({ backup: null, prefs: { language: null, theme: 'dark' } }); // no file yet
+    expect(resetPreferences(file)).toEqual({ backup: null, prefs: { language: null, theme: 'dark', disabledPlugins: [] } }); // no file yet
     fs.writeFileSync(file, '{ not json');
     expect(resetPreferences(file).backup).toBe(`${file}.bak`);
     expect(fs.readFileSync(`${file}.bak`, 'utf8')).toBe('{ not json');
-    expect(JSON.parse(fs.readFileSync(file, 'utf8'))).toEqual({ language: null, theme: 'dark' });
+    expect(JSON.parse(fs.readFileSync(file, 'utf8'))).toEqual({ language: null, theme: 'dark', disabledPlugins: [] });
   });
 
   test('prefs.info and prefs.reset; prefs.setLanguage accepts null', async () => {
@@ -130,12 +130,12 @@ describe('defaults and reset (N0.5 step 6)', () => {
     const reg = new CommandRegistry();
     registerPreferencesCommands(reg, { prefsFile });
     registerLanguageCommands(reg, { prefsFile });
-    expect((await reg.run('prefs.info', undefined, {})).value).toEqual({ file: prefsFile, status: 'missing', language: null, theme: 'dark' });
+    expect((await reg.run('prefs.info', undefined, {})).value).toEqual({ file: prefsFile, status: 'missing', language: null, theme: 'dark', disabledPlugins: [] });
     await reg.run('prefs.setLanguage', { language: 'fr' }, {});
     expect((await reg.run('prefs.info', undefined, {})).value).toMatchObject({ status: 'ok', language: 'fr' });
-    expect(await reg.run('prefs.reset', undefined, {})).toEqual({ ok: true, value: { backup: `${prefsFile}.bak`, language: null, theme: 'dark' } });
+    expect(await reg.run('prefs.reset', undefined, {})).toEqual({ ok: true, value: { backup: `${prefsFile}.bak`, language: null, theme: 'dark', disabledPlugins: [] } });
     await expect(reg.run('prefs.setLanguage', { language: null }, {})).resolves.toEqual({ ok: true, value: { language: null } });
-    expect(JSON.parse(fs.readFileSync(prefsFile, 'utf8'))).toEqual({ language: null, theme: 'dark' });
+    expect(JSON.parse(fs.readFileSync(prefsFile, 'utf8'))).toEqual({ language: null, theme: 'dark', disabledPlugins: [] });
     jest.restoreAllMocks();
   });
 

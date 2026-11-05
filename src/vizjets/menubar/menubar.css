@@ -93,3 +93,23 @@
   margin: 4px 0;
   background: var(--ld-border);
 }
+
+/* Submenus (N0.6): an entry with › opens a dropdown on its right. */
+.MenubarSubmenu {
+  position: relative;
+}
+
+.MenubarSubmenuArrow {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.MenubarDropdown.MenubarSubDropdown {
+  top: -5px;
+  left: 100%;
+}
+
+.MenubarSubmenuEntry[aria-expanded="true"] {
+  background: var(--ld-highlight-bg);
+  color: var(--ld-highlight-fg);
+}

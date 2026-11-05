@@ -1,0 +1,11 @@
+{
+  "name": "dummy-renderer",
+  "publisher": "LayoutDesigner",
+  "displayName": "Dummy Renderer",
+  "version": "1.0.0",
+  "description": "Witness of the renderer plugin API (N0.6): a client Action.",
+  "ld-plugin-type": "renderer",
+  "renderer-main": "renderer.js",
+  "keywords": ["demo", "hello"],
+  "private": true
+}

@@ -47,7 +47,7 @@ export class ActionRegistry {
     if (descriptor === null || typeof descriptor !== 'object') {
       throw new TypeError('Action descriptor must be an object');
     }
-    const { id, label, labelKey, categoryKey, shortcut, command, run } = descriptor;
+    const { id, label, labelKey, categoryKey, shortcut, command, run, menuGroup } = descriptor;
     if (typeof id !== 'string' || !ID_PATTERN.test(id)) {
       throw new TypeError(`Invalid Action id: '${id}' (expected '<domain>.<name>')`);
     }
@@ -59,6 +59,9 @@ export class ActionRegistry {
     }
     if (categoryKey !== undefined && (typeof categoryKey !== 'string' || categoryKey.trim() === '')) {
       throw new TypeError(`Action '${id}': 'categoryKey' must be a non-empty string`);
+    }
+    if (menuGroup !== undefined && (typeof menuGroup !== 'string' || menuGroup.trim() === '')) {
+      throw new TypeError(`Action '${id}': 'menuGroup' must be a non-empty string`);
     }
     const isAlias = command !== undefined;
     const isClient = run !== undefined;
@@ -83,9 +86,26 @@ export class ActionRegistry {
       }
     }
 
-    const action = Object.freeze({ id, label, labelKey, categoryKey, shortcut, command, run });
+    const action = Object.freeze({ id, label, labelKey, categoryKey, shortcut, command, run, menuGroup });
     this.#actions.set(id, action);
     if (normalized !== undefined) this.#shortcuts.set(normalized, id);
+  }
+
+  /**
+   * All or nothing (plugins, PLUGIN_API.md §7): either every descriptor is registered,
+   * or none is and the first error is thrown.
+   * @param {ActionDescriptor[]} descriptors
+   */
+  registerAll(descriptors) {
+    const actions = new Map(this.#actions);
+    const shortcuts = new Map(this.#shortcuts);
+    try {
+      for (const d of descriptors) this.register(d);
+    } catch (err) {
+      this.#actions = actions;
+      this.#shortcuts = shortcuts;
+      throw err;
+    }
   }
 
   /** @param {string} id @returns {Action | undefined} */

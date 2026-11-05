@@ -1,9 +1,9 @@
 # Contract — Plugins and their API (N0.6)
 
-**Status:** DRAFT — to be validated by the Product Owner before any code, after trying
-the interactive mock-up `docs/mockups/plugins_prototype.html` (reference target of the
-Design gate, 2026-11-05). Product Owner
-answers of 2026-10-30 are recorded in §11.
+**Status:** VALIDATED by the Product Owner, 2026-11-05, after trying the interactive
+mock-up `docs/mockups/plugins_prototype.html` (« maquette OK »), the reference target of
+the Design gate. Product Owner answers of 2026-10-30 are recorded in §11, those of
+2026-11-05 in §4, §14 and §15. Implementation notes of N0.6 in §16.
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-10-30
 
 This contract fixes how code outside the application core adds functionality to Layout
@@ -105,7 +105,7 @@ therefore never replace or shadow a core Action or Command.
 
 ```js
 module.exports = function (api) {
-  api.pluginName                                   // 'ld-dummy-server'
+  api.pluginId                                     // 'LayoutDesigner.dummy-server' (§4)
   api.registerCommand({ id, run })                 // as CommandRegistry.register (contract §4)
   api.registerAction({ id, label, categoryKey?, shortcut?, menuGroup?, command })
                                                    // alias Action only; `command` must be
@@ -126,7 +126,7 @@ Plugin Actions carry an English `label` only in N0.6 (PO decision): no `labelKey
 
 ```js
 export function init(api) {
-  api.pluginName                                   // 'ld-dummy-renderer'
+  api.pluginId                                     // 'LayoutDesigner.dummy-renderer' (§4)
   api.registerAction(descriptor)                   // as ActionRegistry.register (contract §3):
                                                    // client (`run`) or alias (`command`);
                                                    // English `label`, optional `menuGroup`
@@ -307,8 +307,8 @@ with the rest of the contract.
    listed by `help`, with no extra work.
 6. **CSP**: renderer plugins are loaded from `plugin://`; the CSP of `index.html`
    (`style-src 'self' 'unsafe-inline'` since step 7) gains `script-src 'self' plugin:`.
-7. **Preferences**: no *Plugins* category in the Preferences dialog in N0.6 (no real
-   preference yet — `PREFERENCES.md` §1 rule); enable / disable stays in the backlog.
+7. **Preferences**: ~~no *Plugins* category in N0.6~~ — superseded by §15 (PO,
+   2026-11-05): enable / disable is a real preference, hence *Preferences › Plugins*.
 8. **Menu bar order** with the *Edit* menu of N0.5: *File · Edit · View · Plugins …
    Help* (Plugins still the last menu on the left).
 9. **Mock-up** `docs/mockups/plugins_prototype.html`: *Plugins › Demo* by mouse and
@@ -350,6 +350,38 @@ keeps its dependents unloaded, with the reason; cycles are refused; a plugin reu
 another through what that one **exports** (same process only — across processes, through
 its Commands). Witness: a third dummy plugin depending on another. The sub-step is
 named « N0.6 bis » so that the later sub-steps keep their numbers.
+
+## 16. Implementation notes (N0.6, 2026-11-05)
+
+What the code fixes where the contract left a choice — to confirm at the Design gate.
+
+- **Files:** `src/server/plugin_manager.js` (discovery, server loading, `plugin://` path
+  resolution — one file instead of the three of §13), `src/renderer/plugin_loader.js`,
+  `src/renderer/plugins_menu.js`, submenus in `vizjets/menubar/`, the source selector in
+  `src/renderer/output_view.js`, the *Plugins* category in `vizjets/preferences_dialog/`.
+- **URL** of a renderer plugin: `plugin://app/<folder>/<file>` (a fixed host, `app`,
+  so the folder name is a path segment; percent-encoded slashes are refused).
+- **Commands:** `plugins.startupInfo` (§3) and `plugins.list` (each plugin: `id`,
+  `displayName`, `kind`, `keywords`, `state`, `reason`) for *Preferences › Plugins*;
+  `prefs.setPluginEnabled({ id, enabled })` writes `disabledPlugins`, which
+  `prefs.info` and `prefs.reset` now return too (a reset that re-enables plugins shows
+  the restart warning, as for the language).
+- **States** in *Preferences › Plugins*: `loaded`, `disabled`, `failed` (reason in the
+  tooltip) at this start; after a change, « disabled (at the next start) » or « enabled
+  (at the next start) ». The category is hidden when there is no plugin.
+- **Several failures** at start-up: each is written in Output; the status bar shows the
+  last one.
+- **A server plugin whose alias Actions are refused in the renderer** (e.g. a shortcut
+  already used) is reported as failed; its Commands stay registered in main (reachable
+  only from the Debug Console). Accepted: no witness; to revisit with N0.6 bis.
+- **Output cap** (TD-3 repaid): 1000 lines per source in main's journal and in the
+  renderer's Output; the oldest line of that source goes. A new line appends a row.
+- **Palette** (`ACTION_COMMAND.md` §13.11): the filter now also matches Action ids and
+  each entry shows its id on the right in the muted colour — decided in N0.5 but not
+  built then; built here because §14.4 relies on it.
+- **Tests:** the core end-to-end tests start with an empty plugins folder
+  (`LD_PLUGINS_PATH`, `launch.js`); `plugins.spec.js` copies `plugins/` into a temporary
+  folder and adds a broken plugin beside the witnesses.
 
 ---
 

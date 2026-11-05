@@ -40,6 +40,8 @@ export interface ActionDescriptor {
   command?: string;
   /** Client Action: the work itself. */
   run?: (args?: unknown) => unknown | Promise<unknown>;
+  /** Plugin Actions: the submenu of *Plugins* they go in (PLUGIN_API.md §8.1). */
+  menuGroup?: string;
 }
 
 /** A registered Action (frozen). */
@@ -55,6 +57,35 @@ export interface OutputLine {
   /** Epoch milliseconds. */
   time: number;
   message: string;
+}
+
+// ---- Plugins (PLUGIN_API.md §5, §6) -------------------------------------------------
+
+/** A plugin's own Output source (PLUGIN_API.md §8.3). */
+export interface PluginOutput {
+  append(level: LogLevel, message: unknown): void;
+}
+
+/** What a server plugin's entry receives: `module.exports = function (api) { … }`. */
+export interface ServerPluginApi {
+  /** `<publisher>.<name>` — the prefix of every id it registers. */
+  pluginId: string;
+  registerCommand(descriptor: CommandDescriptor): void;
+  /** Alias Actions only, of this plugin's Commands. */
+  registerAction(descriptor: Omit<ActionDescriptor, 'run'> & { command: string }): void;
+  output: PluginOutput;
+  log(...args: unknown[]): void;
+  warn(...args: unknown[]): void;
+}
+
+/** What a renderer plugin's `init(api)` receives. */
+export interface RendererPluginApi {
+  pluginId: string;
+  /** Client (`run`) or alias (`command`) Action; English `label`. */
+  registerAction(descriptor: ActionDescriptor): void;
+  output: PluginOutput;
+  log(...args: unknown[]): void;
+  warn(...args: unknown[]): void;
 }
 
 // ---- Preload bridge (ACTION_COMMAND.md §5, OUTPUT_PANEL.md §7) ----------------------

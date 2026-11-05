@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (706 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (720 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -626,6 +626,7 @@
     - PREFERENCES.md
   - **mockups/**
     - output_panel_prototype.html
+    - plugins_prototype.html
     - preferences_prototype.html
   - **reboot-kit/**
     - LD_FileTree.md
@@ -635,6 +636,13 @@
     - LD_Workflow.md
   - ROADMAP.md ★
   - TECH_DEBT.md ★
+- **plugins/**
+  - **dummy-renderer/**
+    - package.json
+    - renderer.js
+  - **dummy-server/**
+    - index.js
+    - package.json
 - **schemas/**
   - pattern.schema.json ★
   - pattern.spec.md ★
@@ -656,6 +664,8 @@
     - output_sources.js
     - output_view.js
     - package.json
+    - plugin_loader.js
+    - plugins_menu.js
     - shortcuts.js
     - splitter.js
     - terminal_view.js
@@ -670,6 +680,7 @@
     - file_commands.js
     - journal.js
     - language_commands.js
+    - plugin_manager.js
     - preferences.js
     - preferences_commands.js
     - preload.js
@@ -716,6 +727,9 @@
         - debug_console.test.mjs
         - i18n.test.mjs
         - output_sources.test.mjs
+        - output_view.test.mjs
+        - plugin_loader.test.mjs
+        - plugins_menu.test.mjs
         - shortcuts.test.mjs
         - splitter.test.mjs
         - terminal_view.test.mjs
@@ -728,6 +742,8 @@
         - journal.test.js
         - language_commands.test.js
         - node_pty_electron.test.js
+        - plugin_manager.test.js
+        - preferences_commands.test.js
         - pty_service.test.js
         - window_options.test.js
       - **vizjets/**
@@ -743,6 +759,7 @@
       - i18n.spec.js
       - launch.js
       - output.spec.js
+      - plugins.spec.js
       - preferences.spec.js
       - terminal.spec.js
     - playwright.config.js

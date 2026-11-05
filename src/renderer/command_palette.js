@@ -33,8 +33,8 @@ export function initialSelection(entries, noPreselect = []) {
   return 0;
 }
 
-// Pure: Actions whose (displayed) label contains `query`, case-insensitive, minus
-// `excludeId`.
+// Pure: Actions whose (displayed) label or id contains `query`, case-insensitive, minus
+// `excludeId` (ACTION_COMMAND.md §13.11: typing a verb or a plugin id lists its Actions).
 /**
  * @param {Action[]} actions
  * @param {string | undefined} query
@@ -43,7 +43,7 @@ export function initialSelection(entries, noPreselect = []) {
  */
 export function filterActions(actions, query, excludeId, labelOf = englishLabel) {
   const q = (query || '').trim().toLowerCase();
-  return actions.filter((a) => a.id !== excludeId && labelOf(a).toLowerCase().includes(q));
+  return actions.filter((a) => a.id !== excludeId && (labelOf(a).toLowerCase().includes(q) || a.id.toLowerCase().includes(q)));
 }
 
 // options: { labelOf(action) → displayed label, locale (sort order), ariaLabel, placeholder,

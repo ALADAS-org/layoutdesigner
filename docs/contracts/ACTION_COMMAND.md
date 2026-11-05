@@ -338,5 +338,6 @@ The palette filter (§7) matches the displayed, localised label **and the Action
 every Action of that kind whatever the interface language, with the same word as in
 the Debug Console. Each palette entry shows its id discreetly on the right, in the
 muted colour (`--ld-muted-fg`); its exact look is confirmed at the Design gate.
-Built in N0.5 together with the Debug Console.
+Planned with the Debug Console (N0.5); actually built in N0.6 (2026-11-05), the id drawn
+by CSS (`::after`) so that an entry's text stays its label.
 

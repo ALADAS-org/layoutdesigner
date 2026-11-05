@@ -6,7 +6,8 @@
        (iziToast embeds its icons in its CSS). -->
   <!-- N0.5 step 7: inline styles allowed for xterm.js, as VS Code (OUTPUT_PANEL.md §10);
        inline scripts stay forbidden. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
+  <!-- N0.6: renderer plugins are ES modules served by plugin:// (PLUGIN_API.md §3). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' plugin:; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
   <title>Layout Designer</title>
 
   <!-- Third-party: jQuery + jQuery UI (dialogs, as in Cryptocalc), iziToast (notifications) -->

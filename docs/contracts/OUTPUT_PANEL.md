@@ -99,9 +99,9 @@ decision 2026-10-30, departing from VS Code, which opens on Terminal).
 - **Witness case of N0.5: the application's own traces**, source `Layout Designer`,
   from **both** processes (renderer: labels loaded, Actions registered, a failed
   Command; main: start-up, preferences read or rejected).
-- **Anticipated, not built in N0.5:** the **source selector** (check boxes, on the
-  right of the tab row). With a single source it has no witness case, so in N0.5 it is
-  not shown; it is built in **N0.6** with the first plugins. Its ergonomics are
+- **Source selector — built in N0.6** (2026-11-05, `src/renderer/output_view.js`; check
+  boxes, on the right of the tab row). With a single source it has no witness case, so
+  in N0.5 it was not shown; it came with the first plugins. Its ergonomics are
   checked by the PO at the N0.6 Design gate (PO, 2026-10-31).
 - **Selector look (PO, 2026-10-31; still checked at the N0.6 Design gate):** shown only
   while the Output tab is active; **no label**; a drop-down button whose closed value

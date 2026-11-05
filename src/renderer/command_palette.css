@@ -44,8 +44,25 @@
 }
 
 .CommandPaletteItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
   padding: 4px 8px;
   cursor: pointer;
+}
+
+/* The Action id, discreetly on the right (ACTION_COMMAND.md §13.11). Drawn by CSS so the
+   entry's text stays its label. */
+.CommandPaletteItem::after {
+  content: attr(data-action-id);
+  color: var(--ld-muted-fg);
+  font: 11px Consolas, monospace;
+  align-self: center;
+}
+
+.CommandPaletteItem[aria-selected="true"]::after {
+  color: inherit;
+  opacity: 0.8;
 }
 
 .CommandPaletteItem[aria-selected="true"] {

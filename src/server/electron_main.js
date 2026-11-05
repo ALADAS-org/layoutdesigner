@@ -9,7 +9,9 @@
 'use strict';
 
 const path = require('path');
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const { pathToFileURL } = require('url');
+const fs = require('fs');
+const { app, BrowserWindow, ipcMain, Menu, protocol, net } = require('electron');
 const { buildMainWindowOptions } = require('./window_options.js');
 const { CommandRegistry } = require('./command_registry.js');
 const { registerAppCommands } = require('./app_commands.js');
@@ -18,7 +20,8 @@ const { registerFileCommands } = require('./file_commands.js');
 const { registerPreferencesCommands } = require('./preferences_commands.js');
 const { createPtyService } = require('./pty_service.js');
 const { journal, log } = require('./journal.js');
-const { preferencesPath } = require('./preferences.js');
+const { preferencesPath, inspectPreferences } = require('./preferences.js');
+const { pluginsPath, discoverPlugins, loadServerPlugins, resolvePluginUrl } = require('./plugin_manager.js');
 const { version } = require('../../package.json');
 
 const INDEX_HTML = path.join(__dirname, '..', 'index.html');
@@ -43,6 +46,26 @@ registerLanguageCommands(commands);
 registerFileCommands(commands);
 registerPreferencesCommands(commands);
 
+// ---- Plugins (PLUGIN_API.md): discovered once; server plugins loaded before the window.
+const PLUGINS = pluginsPath();
+// Renderer plugins are ES modules served by plugin://app/<folder>/<file> (§3); the
+// scheme must be declared privileged before the app is ready.
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'plugin', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true } }
+]);
+// inspect, not read: the language Command already warns once about an invalid file.
+const disabled = /** @type {unknown} */ (inspectPreferences(preferencesPath()).prefs.disabledPlugins);
+const plugins = discoverPlugins(PLUGINS, { disabled: Array.isArray(disabled) ? disabled.filter((d) => typeof d === 'string') : [] });
+const pluginsReady = loadServerPlugins(plugins, { commands, journal });
+commands.register({ id: 'plugins.startupInfo', run: () => pluginsReady });
+commands.register({
+  id: 'plugins.list',
+  run: async () => {
+    await pluginsReady;
+    return plugins.map(({ id, displayName, kind, keywords, state, reason }) => ({ id, displayName, kind, keywords, state, reason }));
+  }
+});
+
 function createMainWindow() {
   const win = new BrowserWindow(buildMainWindowOptions());
   win.loadFile(INDEX_HTML);
@@ -51,6 +74,16 @@ function createMainWindow() {
 
 app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
+
+  // plugin:// serves only files inside the plugins folder (§3).
+  protocol.handle('plugin', async (request) => {
+    const file = resolvePluginUrl(request.url, PLUGINS);
+    if (file === null || !fs.existsSync(file)) return new Response('Not found', { status: 404 });
+    const response = await net.fetch(pathToFileURL(file).toString());
+    return new Response(response.body, {
+      headers: { 'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin': '*' }
+    });
+  });
 
   // Reply is always { ok, value } or { ok: false, error } — never a thrown IPC error.
   // Context: the app, and the webContents of the window that sent the request.

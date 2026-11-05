@@ -16,6 +16,8 @@
 //   - view.showTerminal    client  Ctrl+Shift+T — … on Terminal (PO: same key everywhere)
 // Each Action has a category (its menu); the palette shows "Category: Label". Action ids
 // are prefixed by that category (ACTION_COMMAND.md §13.9); Command ids are not.
+// Plugins (N0.6, PLUGIN_API.md §3): loaded after the core Actions and before the menu
+// bar, toolbar and shortcuts, which read the registry; then the Plugins menu.
 // =====================================================================================
 
 import { ActionRegistry } from './action_registry.js';
@@ -36,6 +38,8 @@ import { log } from './journal.js';
 import { createDebugConsole } from './debug_console.js';
 import { createTerminalView } from './terminal_view.js';
 import { createToaster } from './toast.js';
+import { loadPlugins } from './plugin_loader.js';
+import { pluginsMenuModel, insertPluginsMenu } from './plugins_menu.js';
 
 /** @typedef {import('../types/contracts').Action} Action */
 
@@ -106,7 +110,10 @@ const aboutDialog = createAboutDialog(byId('about_dialog'), { t, version });
 const toaster = createToaster();
 
 // ---- Preferences (docs/contracts/PREFERENCES.md): one dialog, changes applied at once.
-/** @typedef {{ file: string, status: 'ok' | 'missing' | 'invalid', language: string | null, theme: string }} PrefsInfo */
+/**
+ * @typedef {{ file: string, status: 'ok' | 'missing' | 'invalid', language: string | null, theme: string,
+ *             disabledPlugins: string[] }} PrefsInfo
+ */
 /** Applies a theme at once and remembers it (no restart). @param {string} theme */
 async function setTheme(theme) {
   applyTheme(document, theme);
@@ -117,10 +124,10 @@ const restartWarning = () =>
   toaster.modalWarning(t('Language/RestartTitle'), t('Language/RestartMessage'), t('Dialog/OK', 'OK'));
 /** Resets with no confirmation; shows the restart warning when the language changed. */
 async function resetPreferences() {
-  const before = (await prefsInfo()).language;
-  const state = /** @type {{ language: string | null, theme: string }} */ (await command('prefs.reset'));
-  applyTheme(document, state.theme); // at once; the language needs a restart
-  if (state.language !== before) await restartWarning();
+  const before = await prefsInfo();
+  const state = /** @type {{ language: string | null, theme: string, disabledPlugins: string[] }} */ (await command('prefs.reset'));
+  applyTheme(document, state.theme); // at once; the language and the plugins need a restart
+  if (state.language !== before.language || String(state.disabledPlugins) !== String(before.disabledPlugins)) await restartWarning();
   return state;
 }
 const preferencesDialog = createPreferencesDialog(byId('preferences_dialog'), {
@@ -137,15 +144,37 @@ const preferencesDialog = createPreferencesDialog(byId('preferences_dialog'), {
         { label: t('Dialog/Cancel', 'Cancel'), value: 'cancel', primary: false }
       ]);
     return answer === 'ok' ? resetPreferences() : null;
+  },
+  // A change applies at the next start (PLUGIN_API.md §15), as the language.
+  onPluginEnabled: async (id, enabled) => {
+    await command('prefs.setPluginEnabled', { id, enabled });
+    await toaster.modalWarning(t('Language/RestartTitle'), t('Plugin/RestartMessage'), t('Dialog/OK', 'OK'));
   }
 });
-/** @param {{ category?: 'interface' | 'system', focusLanguage?: boolean }} [options] */
+/** @typedef {import('../vizjets/preferences_dialog/preferences_dialog.js').PluginRow} PluginRow */
+/** @type {Map<string, { state: 'loaded' | 'failed', reason?: string }>} */
+let pluginOutcome = new Map();
+/** Each plugin, its state at this start and whether it is enabled for the next one. */
+async function pluginRows() {
+  const listed = /** @type {Array<Omit<PluginRow, 'enabled' | 'state'> & { state: string }>} */ (await command('plugins.list'));
+  const { disabledPlugins } = await prefsInfo();
+  return listed.map((p) => {
+    const done = pluginOutcome.get(p.id);
+    // A plugin main left pending is a renderer plugin; the renderer says how it went.
+    const state = /** @type {PluginRow['state']} */ (done?.state === 'failed' ? 'failed' : p.state === 'pending' ? done?.state ?? 'failed' : p.state);
+    return { ...p, state, reason: done?.reason ?? p.reason, enabled: !disabledPlugins.includes(p.id) };
+  });
+}
+/** @param {{ category?: 'interface' | 'plugins' | 'system', focusLanguage?: boolean }} [options] */
 async function openPreferences(options) {
   const { file, language } = await prefsInfo();
-  preferencesDialog.open({ languages, language, theme: currentTheme(document), file }, options);
+  preferencesDialog.open({ languages, language, theme: currentTheme(document), file, plugins: await pluginRows() }, options);
 }
 const bottomPanel = createBottomPanel(byId('bottom_panel'), { workspace: byId('workspace') });
-createOutputView(bottomPanel.view('output'), output);
+createOutputView(bottomPanel.view('output'), output, {
+  tools: bottomPanel.tools('output'),
+  summaryOf: (checked, total) => format(t('Output/Sources', '{checked} / {total} sources'), { checked: String(checked), total: String(total) })
+});
 // Main-side lines (start-up, preferences…): those written so far, then every new one.
 await window.ld.onOutput((line) => output.add(line));
 const debugConsole = createDebugConsole(bottomPanel.view('debugConsole'), {
@@ -266,6 +295,16 @@ for (const [name, key, label, work] of debugConsoleActions) {
     }
   });
 }
+
+// ---- Plugins (PLUGIN_API.md §3, §7, §8): a faulty plugin never stops the start-up.
+pluginOutcome = await loadPlugins(
+  /** @type {import('./plugin_loader.js').PluginsStartupInfo} */ (await command('plugins.startupInfo')),
+  { actions, output, log, onFailure: (message) => statusBar.showError(message) }
+);
+const pluginIds = /** @type {{ id: string }[]} */ (await command('plugins.list')).map((p) => p.id);
+const pluginActions = actions.list().filter((a) => pluginIds.some((id) => a.id.startsWith(`${id}.`)));
+insertPluginsMenu(/** @type {HTMLElement} */ (byId('menubar').querySelector('.Menubar')),
+  pluginsMenuModel(pluginActions, labelOf, lang), t('Plugins'));
 
 // ---- GUI components
 createMenubar(byId('menubar'), { actions, labelOf });

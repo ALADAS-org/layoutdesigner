@@ -66,3 +66,15 @@ describe('app commands', () => {
     expect(webContents.toggleDevTools).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('registerAll (N0.6, all or nothing)', () => {
+  const { CommandRegistry: Registry } = require('../../../../src/server/command_registry.js');
+  test('registers every descriptor, or none when one is refused', () => {
+    const r = new Registry();
+    r.register({ id: 'core.one', run: async () => 1 });
+    expect(() => r.registerAll([{ id: 'p.a', run: async () => 1 }, { id: 'core.one', run: async () => 1 }])).toThrow();
+    expect(r.has('p.a')).toBe(false);
+    r.registerAll([{ id: 'p.a', run: async () => 1 }, { id: 'p.b', run: async () => 1 }]);
+    expect(r.has('p.a') && r.has('p.b')).toBe(true);
+  });
+});

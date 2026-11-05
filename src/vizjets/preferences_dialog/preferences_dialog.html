@@ -5,6 +5,8 @@
   <div class="PreferencesCategories" role="tablist" aria-orientation="vertical">
     <button class="PreferencesCategory" type="button" role="tab" data-category="interface"
             data-label-key="Preferences/Interface">Interface</button>
+    <button class="PreferencesCategory" type="button" role="tab" data-category="plugins"
+            data-label-key="Preferences/Plugins" hidden>Plugins</button>
     <button class="PreferencesCategory" type="button" role="tab" data-category="system"
             data-label-key="Preferences/System">System</button>
   </div>
@@ -24,6 +26,12 @@
         </select>
       </div>
       <p class="PreferencesHelp" data-label-key="Preferences/ThemeHelp">Applied at once.</p>
+    </section>
+    <!-- N0.6 (PLUGIN_API.md §15): one row per plugin; shown only when there are plugins. -->
+    <section class="PreferencesPage" role="tabpanel" data-category="plugins" hidden>
+      <h3 class="PreferencesPageTitle" data-label-key="Preferences/Plugins">Plugins</h3>
+      <div class="PreferencesPlugins"></div>
+      <p class="PreferencesHelp" data-label-key="Preferences/PluginsHelp">Saved at once; applied when Layout Designer restarts.</p>
     </section>
     <section class="PreferencesPage" role="tabpanel" data-category="system" hidden>
       <h3 class="PreferencesPageTitle" data-label-key="Preferences/System">System</h3>

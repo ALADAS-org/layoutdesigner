@@ -6,6 +6,9 @@
 //   each plugin (N0.6). Every line carries its source, a level, a time and a message.
 // - Lines are kept in time order, so that the view can mix sources.
 // - The only way to write: output.source(name).append(level, message).
+// - N0.6 (TD-3 repaid): at most MAX_LINES_PER_SOURCE lines are kept per source — the
+//   oldest line of that source goes — and listeners learn which line was added and
+//   which was dropped, so that the view appends a row instead of rebuilding.
 // =====================================================================================
 
 /** @typedef {import('../types/contracts').LogLevel} LogLevel */
@@ -15,11 +18,17 @@
 /** @type {readonly string[]} */
 export const LEVELS = ['info', 'warn', 'error'];
 export const APP_SOURCE = 'Layout Designer';
+/** Same cap as main's journal (src/server/journal.js). */
+export const MAX_LINES_PER_SOURCE = 1000;
 
-export function createOutput() {
+/** @typedef {(line: StoredLine, change: { removed: StoredLine | null, atEnd: boolean }) => void} OutputListener */
+
+export function createOutput({ maxLinesPerSource = MAX_LINES_PER_SOURCE } = {}) {
   /** @type {StoredLine[]} */
   const lines = [];
-  /** @type {Set<(line: StoredLine) => void>} */
+  /** @type {Map<string, number>} */
+  const counts = new Map();
+  /** @type {Set<OutputListener>} */
   const listeners = new Set();
   let seq = 0;
 
@@ -35,7 +44,17 @@ export function createOutput() {
     let i = lines.length;
     while (i > 0 && lines[i - 1].time > line.time) i -= 1;
     lines.splice(i, 0, line);
-    for (const listener of listeners) listener(line);
+    const atEnd = i === lines.length - 1;
+    const count = (counts.get(source) ?? 0) + 1;
+    /** @type {StoredLine | null} */
+    let removed = null;
+    if (count > maxLinesPerSource) {
+      const oldest = lines.findIndex((l) => l.source === source);
+      removed = lines.splice(oldest, 1)[0];
+    } else {
+      counts.set(source, count);
+    }
+    for (const listener of listeners) listener(line, { removed, atEnd });
   }
 
   return {
@@ -46,8 +65,9 @@ export function createOutput() {
       append: (level, message, time = Date.now()) => add({ source: name, level, time, message: String(message) })
     }),
     lines: () => lines.slice(),
-    sources: () => [...new Set(lines.map((l) => l.source))],
-    /** @param {(line: StoredLine) => void} listener */
+    /** The sources that wrote, in order of their first line. */
+    sources: () => [...counts.keys()],
+    /** @param {OutputListener} listener */
     onChange(listener) {
       listeners.add(listener);
       return () => listeners.delete(listener);

@@ -66,5 +66,16 @@
   "Preferences/Theme":               "Theme",
   "Preferences/ThemeDark":           "Dark",
   "Preferences/ThemeLight":          "Light",
-  "Preferences/ThemeHelp":           "Applied at once."
+  "Preferences/ThemeHelp":           "Applied at once.",
+  "Plugins":                         "Plugins",
+  "Preferences/Plugins":             "Plugins",
+  "Preferences/PluginsHelp":         "Saved at once; applied when Layout Designer restarts.",
+  "Preferences/PluginTags":          "Tags",
+  "Plugin/Loaded":                   "loaded",
+  "Plugin/Disabled":                 "disabled",
+  "Plugin/Failed":                   "failed",
+  "Plugin/DisabledNext":             "disabled (at the next start)",
+  "Plugin/EnabledNext":              "enabled (at the next start)",
+  "Plugin/RestartMessage":           "The change will be applied when Layout Designer restarts.",
+  "Output/Sources":                  "{checked} / {total} sources"
 }

@@ -59,6 +59,7 @@ export function createBottomPanel(host, { win = window, workspace }) {
   /** @type {HTMLElement} */ const body = required(root, '.BottomPanelBody');
   const tabs = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('.BottomPanelTab')]);
   const views = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('.BottomPanelView')]);
+  const tools = /** @type {HTMLElement[]} */ ([...root.querySelectorAll('.BottomPanelTabTools')]);
 
   let folded = INITIAL_FOLDED;
   /** @type {PanelTab} */
@@ -80,6 +81,7 @@ export function createBottomPanel(host, { win = window, workspace }) {
       tab.tabIndex = on ? 0 : -1;
     }
     for (const view of views) view.hidden = view.dataset.tab !== active;
+    for (const t of tools) t.hidden = t.dataset.tab !== active;
   }
 
   const panel = {
@@ -100,7 +102,13 @@ export function createBottomPanel(host, { win = window, workspace }) {
     /** listener(tab) is called each time a tab is shown (click, Action). @param {(tab: PanelTab) => void} listener */
     onShow: (listener) => { showListeners.add(listener); },
     /** @param {PanelTab} tab @returns {HTMLElement} */
-    view: (tab) => /** @type {HTMLElement} */ (views.find((v) => v.dataset.tab === tab))
+    view: (tab) => /** @type {HTMLElement} */ (views.find((v) => v.dataset.tab === tab)),
+    /** The tools area of a tab, on the right of the tab row. @param {PanelTab} tab @returns {HTMLElement} */
+    tools: (tab) => {
+      const el = tools.find((v) => v.dataset.tab === tab);
+      if (el === undefined) throw new Error(`Bottom panel: no tools for tab '${tab}'`);
+      return el;
+    }
   };
 
   foldButton.addEventListener('click', () => panel.toggle());

@@ -66,5 +66,16 @@
   "Preferences/Theme":               "Thème",
   "Preferences/ThemeDark":           "Sombre",
   "Preferences/ThemeLight":          "Clair",
-  "Preferences/ThemeHelp":           "Appliqué aussitôt."
+  "Preferences/ThemeHelp":           "Appliqué aussitôt.",
+  "Plugins":                         "Plugins",
+  "Preferences/Plugins":             "Plugins",
+  "Preferences/PluginsHelp":         "Enregistré aussitôt ; appliqué au redémarrage de Layout Designer.",
+  "Preferences/PluginTags":          "Tags",
+  "Plugin/Loaded":                   "chargé",
+  "Plugin/Disabled":                 "désactivé",
+  "Plugin/Failed":                   "en échec",
+  "Plugin/DisabledNext":             "désactivé (au prochain démarrage)",
+  "Plugin/EnabledNext":              "activé (au prochain démarrage)",
+  "Plugin/RestartMessage":           "Le changement sera appliqué au redémarrage de Layout Designer.",
+  "Output/Sources":                  "{checked} / {total} sources"
 }

@@ -1,0 +1,11 @@
+{
+  "name": "dummy-server",
+  "publisher": "LayoutDesigner",
+  "displayName": "Dummy Server",
+  "version": "1.0.0",
+  "description": "Witness of the server plugin API (N0.6): a Command and its alias Action.",
+  "ld-plugin-type": "server",
+  "main": "index.js",
+  "keywords": ["demo", "hello", "node"],
+  "private": true
+}

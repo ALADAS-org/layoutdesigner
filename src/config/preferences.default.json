@@ -1,4 +1,5 @@
 {
   "language": null,
-  "theme": "dark"
+  "theme": "dark",
+  "disabledPlugins": []
 }

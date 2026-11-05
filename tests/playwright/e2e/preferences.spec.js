@@ -52,7 +52,7 @@ test.describe('the Preferences dialog', () => {
     await win.keyboard.press('Control+K');
     await expect(dialog(win)).toBeVisible();
     await expect(dialog(win).locator('.ui-dialog-title')).toHaveText('Preferences');
-    await expect(dialog(win).locator('.PreferencesCategory')).toHaveText(['Interface', 'System']);
+    await expect(dialog(win).locator('.PreferencesCategory:visible')).toHaveText(['Interface', 'System']);
     await expect(category(win, 'interface')).toHaveAttribute('aria-selected', 'true');
     await expect(dialog(win).locator('.ui-dialog-buttonpane').getByRole('button', { name: 'Close' })).toBeVisible();
     await expect(dialog(win).locator('.ui-dialog-buttonpane').getByRole('button', { name: 'OK' })).toHaveCount(0); // changes apply at once
@@ -144,7 +144,7 @@ test.describe('the Preferences dialog', () => {
     await answer(win, 'ok'); // the language changed (fr → system): restart warning
     expect(readJson(`${prefsFile}.bak`)).toEqual({ language: 'fr', theme: 'light' });
     expect(await win.evaluate(() => document.documentElement.dataset.theme)).toBe('dark'); // at once
-    expect(readJson(prefsFile)).toEqual({ language: null, theme: 'dark' });
+    expect(readJson(prefsFile)).toEqual({ language: null, theme: 'dark', disabledPlugins: [] });
     await category(win, 'interface').click();
     await expect(select(win)).toHaveValue('');
     await dialog(win).locator('.ui-dialog-buttonpane').getByRole('button', { name: 'Close' }).click();
@@ -248,7 +248,7 @@ test.describe('an invalid preferences file at start-up', () => {
       await answer(win, 'reset');
       await expect.poll(() => fs.existsSync(`${prefsFile}.bak`)).toBe(true);
       expect(fs.readFileSync(`${prefsFile}.bak`, 'utf8')).toBe('{ not json');
-      expect(readJson(prefsFile)).toEqual({ language: null, theme: 'dark' });
+      expect(readJson(prefsFile)).toEqual({ language: null, theme: 'dark', disabledPlugins: [] });
       await expect(toast(win)).toHaveCount(0); // language unchanged (system): no restart warning
     } finally {
       await app.close();

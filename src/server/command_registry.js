@@ -36,6 +36,21 @@ class CommandRegistry {
     this.#commands.set(id, { id, run });
   }
 
+  /**
+   * All or nothing (plugins, PLUGIN_API.md §7): either every descriptor is registered,
+   * or none is and the first error is thrown.
+   * @param {CommandDescriptor[]} descriptors
+   */
+  registerAll(descriptors) {
+    const commands = new Map(this.#commands);
+    try {
+      for (const d of descriptors) this.register(d);
+    } catch (err) {
+      this.#commands = commands;
+      throw err;
+    }
+  }
+
   /** @param {string} id */
   has(id) {
     return this.#commands.has(id);
