@@ -332,6 +332,38 @@ confirmation); restart. Try the select-all box.
 - **Debt:** none expected. §16's « server plugin whose Actions are refused » is settled
   in §7.
 
+## 14. Implementation notes (N0.6 bis, 2026-11-06)
+
+What the code fixes where the contract left a choice — to confirm at the Design gate.
+
+- **Files:** `src/server/plugin_dependencies.js` (pure: `parseDependencies`,
+  `loadingOrder` — Kahn with ties in folder order, cycles by Tarjan with the shortest
+  path —, `dependencyProblem`, `cycleReason`); `src/types/semver.d.ts` (the three
+  `semver` functions used, instead of adding `@types/semver`).
+- **Check order of a dependency** when several things are wrong with it: not installed
+  → server → renderer (failed) → version → disabled → not loaded.
+- **Main** resolves the order of **both** graphs, blocks what can be known before
+  loading (missing, version, disabled, failed, cycles) and loads the server graph; a
+  renderer plugin whose **server** dependency failed is blocked in main.
+  `plugins.startupInfo` gains `blocked` and, per renderer plugin, `dependencies`
+  (`{ id, kind }`); `plugins.list` gains `dependencies` (ids).
+- **Renderer:** a renderer plugin whose dependency failed or was blocked there
+  (a renderer `init` that throws, or a server plugin whose Actions were refused, §7) is
+  blocked at load time.
+- **Status bar:** a blocked plugin is shown in the **warn** colour (`showWarning`, new);
+  `error` stays for failures. The last message wins, as before.
+- **Preferences › Plugins:** with the bulk actions, *Apply* writes one
+  `prefs.setPluginEnabled` per changed plugin, then shows the restart warning once; the
+  confirmation is a small jQuery UI dialog (`LdPluginsConfirm`) over the Preferences
+  dialog. A selection that leaves nobody blocked (e.g. select all + Disable) asks
+  nothing.
+- **Witnesses:** `dummy-server` returns `{ nodeVersion }`; `dummy-greeter` in
+  `plugins/`.
+- **Tests tagged by roadmap lot** (PO, 2026-11-06): the tests of this lot carry
+  `@N0.6bis` in their titles — `npm run test:jest -- -t @N0.6bis`,
+  `npx playwright test --grep @N0.6bis`. Earlier tests are not tagged yet (backlog
+  *Test batches*).
+
 ---
 
 <sub>Prepared with the assistance of Claude AI, used as a tool under the authors' direction.</sub>

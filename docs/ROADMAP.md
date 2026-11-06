@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis in progress (plugin dependencies: contract validated) · N0.6 ter planned (NFT-ready foundations) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis delivered, Design gate pending (plugin dependencies) · N0.6 ter planned (NFT-ready foundations) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -128,7 +128,10 @@ rule (server → renderer refused, to keep a future batch mode), `exports` and
 `api.getExports`, state `blocked` with reasons after VS Code, confirmations in
 *Preferences › Plugins*, topological order, witness `dummy-greeter`. **Validated by the PO (2026-11-06)** after its mock-up
 `docs/mockups/plugin_dependencies_prototype.html` (bulk actions after Gmail; `warn` for
-`blocked`). Implementation next.
+`blocked`). **Delivered (2026-11-06):** dependencies with semver ranges, topological
+loading, `blocked` with reasons after VS Code, `api.getExports`, bulk actions and
+confirmations in *Preferences › Plugins*, witness `dummy-greeter`; tests tagged
+`@N0.6bis`. **Awaiting the PO's Design gate.**
 **NFT ready** (PO, 2026-11-06): foundations first as **N0.6 ter** (disabled-by-default
 plugins, `api.secrets`), then **N3 bis — NFT minimal** with Solana as first chain.
 
@@ -268,7 +271,7 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
 | N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ✅ 2026-11-05 |
 | N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector**; **enable / disable** each plugin (Preferences › Plugins) | Plugin API (validated 2026-11-05) | ✅ 2026-11-05 |
-| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies (validated 2026-11-06) | ⏳ in progress — implementation next |
+| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies (validated 2026-11-06) | ⏳ delivered 2026-11-06 — Design gate |
 | N0.6 ter | **NFT-ready foundations**, inactive by default: plugins **disabled by default** (`ld-enabled-by-default`) and a **secret store** per plugin (`api.secrets`, after VS Code's `SecretStorage`, encrypted with Electron `safeStorage`, main only) — witness: a dummy plugin shipped disabled that stores a fake API key | Plugin defaults and secrets | — |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
@@ -320,11 +323,12 @@ promotes it to a step, with its reference target.
 - Composition templates, predefined patterns, tutorials (guiding)
 - Search plugins by tag (`keywords`), in *Preferences › Plugins* or the palette (N0.6)
 - Enable / disable plugins without a restart (VS Code does it since 1.31) (N0.6)
-- **Test batches** (PO, 2026-11-05): run only part of the unit / end-to-end tests by a
-  criterion — a category, or the version / sub-step that introduced them (e.g. a
-  `@N0.6` tag; the 4-number `xx.yy.zz.tt` idea needs care, since `package.json`
-  versions must be semver). Jest (`-t`, paths) and Playwright (`--grep` on tags) can
-  filter already, no new dependency. To place: a small sub-step before N0.7, or later.
+- **Test batches** (PO, 2026-11-05; precised 2026-11-06): run only part of the unit /
+  end-to-end tests **by roadmap lot** (and by category). Convention started in
+  N0.6 bis: the lot's tag in the test titles (`@N0.6bis`), filtered with
+  `npm run test:jest -- -t @N0.6bis` and `npx playwright test --grep @N0.6bis` — no new
+  dependency. Left: tag the earlier tests (`@N0.1` … `@N0.6`), categories, and npm
+  scripts if wanted. To place: a small sub-step before N0.7, or later.
 - **Scripts** (PO, 2026-11-05) — automation after MS Office *macros*: record, edit and
   replay a sequence of Actions / Commands, also in a **batch mode** (main without a
   window; kept possible by `PLUGIN_DEPENDENCIES.md` §2). Merges the « scripting

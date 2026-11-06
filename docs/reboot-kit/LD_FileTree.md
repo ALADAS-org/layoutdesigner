@@ -1,6 +1,6 @@
 # Layout Designer — Repository File Tree
 
-*Generated from `git ls-files` (720 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
+*Generated from `git ls-files` (729 tracked files). Directory-level map; `node_modules` / build / cache folders are collapsed to a count. ★ = live authority file (governance doc, grammar or core contract — read it from HEAD, never recite from memory). Regenerate with `cli_tools/ld_generate_filetree.py` after structural changes, then reload it into Project Knowledge.*
 
 - **.claude/**
   - **skills/**
@@ -623,9 +623,11 @@
     - ACTION_COMMAND.md
     - OUTPUT_PANEL.md
     - PLUGIN_API.md
+    - PLUGIN_DEPENDENCIES.md
     - PREFERENCES.md
   - **mockups/**
     - output_panel_prototype.html
+    - plugin_dependencies_prototype.html
     - plugins_prototype.html
     - preferences_prototype.html
   - **reboot-kit/**
@@ -637,6 +639,9 @@
   - ROADMAP.md ★
   - TECH_DEBT.md ★
 - **plugins/**
+  - **dummy-greeter/**
+    - index.js
+    - package.json
   - **dummy-renderer/**
     - package.json
     - renderer.js
@@ -680,6 +685,7 @@
     - file_commands.js
     - journal.js
     - language_commands.js
+    - plugin_dependencies.js
     - plugin_manager.js
     - preferences.js
     - preferences_commands.js
@@ -689,6 +695,7 @@
   - **types/**
     - contracts.d.ts
     - renderer-globals.d.ts
+    - semver.d.ts
   - **vizjets/**
     - **about_dialog/**
       - about_dialog.css
@@ -742,6 +749,7 @@
         - journal.test.js
         - language_commands.test.js
         - node_pty_electron.test.js
+        - plugin_dependencies.test.js
         - plugin_manager.test.js
         - preferences_commands.test.js
         - pty_service.test.js
@@ -749,6 +757,7 @@
       - **vizjets/**
         - bottom_panel.test.mjs
         - gui_helpers.test.mjs
+        - preferences_dialog.test.mjs
   - **playwright/**
     - **e2e/**
       - app_launch.spec.js
@@ -759,6 +768,7 @@
       - i18n.spec.js
       - launch.js
       - output.spec.js
+      - plugin_dependencies.spec.js
       - plugins.spec.js
       - preferences.spec.js
       - terminal.spec.js
