@@ -8,6 +8,11 @@
 // - Source tags on the lines when several sources are shown.
 // - The view follows new lines while it is scrolled to the bottom; a new line appends a
 //   row (TD-3 repaid) — the view is rebuilt only when the choice of sources changes.
+//   Fixed at the N0.6 bis Design gate (PO, 2026-11-06), after VS Code: the view follows
+//   **by default**; only the user scrolling up stops it, scrolling back to the bottom
+//   resumes it; when the view is shown or resized (panel unfolded, tab chosen, splitter
+//   moved) it goes back to the bottom if it follows. Before, lines written while the
+//   panel was folded left the view at the top, and it never followed again.
 // =====================================================================================
 
 import { formatLine } from './output_sources.js';
@@ -116,9 +121,21 @@ export function createOutputView(el, output, { tools, summaryOf = englishSummary
     return row;
   }
   const atBottom = () => el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
+  // Follow by default; only a scroll while the view is shown changes it (a hidden view has
+  // no height, so it would look « not at the bottom »).
+  let following = true;
+  el.addEventListener('scroll', () => {
+    if (el.clientHeight > 0) following = atBottom();
+  });
+  const stick = () => {
+    if (following) el.scrollTop = el.scrollHeight;
+  };
+  // Shown, unfolded or resized: back to the bottom if it follows.
+  const view = doc.defaultView;
+  if (view !== null && typeof view.ResizeObserver === 'function') new view.ResizeObserver(stick).observe(el);
 
   function renderAll() {
-    const follow = atBottom();
+    const follow = following;
     state = selectorState(output.sources(), unchecked, summaryOf);
     rows.clear();
     el.replaceChildren(...output.lines().filter((l) => state.checked.includes(l.source)).map(rowOf));
@@ -127,7 +144,7 @@ export function createOutputView(el, output, { tools, summaryOf = englishSummary
   }
 
   output.onChange((line, { removed, atEnd }) => {
-    const follow = atBottom();
+    const follow = following;
     const before = state;
     state = selectorState(output.sources(), unchecked, summaryOf);
     if (removed !== null) {

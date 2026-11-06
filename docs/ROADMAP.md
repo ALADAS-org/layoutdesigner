@@ -131,7 +131,9 @@ rule (server → renderer refused, to keep a future batch mode), `exports` and
 `blocked`). **Delivered (2026-11-06):** dependencies with semver ranges, topological
 loading, `blocked` with reasons after VS Code, `api.getExports`, bulk actions and
 confirmations in *Preferences › Plugins*, witness `dummy-greeter`; tests tagged
-`@N0.6bis`. **Awaiting the PO's Design gate.**
+`@N0.6bis`. **Awaiting the PO's Design gate.** Fixed at the Design gate (2026-11-06):
+the Output view now **follows new lines by default**, after VS Code — lines written
+while the panel was folded left it at the top, so the demos' lines were hidden below.
 **NFT ready** (PO, 2026-11-06): foundations first as **N0.6 ter** (disabled-by-default
 plugins, `api.secrets`), then **N3 bis — NFT minimal** with Solana as first chain.
 
@@ -328,7 +330,10 @@ promotes it to a step, with its reference target.
   N0.6 bis: the lot's tag in the test titles (`@N0.6bis`), filtered with
   `npm run test:jest -- -t @N0.6bis` and `npx playwright test --grep @N0.6bis` — no new
   dependency. Left: tag the earlier tests (`@N0.1` … `@N0.6`), categories, and npm
-  scripts if wanted. To place: a small sub-step before N0.7, or later.
+  scripts if wanted. To place: a small sub-step before N0.7, or later. **Seen
+  2026-11-06:** some `describe` blocks share one application across their tests (state
+  carried from test to test), so a filter that keeps only part of such a block fails —
+  tag whole blocks, or make their tests independent.
 - **Scripts** (PO, 2026-11-05) — automation after MS Office *macros*: record, edit and
   replay a sequence of Actions / Commands, also in a **batch mode** (main without a
   window; kept possible by `PLUGIN_DEPENDENCIES.md` §2). Merges the « scripting

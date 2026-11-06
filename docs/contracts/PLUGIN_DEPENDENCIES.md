@@ -363,6 +363,10 @@ What the code fixes where the contract left a choice — to confirm at the Desig
   `@N0.6bis` in their titles — `npm run test:jest -- -t @N0.6bis`,
   `npx playwright test --grep @N0.6bis`. Earlier tests are not tagged yet (backlog
   *Test batches*).
+- **Fixed at the Design gate (PO, 2026-11-06):** the Output view follows new lines **by
+  default** (VS Code); only the user scrolling up stops it, and it goes back to the
+  bottom when shown or resized (`output_view.js`, `OUTPUT_PANEL.md` §4 behaviour made
+  robust). New end-to-end test, tagged `@N0.6bis`.
 
 ---
 

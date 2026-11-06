@@ -142,6 +142,36 @@ test.describe('plugin dependencies @N0.6bis', () => {
     }
   });
 
+  test('Output follows new lines by default, also after the panel was folded; scrolling up stops it', async () => {
+    // Fixed at the N0.6 bis Design gate (PO, 2026-11-06): the demos' lines were hidden below.
+    const { app, win } = await launch({ plugins: pluginsFolder() });
+    try {
+      await win.setViewportSize({ width: 1000, height: 650 });
+      await win.keyboard.press('Control+Shift+U'); // the start-up lines arrived while folded
+      const view = win.locator('.OutputView');
+      const atBottom = () => view.evaluate((el) => el.scrollTop + el.clientHeight >= el.scrollHeight - 2);
+      const run = async (id) => {
+        await win.keyboard.press('Control+Shift+P');
+        await win.locator('.CommandPaletteInput').fill(id);
+        await win.keyboard.press('Enter');
+      };
+      await expect.poll(atBottom).toBe(true);
+      for (const id of [`${SERVER}.hello`, `${GREETER}.hello`, 'LayoutDesigner.dummy-renderer.hello']) {
+        await run(id);
+        await expect.poll(atBottom).toBe(true);
+      }
+      await view.evaluate((el) => { el.scrollTop = 0; el.dispatchEvent(new Event('scroll')); });
+      await run(`${SERVER}.hello`);
+      await expect(lines(win).filter({ hasText: 'Hello from a server plugin' })).toHaveCount(2);
+      expect(await atBottom()).toBe(false); // the user scrolled up: the view stays there
+      await view.evaluate((el) => { el.scrollTop = el.scrollHeight; el.dispatchEvent(new Event('scroll')); });
+      await run(`${GREETER}.hello`);
+      await expect.poll(atBottom).toBe(true); // back at the bottom: it follows again
+    } finally {
+      await app.close();
+    }
+  });
+
   test('a cycle is refused with its path; the other plugins load', async () => {
     const { app, win } = await launch({ plugins: pluginsFolder({ cycle: true }) });
     try {
