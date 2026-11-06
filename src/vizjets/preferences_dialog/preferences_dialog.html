@@ -27,9 +27,21 @@
       </div>
       <p class="PreferencesHelp" data-label-key="Preferences/ThemeHelp">Applied at once.</p>
     </section>
-    <!-- N0.6 (PLUGIN_API.md §15): one row per plugin; shown only when there are plugins. -->
+    <!-- N0.6 (PLUGIN_API.md §15): one row per plugin; shown only when there are plugins.
+         N0.6 bis (PLUGIN_DEPENDENCIES.md §6): bulk actions after Gmail — a row's check box
+         selects it; select-all box, then the action, then Apply on its right. -->
     <section class="PreferencesPage" role="tabpanel" data-category="plugins" hidden>
       <h3 class="PreferencesPageTitle" data-label-key="Preferences/Plugins">Plugins</h3>
+      <div class="PreferencesPluginsBulk">
+        <input type="checkbox" class="PreferencesPluginsSelectAll" aria-label="Select all plugins"
+               data-aria-label-key="Preferences/PluginsSelectAll">
+        <select class="PreferencesPluginsAction" aria-label="Action" data-aria-label-key="Preferences/PluginsAction">
+          <option value="disable" data-label-key="Preferences/PluginsDisable">Disable</option>
+          <option value="enable" data-label-key="Preferences/PluginsEnable">Enable</option>
+        </select>
+        <button class="PreferencesPluginsApply" type="button" data-label-key="Preferences/PluginsApply">Apply</button>
+        <span class="PreferencesPluginsCount"></span>
+      </div>
       <div class="PreferencesPlugins"></div>
       <p class="PreferencesHelp" data-label-key="Preferences/PluginsHelp">Saved at once; applied when Layout Designer restarts.</p>
     </section>
@@ -46,4 +58,10 @@
       <p class="PreferencesHelp" data-label-key="Preferences/ResetHelp">Restores the defaults of preferences.default.json. The current file is kept as preferences.json.bak.</p>
     </section>
   </div>
+</div>
+<!-- N0.6 bis: confirmation when Apply would leave a plugin blocked (PLUGIN_DEPENDENCIES.md §6). -->
+<div class="PreferencesPluginsConfirm" hidden>
+  <p class="PreferencesPluginsConfirmMessage"></p>
+  <ul class="PreferencesPluginsConfirmList"></ul>
+  <label class="PreferencesPluginsConfirmAlso"><input type="checkbox" checked> <span></span></label>
 </div>

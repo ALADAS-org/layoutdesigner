@@ -11,7 +11,7 @@ const {
 } = require('../../../../src/server/plugin_manager.js');
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'ld-plugins-test-'));
-const manifest = (over = {}) => ({ name: 'demo', publisher: 'Acme', 'ld-plugin-type': 'server', main: 'index.js', ...over });
+const manifest = (over = {}) => ({ name: 'demo', publisher: 'Acme', version: '1.0.0', 'ld-plugin-type': 'server', main: 'index.js', ...over });
 
 /** Writes a plugin folder; `files` maps file names to contents (objects become JSON). */
 function plugin(dir, folder, files) {
@@ -34,7 +34,8 @@ describe('pluginsPath', () => {
 describe('describePlugin', () => {
   test('id `<publisher>.<name>` as VS Code; displayName shown; keywords are the tags', () => {
     expect(describePlugin('f', manifest({ displayName: 'Demo', keywords: ['a', 3, 'b'] }))).toEqual({
-      id: 'Acme.demo', displayName: 'Demo', kind: 'server', keywords: ['a', 'b'], entryName: 'index.js'
+      id: 'Acme.demo', displayName: 'Demo', kind: 'server', keywords: ['a', 'b'], entryName: 'index.js',
+      version: '1.0.0', dependencies: {}
     });
   });
 
@@ -49,7 +50,12 @@ describe('describePlugin', () => {
     [manifest({ name: 'Bad_Name' }), "'name'"],
     [manifest({ 'ld-plugin-type': undefined }), "'ld-plugin-type' must be one of"],
     [manifest({ 'ld-plugin-type': 'widget' }), "'ld-plugin-type' must be one of"],
-    [manifest({ 'ld-plugin-type': 'both' }), 'not supported yet']
+    [manifest({ 'ld-plugin-type': 'both' }), 'not supported yet'],
+    // N0.6 bis (PLUGIN_DEPENDENCIES.md §1): a semver version and valid declarations.
+    [manifest({ version: undefined }), "'version' must be a semver version"],
+    [manifest({ version: '1.0' }), "'version' must be a semver version"],
+    [manifest({ pluginDependencies: ['Acme.x'] }), "'pluginDependencies' must be an object"],
+    [manifest({ pluginDependencies: { 'Acme.x': 'soon' } }), "'soon' is not a valid version range"]
   ])('rejects %p', (m, reason) => {
     expect(describePlugin('f', m).error).toContain(reason);
   });
@@ -90,11 +96,12 @@ describe('discoverPlugins', () => {
     expect(discoverPlugins(path.join(tmp(), 'none'))).toEqual([]);
   });
 
-  test('the two witnesses of plugins/ are valid', () => {
+  test('the three witnesses of plugins/ are valid @N0.6bis', () => {
     // Only the witnesses: a developer may have other plugins in plugins/ (e.g. a broken
     // one dropped there for the Design gate).
     const witnesses = discoverPlugins(PLUGINS_DIR).filter((p) => p.id.startsWith('LayoutDesigner.dummy-'));
     expect(witnesses.map((p) => [p.id, p.kind, p.state])).toEqual([
+      ['LayoutDesigner.dummy-greeter', 'server', 'pending'],
       ['LayoutDesigner.dummy-renderer', 'renderer', 'pending'],
       ['LayoutDesigner.dummy-server', 'server', 'pending']
     ]);
@@ -139,8 +146,9 @@ describe('loadServerPlugins', () => {
     expect(info.serverActions).toEqual([{ plugin: 'Acme.good', descriptor: {
       id: 'Acme.good.hello', label: 'Hello', menuGroup: 'Demo', command: 'Acme.good.hello', categoryKey: 'Plugins'
     } }]);
-    expect(info.rendererPlugins).toEqual([{ plugin: 'Acme.zz-renderer', url: 'plugin://app/zz-renderer/r.js' }]);
+    expect(info.rendererPlugins).toEqual([{ plugin: 'Acme.zz-renderer', url: 'plugin://app/zz-renderer/r.js', dependencies: [] }]);
     expect(info.failures).toEqual([]);
+    expect(info.blocked).toEqual([]);
     expect(s.plugins.find((p) => p.id === 'Acme.good').state).toBe('loaded');
     expect(s.journal.history().map((l) => l.message)).toEqual(['Plugin Acme.good loaded (server)']);
   });

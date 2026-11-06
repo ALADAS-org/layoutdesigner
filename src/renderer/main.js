@@ -145,14 +145,15 @@ const preferencesDialog = createPreferencesDialog(byId('preferences_dialog'), {
       ]);
     return answer === 'ok' ? resetPreferences() : null;
   },
-  // A change applies at the next start (PLUGIN_API.md §15), as the language.
-  onPluginEnabled: async (id, enabled) => {
-    await command('prefs.setPluginEnabled', { id, enabled });
+  // A change applies at the next start (PLUGIN_API.md §15), as the language; several
+  // plugins at once with the bulk actions (PLUGIN_DEPENDENCIES.md §6).
+  onPluginsEnabled: async (ids, enabled) => {
+    for (const id of ids) await command('prefs.setPluginEnabled', { id, enabled });
     await toaster.modalWarning(t('Language/RestartTitle'), t('Plugin/RestartMessage'), t('Dialog/OK', 'OK'));
   }
 });
 /** @typedef {import('../vizjets/preferences_dialog/preferences_dialog.js').PluginRow} PluginRow */
-/** @type {Map<string, { state: 'loaded' | 'failed', reason?: string }>} */
+/** @type {Map<string, import('./plugin_loader.js').PluginOutcome>} */
 let pluginOutcome = new Map();
 /** Each plugin, its state at this start and whether it is enabled for the next one. */
 async function pluginRows() {
@@ -160,8 +161,9 @@ async function pluginRows() {
   const { disabledPlugins } = await prefsInfo();
   return listed.map((p) => {
     const done = pluginOutcome.get(p.id);
-    // A plugin main left pending is a renderer plugin; the renderer says how it went.
-    const state = /** @type {PluginRow['state']} */ (done?.state === 'failed' ? 'failed' : p.state === 'pending' ? done?.state ?? 'failed' : p.state);
+    // A plugin main left pending is a renderer plugin; the renderer says how it went (and
+    // may fail or block a plugin main had loaded: refused Actions, PLUGIN_DEPENDENCIES §7).
+    const state = /** @type {PluginRow['state']} */ (done !== undefined && done.state !== 'loaded' ? done.state : p.state === 'pending' ? done?.state ?? 'failed' : p.state);
     return { ...p, state, reason: done?.reason ?? p.reason, enabled: !disabledPlugins.includes(p.id) };
   });
 }
@@ -299,7 +301,7 @@ for (const [name, key, label, work] of debugConsoleActions) {
 // ---- Plugins (PLUGIN_API.md §3, §7, §8): a faulty plugin never stops the start-up.
 pluginOutcome = await loadPlugins(
   /** @type {import('./plugin_loader.js').PluginsStartupInfo} */ (await command('plugins.startupInfo')),
-  { actions, output, log, onFailure: (message) => statusBar.showError(message) }
+  { actions, output, log, onFailure: (message) => statusBar.showError(message), onBlocked: (message) => statusBar.showWarning(message) }
 );
 const pluginIds = /** @type {{ id: string }[]} */ (await command('plugins.list')).map((p) => p.id);
 const pluginActions = actions.list().filter((a) => pluginIds.some((id) => a.id.startsWith(`${id}.`)));

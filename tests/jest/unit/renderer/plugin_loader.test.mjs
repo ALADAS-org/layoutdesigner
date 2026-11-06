@@ -88,3 +88,80 @@ test('server alias Actions refused in the renderer fail their plugin', async () 
   expect(s.actions.get('A.s.x')).toBeUndefined();
   expect(s.failures[0]).toMatch(/^Plugin 'A\.s' not loaded: /);
 });
+
+// ---- N0.6 bis — dependencies in the renderer (PLUGIN_DEPENDENCIES.md §3–§5) ----------
+describe('renderer dependencies @N0.6bis', () => {
+  test('exports: init\'s value (awaited), read by a declared renderer dependent', async () => {
+    const seen = [];
+    const s = setup({
+      'plugin://app/A.base/renderer.js': { init: async () => { await Promise.resolve(); return { twice: (n) => n * 2 }; } },
+      'plugin://app/A.top/renderer.js': { init: (api) => { seen.push(api.getExports('A.base').twice(21)); } }
+    });
+    const outcome = await loadPlugins({
+      serverActions: [],
+      rendererPlugins: [renderer('A.base'), { ...renderer('A.top'), dependencies: [{ id: 'A.base', kind: 'renderer' }] }],
+      failures: []
+    }, s.deps);
+    expect(seen).toEqual([42]);
+    expect(outcome.get('A.top')).toEqual({ state: 'loaded' });
+  });
+
+  test('getExports: undeclared, or a server plugin (use its Commands), throws → failed', async () => {
+    const s = setup({
+      'plugin://app/A.x/renderer.js': { init: (api) => api.getExports('A.other') },
+      'plugin://app/A.y/renderer.js': { init: (api) => api.getExports('A.srv') }
+    });
+    const outcome = await loadPlugins({
+      serverActions: [],
+      rendererPlugins: [renderer('A.x'), { ...renderer('A.y'), dependencies: [{ id: 'A.srv', kind: 'server' }] }],
+      failures: []
+    }, s.deps);
+    expect(outcome.get('A.x')).toEqual({ state: 'failed', reason: "getExports('A.other'): 'A.other' is not declared in pluginDependencies" });
+    expect(outcome.get('A.y')).toEqual({ state: 'failed', reason: "getExports('A.srv'): 'A.srv' is a server plugin; use its Commands" });
+  });
+
+  test('a renderer dependency that failed here blocks its dependents (warn), transitively', async () => {
+    const blocked = [];
+    const s = setup({
+      'plugin://app/A.base/renderer.js': { init: () => { throw new Error('boom'); } },
+      'plugin://app/A.mid/renderer.js': { init: () => {} },
+      'plugin://app/A.top/renderer.js': { init: () => {} }
+    });
+    const outcome = await loadPlugins({
+      serverActions: [],
+      rendererPlugins: [
+        renderer('A.base'),
+        { ...renderer('A.mid'), dependencies: [{ id: 'A.base', kind: 'renderer' }] },
+        { ...renderer('A.top'), dependencies: [{ id: 'A.mid', kind: 'renderer' }] }
+      ],
+      failures: []
+    }, { ...s.deps, onBlocked: (m) => blocked.push(m) });
+    expect(outcome.get('A.mid')).toEqual({ state: 'blocked', reason: "Cannot load 'A.mid' because it depends on 'A.base', which was not loaded." });
+    expect(outcome.get('A.top')?.state).toBe('blocked');
+    expect(s.logged.filter(([level]) => level === 'warn')).toHaveLength(2);
+    expect(blocked).toHaveLength(2);
+  });
+
+  test('a server plugin whose Actions are refused here blocks its renderer dependents (§7)', async () => {
+    const s = setup({ 'plugin://app/A.ui/renderer.js': { init: () => {} } });
+    const outcome = await loadPlugins({
+      serverActions: [{ plugin: 'A.srv', descriptor: { id: 'A.srv.x', label: 'X', shortcut: 'Ctrl+Q', command: 'A.srv.x' } }],
+      rendererPlugins: [{ ...renderer('A.ui'), dependencies: [{ id: 'A.srv', kind: 'server' }] }],
+      failures: []
+    }, s.deps);
+    expect(outcome.get('A.srv')?.state).toBe('failed');
+    expect(outcome.get('A.ui')?.state).toBe('blocked');
+  });
+
+  test('plugins main blocked are reported (onBlocked) without a second Output line', async () => {
+    const blocked = [];
+    const s = setup({});
+    const outcome = await loadPlugins({
+      serverActions: [], rendererPlugins: [], failures: [],
+      blocked: [{ plugin: 'A.g', message: "Cannot load 'A.g' because it depends on 'A.s', which is disabled." }]
+    }, { ...s.deps, onBlocked: (m) => blocked.push(m) });
+    expect(outcome.get('A.g')?.state).toBe('blocked');
+    expect(blocked).toEqual(["Cannot load 'A.g' because it depends on 'A.s', which is disabled."]);
+    expect(s.logged).toEqual([]);
+  });
+});

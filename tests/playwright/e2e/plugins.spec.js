@@ -158,7 +158,10 @@ test.describe('plugins: enable / disable at the next start', () => {
     await win.keyboard.press('Control+K');
     await win.locator('.PreferencesCategory[data-category="plugins"]').click();
     const row = () => win.locator(`.PreferencesPlugin[data-plugin="${SERVER}"]`);
-    await row().locator('input').uncheck();
+    // N0.6 bis: bulk actions after Gmail — select, choose Disable, Apply.
+    await row().locator('input').check();
+    await win.locator('.PreferencesPluginsAction').selectOption('disable');
+    await win.locator('.PreferencesPluginsApply').click();
     await expect(row().locator('.PreferencesPluginState')).toHaveText('disabled (at the next start)');
     await win.locator('.iziToast.LdModalToast button').click(); // restart warning
     expect(JSON.parse(fs.readFileSync(prefsFile, 'utf8')).disabledPlugins).toEqual([SERVER]);
@@ -175,7 +178,6 @@ test.describe('plugins: enable / disable at the next start', () => {
       await win.keyboard.press('Escape');
       await win.keyboard.press('Control+K');
       await win.locator('.PreferencesCategory[data-category="plugins"]').click();
-      await expect(row().locator('input')).not.toBeChecked();
       await expect(row().locator('.PreferencesPluginState')).toHaveText('disabled');
     } finally {
       await app.close();

@@ -136,3 +136,57 @@
 .PreferencesPlugins {
   margin-bottom: 8px;
 }
+
+/* N0.6 bis (PLUGIN_DEPENDENCIES.md §6): bulk actions after Gmail, blocked state. */
+.PreferencesPluginsBulk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0 8px;
+  border-bottom: 1px solid var(--ld-border);
+}
+
+.PreferencesPluginsBulk select,
+.PreferencesPluginsApply {
+  padding: 3px 8px;
+  background: var(--ld-input-bg);
+  color: var(--ld-menu-fg);
+  border: 1px solid var(--ld-border);
+  font: inherit;
+}
+
+.PreferencesPluginsApply {
+  background: var(--ld-hover-bg);
+  cursor: pointer;
+}
+
+.PreferencesPluginsApply:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.PreferencesPluginsCount {
+  margin-left: auto;
+  color: var(--ld-muted-fg);
+  font-size: 12px;
+}
+
+.PreferencesPlugin.is-selected {
+  background: var(--ld-hover-bg);
+}
+
+.PreferencesPluginState.is-blocked {
+  color: var(--ld-warn-fg);
+  text-decoration: underline dotted;
+}
+
+.PreferencesPluginsConfirmList {
+  margin: 6px 0;
+  padding-left: 20px;
+}
+
+.PreferencesPluginsConfirmAlso {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

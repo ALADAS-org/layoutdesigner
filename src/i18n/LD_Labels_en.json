@@ -77,5 +77,18 @@
   "Plugin/DisabledNext":             "disabled (at the next start)",
   "Plugin/EnabledNext":              "enabled (at the next start)",
   "Plugin/RestartMessage":           "The change will be applied when Layout Designer restarts.",
+  "Plugin/Blocked":                  "blocked",
+  "Preferences/PluginsSelectAll":    "Select all plugins",
+  "Preferences/PluginsAction":       "Action",
+  "Preferences/PluginsDisable":      "Disable",
+  "Preferences/PluginsEnable":       "Enable",
+  "Preferences/PluginsApply":        "Apply",
+  "Preferences/PluginsSelected":     "{n} selected",
+  "Plugin/ConfirmDisableTitle":      "Disable plugins",
+  "Plugin/ConfirmDisableMessage":    "Disabling {names} will keep these plugins from loading:",
+  "Plugin/ConfirmDisableAlso":       "Disable them too",
+  "Plugin/ConfirmEnableTitle":       "Enable plugins",
+  "Plugin/ConfirmEnableMessage":     "These disabled plugins are needed by {names}:",
+  "Plugin/ConfirmEnableAlso":        "Enable them too",
   "Output/Sources":                  "{checked} / {total} sources"
 }

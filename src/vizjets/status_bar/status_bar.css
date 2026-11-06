@@ -21,3 +21,8 @@
 .StatusBarMessage.is-error {
   color: var(--ld-error-fg);
 }
+
+/* N0.6 bis: a plugin blocked by a dependency (PLUGIN_DEPENDENCIES.md §4). */
+.StatusBarMessage.is-warn {
+  color: var(--ld-warn-fg);
+}

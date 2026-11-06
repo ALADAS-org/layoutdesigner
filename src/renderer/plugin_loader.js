@@ -8,6 +8,10 @@
 //      `init(api)` called; its Actions are staged, then registered all or nothing.
 // A failing plugin leaves no Action behind; it is reported in the status bar and in
 // Output (`error` line); the core and the other plugins load normally.
+// N0.6 bis (PLUGIN_DEPENDENCIES.md): renderer plugins come in loading order with their
+// dependencies; one whose dependency failed or was blocked here is `blocked` (a `warn`
+// line); `init`'s value is its exports, read by renderer dependents with
+// `api.getExports(id)`. Plugins main already blocked are only reported.
 // =====================================================================================
 
 /** @typedef {import('../types/contracts').ActionDescriptor} ActionDescriptor */
@@ -15,8 +19,10 @@
 /** @typedef {import('../types/contracts').LogLevel} LogLevel */
 /**
  * @typedef {{ serverActions: { plugin: string, descriptor: ActionDescriptor }[],
- *             rendererPlugins: { plugin: string, url: string }[],
- *             failures: { plugin: string, message: string }[] }} PluginsStartupInfo
+ *             rendererPlugins: { plugin: string, url: string, dependencies?: { id: string, kind: string }[] }[],
+ *             failures: { plugin: string, message: string }[],
+ *             blocked?: { plugin: string, message: string }[] }} PluginsStartupInfo
+ * @typedef {{ state: 'loaded' | 'failed' | 'blocked', reason?: string }} PluginOutcome
  */
 
 /** Palette category of plugin Actions that name none (§8.2). */
@@ -36,14 +42,22 @@ const reasonOf = (err) => (err instanceof Error ? err.message : String(err));
  *           output: ReturnType<typeof import('./output_sources.js').createOutput>,
  *           log: (level: LogLevel, message: unknown) => void,
  *           onFailure: (message: string) => void,
+ *           onBlocked?: (message: string) => void,
  *           importModule?: (url: string) => Promise<Record<string, unknown>> }} deps
- * @returns {Promise<Map<string, { state: 'loaded' | 'failed', reason?: string }>>} the
- *          outcome of each plugin handled here (renderer plugins, and server plugins whose
- *          Actions were refused)
+ * @returns {Promise<Map<string, PluginOutcome>>} the outcome of each plugin handled here
+ *          (renderer plugins, server plugins whose Actions were refused, plugins blocked)
  */
-export async function loadPlugins(info, { actions, output, log, onFailure, importModule = (url) => import(url) }) {
-  /** @type {Map<string, { state: 'loaded' | 'failed', reason?: string }>} */
+export async function loadPlugins(info, { actions, output, log, onFailure, onBlocked = onFailure, importModule = (url) => import(url) }) {
+  /** @type {Map<string, PluginOutcome>} */
   const outcome = new Map();
+  /** @type {Map<string, unknown>} the exports of each loaded renderer plugin */
+  const exportsOf = new Map();
+  /** @param {string} plugin @param {string} reason @param {boolean} [logged] main already wrote the line */
+  const block = (plugin, reason, logged = false) => {
+    if (!logged) log('warn', reason);
+    onBlocked(reason);
+    outcome.set(plugin, { state: 'blocked', reason });
+  };
   /** @param {string} plugin @param {string} reason @param {boolean} [logged] main already wrote the line */
   const fail = (plugin, reason, logged = false) => {
     const message = `Plugin '${plugin}' not loaded: ${reason}`;
@@ -53,6 +67,7 @@ export async function loadPlugins(info, { actions, output, log, onFailure, impor
   };
 
   for (const { plugin, message } of info.failures) fail(plugin, message, true);
+  for (const { plugin, message } of info.blocked ?? []) block(plugin, message, true);
 
   // 1. Server plugins' alias Actions, grouped by plugin (all or nothing each).
   /** @type {Map<string, ActionDescriptor[]>} */
@@ -68,8 +83,13 @@ export async function loadPlugins(info, { actions, output, log, onFailure, impor
     }
   }
 
-  // 2. Renderer plugins, in the order main discovered them.
-  for (const { plugin, url } of info.rendererPlugins) {
+  // 2. Renderer plugins, in loading order (roots → leaves).
+  for (const { plugin, url, dependencies = [] } of info.rendererPlugins) {
+    const fault = dependencies.find((d) => (outcome.get(d.id)?.state ?? 'loaded') !== 'loaded');
+    if (fault !== undefined) {
+      block(plugin, `Cannot load '${plugin}' because it depends on '${fault.id}', which was not loaded.`);
+      continue;
+    }
     /** @type {ActionDescriptor[]} */
     const staged = [];
     const source = output.source(plugin);
@@ -80,6 +100,12 @@ export async function loadPlugins(info, { actions, output, log, onFailure, impor
         if (!ownsId(plugin, descriptor?.id)) throw new Error(`Action id '${descriptor?.id}' must start with '${plugin}.'`);
         staged.push({ categoryKey: PLUGIN_CATEGORY, ...descriptor });
       },
+      getExports(id) {
+        const d = dependencies.find((x) => x.id === id);
+        if (d === undefined) throw new Error(`getExports('${id}'): '${id}' is not declared in pluginDependencies`);
+        if (d.kind === 'server') throw new Error(`getExports('${id}'): '${id}' is a server plugin; use its Commands`);
+        return exportsOf.get(id);
+      },
       output: { append: (level, message) => source.append(level, message) },
       log: (...args) => console.log(`[plugin:${plugin}]`, ...args),
       warn: (...args) => console.warn(`[plugin:${plugin}]`, ...args)
@@ -87,8 +113,9 @@ export async function loadPlugins(info, { actions, output, log, onFailure, impor
     try {
       const module = await importModule(url);
       if (typeof module.init !== 'function') throw new Error('its module must export a function init(api)');
-      await module.init(api);
+      const value = await module.init(api); // awaited: an async init's exports are its resolved value
       actions.registerAll(staged);
+      exportsOf.set(plugin, value);
       outcome.set(plugin, { state: 'loaded' });
       log('info', `Plugin ${plugin} loaded (renderer)`);
     } catch (err) {

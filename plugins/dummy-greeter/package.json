@@ -1,0 +1,14 @@
+{
+  "name": "dummy-greeter",
+  "publisher": "LayoutDesigner",
+  "displayName": "Dummy Greeter",
+  "version": "1.0.0",
+  "description": "Witness of plugin dependencies (N0.6 bis): reuses dummy-server through its exports.",
+  "ld-plugin-type": "server",
+  "main": "index.js",
+  "keywords": ["demo", "dependency"],
+  "pluginDependencies": {
+    "LayoutDesigner.dummy-server": "^1.0.0"
+  },
+  "private": true
+}

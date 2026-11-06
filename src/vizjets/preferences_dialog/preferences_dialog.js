@@ -8,15 +8,62 @@
 // N0.6 (PLUGIN_API.md §15): a Plugins category, shown when there are plugins — one row
 // per plugin: check box (enabled), display name, id · kind, tags, state at this start
 // (the reason of a failure in a tooltip). A change applies at the next start.
+// N0.6 bis (PLUGIN_DEPENDENCIES.md §6): state `blocked`; bulk actions after Gmail — the
+// row's check box selects it, above the list a select-all box, the action (Disable /
+// Enable) and Apply on its right; a confirmation when Apply would leave a plugin blocked,
+// offering the other plugins concerned (transitively) with a check box, checked.
 // =====================================================================================
 
 /** @typedef {'interface' | 'plugins' | 'system'} PreferencesCategory */
 /**
  * @typedef {{ id: string, displayName: string, kind: string, keywords: string[],
- *             state: 'loaded' | 'disabled' | 'failed', reason?: string,
- *             enabled: boolean }} PluginRow — state: at this start; enabled: saved for the next
+ *             state: 'loaded' | 'disabled' | 'failed' | 'blocked', reason?: string,
+ *             dependencies?: string[], enabled: boolean }} PluginRow — state: at this start;
+ *             enabled: saved for the next; dependencies: the ids it declares
  */
 /** @typedef {import('../../types/contracts').LanguageInfo} LanguageInfo */
+
+/**
+ * Pure: the plugins that depend on `ids`, directly or not, in list order, `ids` excluded.
+ * @param {string[]} ids @param {PluginRow[]} rows
+ */
+export function dependentsOf(ids, rows) {
+  const found = new Set(ids);
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const r of rows) {
+      if (!found.has(r.id) && (r.dependencies ?? []).some((d) => found.has(d))) {
+        found.add(r.id);
+        grew = true;
+      }
+    }
+  }
+  return rows.filter((r) => found.has(r.id) && !ids.includes(r.id));
+}
+
+/**
+ * Pure: the plugins `ids` need, directly or not, in list order, `ids` excluded.
+ * @param {string[]} ids @param {PluginRow[]} rows
+ */
+export function prerequisitesOf(ids, rows) {
+  const found = new Set(ids);
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const r of rows) {
+      if (found.has(r.id)) {
+        for (const d of r.dependencies ?? []) {
+          if (!found.has(d) && rows.some((x) => x.id === d)) {
+            found.add(d);
+            grew = true;
+          }
+        }
+      }
+    }
+  }
+  return rows.filter((r) => found.has(r.id) && !ids.includes(r.id));
+}
 
 /**
  * @param {HTMLElement} host
@@ -24,11 +71,11 @@
  *           onLanguage: (language: string | null) => Promise<void>,
  *           onTheme: (theme: string) => Promise<void>,
  *           onReset: () => Promise<{ language: string | null, theme: string } | null>,
- *           onPluginEnabled?: (id: string, enabled: boolean) => Promise<void>,
+ *           onPluginsEnabled?: (ids: string[], enabled: boolean) => Promise<void>,
  *           $?: any }} options — onReset resolves with the new state, or null when
  *           the user cancelled its confirmation
  */
-export function createPreferencesDialog(host, { t, onLanguage, onTheme, onReset, onPluginEnabled = async () => {}, $ = /** @type {Window} */ (host.ownerDocument.defaultView).jQuery }) {
+export function createPreferencesDialog(host, { t, onLanguage, onTheme, onReset, onPluginsEnabled = async () => {}, $ = /** @type {Window} */ (host.ownerDocument.defaultView).jQuery }) {
   const doc = host.ownerDocument;
   const categories = /** @type {HTMLElement[]} */ ([...host.querySelectorAll('.PreferencesCategory')]);
   const pages = /** @type {HTMLElement[]} */ ([...host.querySelectorAll('.PreferencesPage')]);
@@ -38,6 +85,11 @@ export function createPreferencesDialog(host, { t, onLanguage, onTheme, onReset,
   const resetButton = /** @type {HTMLButtonElement} */ (host.querySelector('.PreferencesReset'));
   const pluginsCategory = /** @type {HTMLElement} */ (host.querySelector('.PreferencesCategory[data-category="plugins"]'));
   const pluginsList = /** @type {HTMLElement} */ (host.querySelector('.PreferencesPlugins'));
+  const selectAll = /** @type {HTMLInputElement} */ (host.querySelector('.PreferencesPluginsSelectAll'));
+  const actionSelect = /** @type {HTMLSelectElement} */ (host.querySelector('.PreferencesPluginsAction'));
+  const applyButton = /** @type {HTMLButtonElement} */ (host.querySelector('.PreferencesPluginsApply'));
+  const countLabel = /** @type {HTMLElement} */ (host.querySelector('.PreferencesPluginsCount'));
+  const confirmHost = /** @type {HTMLElement} */ (host.querySelector('.PreferencesPluginsConfirm'));
   const dialog = $(host);
 
   /** @param {string} category */
@@ -87,42 +139,133 @@ export function createPreferencesDialog(host, { t, onLanguage, onTheme, onReset,
     return e;
   };
 
-  /** @param {PluginRow} plugin @param {boolean} enabled the check box */
-  function stateText(plugin, enabled) {
+  /** @param {PluginRow} plugin */
+  function stateText(plugin) {
     const atStart = plugin.state !== 'disabled';
-    if (enabled !== atStart) return enabled ? t('Plugin/EnabledNext', 'enabled (at the next start)') : t('Plugin/DisabledNext', 'disabled (at the next start)');
-    return { loaded: t('Plugin/Loaded', 'loaded'), disabled: t('Plugin/Disabled', 'disabled'), failed: t('Plugin/Failed', 'failed') }[plugin.state];
+    if (plugin.enabled !== atStart) return plugin.enabled ? t('Plugin/EnabledNext', 'enabled (at the next start)') : t('Plugin/DisabledNext', 'disabled (at the next start)');
+    return { loaded: t('Plugin/Loaded', 'loaded'), disabled: t('Plugin/Disabled', 'disabled'), failed: t('Plugin/Failed', 'failed'), blocked: t('Plugin/Blocked', 'blocked') }[plugin.state];
   }
 
-  /** @param {PluginRow[]} plugins */
-  function renderPlugins(plugins) {
-    pluginsCategory.hidden = plugins.length === 0;
+  /** @type {PluginRow[]} */
+  let rows = [];
+  /** @type {Set<string>} */
+  let selection = new Set();
+
+  function updateBulk() {
+    const n = selection.size;
+    selectAll.checked = n > 0 && n === rows.length;
+    selectAll.indeterminate = n > 0 && n < rows.length;
+    applyButton.disabled = n === 0;
+    countLabel.textContent = n > 0 ? t('Preferences/PluginsSelected', '{n} selected').replace('{n}', String(n)) : '';
+  }
+
+  function renderPlugins() {
+    pluginsCategory.hidden = rows.length === 0;
     pluginsList.replaceChildren(
-      ...plugins.map((p) => {
-        const row = el('PreferencesPlugin');
+      ...rows.map((p) => {
+        const row = el(`PreferencesPlugin${selection.has(p.id) ? ' is-selected' : ''}`);
         row.dataset.plugin = p.id;
         const box = doc.createElement('input');
         box.type = 'checkbox';
-        box.className = 'PreferencesPluginEnabled';
-        box.checked = p.enabled;
+        box.className = 'PreferencesPluginSelect';
+        box.checked = selection.has(p.id);
         box.setAttribute('aria-label', p.displayName);
         const text = el('PreferencesPluginText');
         const tags = el('PreferencesPluginTags', `${t('Preferences/PluginTags', 'Tags')}: `);
         tags.append(...p.keywords.map((k) => el('PreferencesPluginTag', k)));
         text.append(el('PreferencesPluginName', p.displayName), el('PreferencesPluginId', `${p.id} · ${p.kind}`));
         if (p.keywords.length > 0) text.append(tags);
-        const state = el(`PreferencesPluginState is-${p.state}`, stateText(p, box.checked));
+        const changed = p.enabled !== (p.state !== 'disabled');
+        const state = el(`PreferencesPluginState${changed ? '' : ` is-${p.state}`}`, stateText(p));
         if (p.reason !== undefined) state.title = p.reason;
-        box.addEventListener('change', async () => {
-          state.textContent = stateText(p, box.checked);
-          p.enabled = box.checked;
-          await onPluginEnabled(p.id, box.checked);
+        box.addEventListener('change', () => {
+          if (box.checked) selection.add(p.id);
+          else selection.delete(p.id);
+          row.classList.toggle('is-selected', box.checked);
+          updateBulk();
         });
         row.append(box, text, state);
         return row;
       })
     );
+    updateBulk();
   }
+
+  selectAll.addEventListener('change', () => {
+    selection = selectAll.checked ? new Set(rows.map((r) => r.id)) : new Set();
+    renderPlugins();
+  });
+
+  /**
+   * Asks whether to include the other plugins concerned. Resolves with true (include
+   * them), false (only the selection) or null (cancelled).
+   * @param {string} title @param {string} message @param {PluginRow[]} others @param {string} alsoLabel
+   * @returns {Promise<boolean | null>}
+   */
+  function confirmOthers(title, message, others, alsoLabel) {
+    return new Promise((resolve) => {
+      /** @type {boolean | null} */
+      let answer = null;
+      const box = /** @type {HTMLInputElement} */ (confirmHost.querySelector('.PreferencesPluginsConfirmAlso input'));
+      /** @type {HTMLElement} */ (confirmHost.querySelector('.PreferencesPluginsConfirmMessage')).textContent = message;
+      /** @type {HTMLElement} */ (confirmHost.querySelector('.PreferencesPluginsConfirmList')).replaceChildren(
+        ...others.map((o) => {
+          const li = doc.createElement('li');
+          li.textContent = o.displayName;
+          return li;
+        })
+      );
+      /** @type {HTMLElement} */ (confirmHost.querySelector('.PreferencesPluginsConfirmAlso span')).textContent = alsoLabel;
+      box.checked = true;
+      confirmHost.hidden = false;
+      $(confirmHost).dialog({
+        modal: true,
+        resizable: false,
+        width: 460,
+        title,
+        classes: { 'ui-dialog': 'LdDialog LdPluginsConfirm' },
+        buttons: [
+          { text: t('Preferences/PluginsApply', 'Apply'), click: () => { answer = box.checked; $(confirmHost).dialog('close'); } },
+          { text: t('Dialog/Cancel', 'Cancel'), click: () => $(confirmHost).dialog('close') }
+        ],
+        close: () => {
+          $(confirmHost).dialog('destroy');
+          confirmHost.hidden = true;
+          resolve(answer);
+        }
+      });
+    });
+  }
+
+  /** @param {PluginRow[]} list */
+  const namesOf = (list) => list.map((r) => `« ${r.displayName} »`).join(', ');
+
+  applyButton.addEventListener('click', async () => {
+    const enable = actionSelect.value === 'enable';
+    const ids = rows.filter((r) => selection.has(r.id)).map((r) => r.id);
+    const chosen = rows.filter((r) => selection.has(r.id));
+    // Only what Apply would leave blocked is offered (§6).
+    const others = enable
+      ? prerequisitesOf(ids, rows).filter((r) => !r.enabled)
+      : dependentsOf(ids, rows).filter((r) => r.enabled);
+    let targets = chosen;
+    if (others.length > 0) {
+      const include = enable
+        ? await confirmOthers(t('Plugin/ConfirmEnableTitle', 'Enable plugins'),
+          t('Plugin/ConfirmEnableMessage', 'These disabled plugins are needed by {names}:').replace('{names}', namesOf(chosen)),
+          others, t('Plugin/ConfirmEnableAlso', 'Enable them too'))
+        : await confirmOthers(t('Plugin/ConfirmDisableTitle', 'Disable plugins'),
+          t('Plugin/ConfirmDisableMessage', 'Disabling {names} will keep these plugins from loading:').replace('{names}', namesOf(chosen)),
+          others, t('Plugin/ConfirmDisableAlso', 'Disable them too'));
+      if (include === null) return;
+      if (include) targets = [...chosen, ...others];
+    }
+    const changing = targets.filter((r) => r.enabled !== enable);
+    for (const r of changing) r.enabled = enable;
+    selection = new Set();
+    renderPlugins();
+    if (changing.length > 0) await onPluginsEnabled(changing.map((r) => r.id), enable);
+  });
 
   return {
     /**
@@ -147,7 +290,9 @@ export function createPreferencesDialog(host, { t, onLanguage, onTheme, onReset,
       themeSelect.value = state.theme;
       fileLabel.textContent = state.file;
       fileLabel.title = state.file;
-      renderPlugins(state.plugins ?? []);
+      rows = state.plugins ?? [];
+      selection = new Set();
+      renderPlugins();
       showCategory(category);
       dialog.dialog('open');
       if (focusLanguage) select.focus();

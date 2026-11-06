@@ -62,7 +62,8 @@ commands.register({
   id: 'plugins.list',
   run: async () => {
     await pluginsReady;
-    return plugins.map(({ id, displayName, kind, keywords, state, reason }) => ({ id, displayName, kind, keywords, state, reason }));
+    return plugins.map(({ id, displayName, kind, keywords, state, reason, dependencies }) =>
+      ({ id, displayName, kind, keywords, state, reason, dependencies: Object.keys(dependencies ?? {}) }));
   }
 });
 

@@ -77,5 +77,18 @@
   "Plugin/DisabledNext":             "désactivé (au prochain démarrage)",
   "Plugin/EnabledNext":              "activé (au prochain démarrage)",
   "Plugin/RestartMessage":           "Le changement sera appliqué au redémarrage de Layout Designer.",
+  "Plugin/Blocked":                  "bloqué",
+  "Preferences/PluginsSelectAll":    "Sélectionner tous les plugins",
+  "Preferences/PluginsAction":       "Action",
+  "Preferences/PluginsDisable":      "Désactiver",
+  "Preferences/PluginsEnable":       "Activer",
+  "Preferences/PluginsApply":        "Appliquer",
+  "Preferences/PluginsSelected":     "{n} sélectionné(s)",
+  "Plugin/ConfirmDisableTitle":      "Désactiver des plugins",
+  "Plugin/ConfirmDisableMessage":    "Désactiver {names} empêchera ces plugins de se charger :",
+  "Plugin/ConfirmDisableAlso":       "Les désactiver aussi",
+  "Plugin/ConfirmEnableTitle":       "Activer des plugins",
+  "Plugin/ConfirmEnableMessage":     "Ces plugins désactivés sont nécessaires à {names} :",
+  "Plugin/ConfirmEnableAlso":        "Les activer aussi",
   "Output/Sources":                  "{checked} / {total} sources"
 }

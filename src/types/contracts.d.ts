@@ -73,6 +73,8 @@ export interface ServerPluginApi {
   registerCommand(descriptor: CommandDescriptor): void;
   /** Alias Actions only, of this plugin's Commands. */
   registerAction(descriptor: Omit<ActionDescriptor, 'run'> & { command: string }): void;
+  /** The exports of a server plugin declared in `pluginDependencies` (PLUGIN_DEPENDENCIES.md §3). */
+  getExports(id: string): any;
   output: PluginOutput;
   log(...args: unknown[]): void;
   warn(...args: unknown[]): void;
@@ -83,6 +85,8 @@ export interface RendererPluginApi {
   pluginId: string;
   /** Client (`run`) or alias (`command`) Action; English `label`. */
   registerAction(descriptor: ActionDescriptor): void;
+  /** The exports of a renderer plugin declared in `pluginDependencies`; a server one throws (use its Commands). */
+  getExports(id: string): any;
   output: PluginOutput;
   log(...args: unknown[]): void;
   warn(...args: unknown[]): void;

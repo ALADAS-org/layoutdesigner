@@ -9,12 +9,18 @@
 //   renderer, entry `renderer-main`); `both` is anticipated, not supported.
 // - Tags: the standard `keywords` field. Disabled plugins (preferences) are not loaded.
 // - A faulty plugin never breaks the application: it is rejected, all or nothing.
+// N0.6 bis (PLUGIN_DEPENDENCIES.md): `version` (semver) and `pluginDependencies`;
+// plugins load in topological order; a plugin whose dependency is missing, of the wrong
+// version, disabled, not loaded or on a cycle is `blocked`; the value an entry returns
+// is its exports, read by its dependents with `api.getExports(id)`.
 // No Electron import here, so it is unit-testable without Electron.
 // =====================================================================================
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
+const semver = require('semver');
+const { parseDependencies, loadingOrder, dependencyProblem, cycleReason } = require('./plugin_dependencies.js');
 
 const PLUGINS_DIR = path.join(__dirname, '..', '..', 'plugins');
 const KINDS = ['server', 'renderer'];
@@ -23,9 +29,10 @@ const PUBLISHER = /^[A-Za-z][A-Za-z0-9-]*$/;
 const PLUGIN_CATEGORY = 'Plugins'; // palette category of plugin Actions without one (§8.2)
 
 /**
- * @typedef {'loaded' | 'disabled' | 'failed' | 'pending'} PluginState
+ * @typedef {'loaded' | 'disabled' | 'failed' | 'blocked' | 'pending'} PluginState
  * @typedef {{ folder: string, dir: string, id: string, displayName: string, kind: string,
- *             keywords: string[], entry: string, state: PluginState, reason?: string }} PluginInfo
+ *             keywords: string[], entry: string, state: PluginState, reason?: string,
+ *             version?: string, dependencies?: Record<string, string> }} PluginInfo
  */
 
 /** @param {NodeJS.ProcessEnv} [env] */
@@ -36,7 +43,8 @@ function pluginsPath(env = process.env) {
 /**
  * Pure: a plugin described by its package.json, or the reason it is rejected.
  * @param {string} folder @param {unknown} manifest
- * @returns {{ id: string, displayName: string, kind: string, keywords: string[], entryName: string } | { error: string }}
+ * @returns {{ id: string, displayName: string, kind: string, keywords: string[], entryName: string,
+ *             version: string, dependencies: Record<string, string> } | { error: string }}
  */
 function describePlugin(folder, manifest) {
   if (manifest === null || typeof manifest !== 'object' || Array.isArray(manifest)) {
@@ -52,6 +60,12 @@ function describePlugin(folder, manifest) {
   if (typeof kind !== 'string' || !KINDS.includes(kind)) {
     return { error: `'ld-plugin-type' must be one of: ${KINDS.join(', ')}` };
   }
+  // N0.6 bis: a semver version (npm requires it too) and the declared dependencies.
+  if (typeof m.version !== 'string' || semver.valid(m.version) === null) {
+    return { error: "'version' must be a semver version (e.g. 1.0.0)" };
+  }
+  const deps = parseDependencies(m.pluginDependencies, `${m.publisher}.${m.name}`);
+  if ('error' in deps) return { error: deps.error };
   const entryKey = kind === 'server' ? 'main' : 'renderer-main';
   const entryName = typeof m[entryKey] === 'string' ? /** @type {string} */ (m[entryKey]) : kind === 'server' ? 'index.js' : 'renderer.js';
   const keywords = Array.isArray(m.keywords) ? m.keywords.filter((k) => typeof k === 'string') : [];
@@ -60,7 +74,9 @@ function describePlugin(folder, manifest) {
     displayName: typeof m.displayName === 'string' && m.displayName.trim() !== '' ? m.displayName : `${m.publisher}.${m.name}`,
     kind,
     keywords,
-    entryName
+    entryName,
+    version: m.version,
+    dependencies: deps.dependencies
   };
 }
 
@@ -93,7 +109,10 @@ function discoverPlugins(dir, { disabled = [] } = {}) {
       Object.assign(info, { state: 'failed', reason: d.error });
       continue;
     }
-    Object.assign(info, { id: d.id, displayName: d.displayName, kind: d.kind, keywords: d.keywords, entry: path.join(pluginDir, d.entryName) });
+    Object.assign(info, {
+      id: d.id, displayName: d.displayName, kind: d.kind, keywords: d.keywords, entry: path.join(pluginDir, d.entryName),
+      version: d.version, dependencies: d.dependencies
+    });
     // Disabled first: a failed plugin can be disabled so that its error is no longer
     // shown at each start (PLUGIN_API.md §15). Only a plugin with no valid id cannot be.
     if (disabled.includes(info.id)) {
@@ -126,14 +145,39 @@ function ownsId(pluginId, id) {
 async function loadServerPlugins(plugins, { commands, journal, load = require }) {
   /** @type {{ plugin: string, descriptor: Record<string, unknown> }[]} */
   const serverActions = [];
-  for (const p of plugins) {
+  /** @type {Map<string, unknown>} the exports of each loaded server plugin (§3) */
+  const exportsOf = new Map();
+  /** @type {Map<string, PluginInfo>} */
+  const byId = new Map();
+  for (const p of plugins) if (!byId.has(p.id) || byId.get(p.id)?.state === 'failed') byId.set(p.id, p);
+  const find = (/** @type {string} */ id) => byId.get(id);
+
+  // Topological order, roots → leaves (PLUGIN_DEPENDENCIES.md §5); cycles are refused.
+  const { order, cycles } = loadingOrder(plugins);
+  for (const [p, cycle] of cycles) {
+    if (p.state !== 'pending') continue;
+    Object.assign(p, { state: 'blocked', reason: cycleReason(p.id, cycle) });
+    journal.log('warn', p.reason);
+  }
+  for (const p of order) {
     if (p.state === 'disabled') journal.log('info', `Plugin ${p.id} disabled`);
-    if (p.state !== 'pending' || p.kind !== 'server') continue;
+    if (p.state !== 'pending') continue;
+    // A renderer plugin may wait for renderer prerequisites that load later, in the renderer.
+    const problem = dependencyProblem(p, find, {
+      ready: (d) => d.state === 'loaded' || (p.kind === 'renderer' && d.kind === 'renderer' && d.state === 'pending')
+    });
+    if (problem !== null) {
+      Object.assign(p, problem);
+      if (problem.state === 'blocked') journal.log('warn', problem.reason);
+      continue;
+    }
+    if (p.kind !== 'server') continue;
     /** @type {import('../types/contracts').CommandDescriptor[]} */
     const staged = [];
     /** @type {Record<string, unknown>[]} */
     const actions = [];
     const source = journal.source(p.id);
+    const declared = p.dependencies ?? {};
     const api = {
       pluginId: p.id,
       /** @param {import('../types/contracts').CommandDescriptor} d */
@@ -148,6 +192,11 @@ async function loadServerPlugins(plugins, { commands, journal, load = require })
         if (typeof d.run === 'function') throw new Error(`Action '${d.id}': a server plugin registers alias Actions only`);
         actions.push({ categoryKey: PLUGIN_CATEGORY, ...d });
       },
+      /** The exports of a declared dependency (§3). @param {string} id */
+      getExports(id) {
+        if (!Object.hasOwn(declared, id)) throw new Error(`getExports('${id}'): '${id}' is not declared in pluginDependencies`);
+        return exportsOf.get(id);
+      },
       output: { append: (/** @type {import('../types/contracts').LogLevel} */ level, /** @type {unknown} */ message) => source.log(level, message) },
       log: (/** @type {unknown[]} */ ...args) => console.log(`[plugin:${p.id}]`, ...args),
       warn: (/** @type {unknown[]} */ ...args) => console.warn(`[plugin:${p.id}]`, ...args)
@@ -155,8 +204,9 @@ async function loadServerPlugins(plugins, { commands, journal, load = require })
     try {
       const entry = load(p.entry);
       if (typeof entry !== 'function') throw new Error('its entry must export a function (module.exports = function (api) { … })');
-      await entry(api);
+      const value = await entry(api); // awaited: an async entry's exports are its resolved value
       commands.registerAll(staged);
+      exportsOf.set(p.id, value);
       p.state = 'loaded';
       for (const descriptor of actions) serverActions.push({ plugin: p.id, descriptor });
       journal.log('info', `Plugin ${p.id} loaded (server)`);
@@ -169,10 +219,16 @@ async function loadServerPlugins(plugins, { commands, journal, load = require })
   }
   return {
     serverActions,
-    rendererPlugins: plugins
+    // In loading order, each with its dependencies (the renderer checks them, §5).
+    rendererPlugins: order
       .filter((p) => p.state === 'pending' && p.kind === 'renderer')
-      .map((p) => ({ plugin: p.id, url: `plugin://app/${encodeURIComponent(p.folder)}/${encodeURIComponent(path.basename(p.entry))}` })),
-    failures: plugins.filter((p) => p.state === 'failed').map((p) => ({ plugin: p.id, message: String(p.reason) }))
+      .map((p) => ({
+        plugin: p.id,
+        url: `plugin://app/${encodeURIComponent(p.folder)}/${encodeURIComponent(path.basename(p.entry))}`,
+        dependencies: Object.keys(p.dependencies ?? {}).map((id) => ({ id, kind: find(id)?.kind ?? '?' }))
+      })),
+    failures: plugins.filter((p) => p.state === 'failed').map((p) => ({ plugin: p.id, message: String(p.reason) })),
+    blocked: plugins.filter((p) => p.state === 'blocked').map((p) => ({ plugin: p.id, message: String(p.reason) }))
   };
 }
 
