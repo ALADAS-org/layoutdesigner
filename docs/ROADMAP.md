@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis delivered, Design gate pending (plugin dependencies) · N0.6 ter planned (NFT-ready foundations) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis ✅ 2026-11-06 · **next: N0.6 ter** (NFT-ready foundations) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -131,7 +131,7 @@ rule (server → renderer refused, to keep a future batch mode), `exports` and
 `blocked`). **Delivered (2026-11-06):** dependencies with semver ranges, topological
 loading, `blocked` with reasons after VS Code, `api.getExports`, bulk actions and
 confirmations in *Preferences › Plugins*, witness `dummy-greeter`; tests tagged
-`@N0.6bis`. **Awaiting the PO's Design gate.** Fixed at the Design gate (2026-11-06):
+`@N0.6bis`. **Validated by the PO (both gates), 2026-11-06.** Fixed at the Design gate (2026-11-06):
 the Output view now **follows new lines by default**, after VS Code — lines written
 while the panel was folded left it at the top, so the demos' lines were hidden below.
 **NFT ready** (PO, 2026-11-06): foundations first as **N0.6 ter** (disabled-by-default
@@ -273,8 +273,8 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
 | N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ✅ 2026-11-05 |
 | N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector**; **enable / disable** each plugin (Preferences › Plugins) | Plugin API (validated 2026-11-05) | ✅ 2026-11-05 |
-| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies (validated 2026-11-06) | ⏳ delivered 2026-11-06 — Design gate |
-| N0.6 ter | **NFT-ready foundations**, inactive by default: plugins **disabled by default** (`ld-enabled-by-default`) and a **secret store** per plugin (`api.secrets`, after VS Code's `SecretStorage`, encrypted with Electron `safeStorage`, main only) — witness: a dummy plugin shipped disabled that stores a fake API key | Plugin defaults and secrets | — |
+| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies (validated 2026-11-06) | ✅ 2026-11-06 |
+| N0.6 ter | **NFT-ready foundations**, inactive by default: plugins **disabled by default** (`ld-enabled-by-default`) and a **secret store** per plugin (`api.secrets`, after VS Code's `SecretStorage`, encrypted with Electron `safeStorage`, main only) — witness: a dummy plugin shipped disabled that stores a fake API key | Plugin defaults and secrets | ⏳ next |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
 | N0.9 | Selection + copy / paste | — | — |

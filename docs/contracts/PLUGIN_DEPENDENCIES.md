@@ -334,7 +334,11 @@ confirmation); restart. Try the select-all box.
 
 ## 14. Implementation notes (N0.6 bis, 2026-11-06)
 
-What the code fixes where the contract left a choice — to confirm at the Design gate.
+**Step closed 2026-11-06:** anti-regression gate (249 unit, 107 end-to-end) and Design
+gate passed (PO: blocked state and reasons, both confirmations, bulk selection,
+Output scrolling).
+
+What the code fixes where the contract left a choice — confirmed at the Design gate.
 
 - **Files:** `src/server/plugin_dependencies.js` (pure: `parseDependencies`,
   `loadingOrder` — Kahn with ties in folder order, cycles by Tarjan with the shortest
