@@ -13,7 +13,7 @@
 
 | Level | State |
 |---|---|
-| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis in progress (plugin dependencies: contract drafted) |
+| N0 — Scaffolding | ⏳ **in progress** — N0.1 ✅ · N0.2 ✅ · N0.3 + N0.4 ✅ · N0.5 ✅ 2026-11-05 · N0.6 ✅ 2026-11-05 · N0.6 bis in progress (plugin dependencies: contract validated) · N0.6 ter planned (NFT-ready foundations) |
 | N1 — Base | — |
 | N2 — Reliability | — |
 | N3 — Control | — |
@@ -126,8 +126,11 @@ way: a failed plugin that is disabled is no longer reported. **Next: N0.6 bis**
 (its §12): `pluginDependencies` with semver ranges (`semver` approved), the process
 rule (server → renderer refused, to keep a future batch mode), `exports` and
 `api.getExports`, state `blocked` with reasons after VS Code, confirmations in
-*Preferences › Plugins*, topological order, witness `dummy-greeter`. **To validate**
-after its mock-up `docs/mockups/plugin_dependencies_prototype.html`.
+*Preferences › Plugins*, topological order, witness `dummy-greeter`. **Validated by the PO (2026-11-06)** after its mock-up
+`docs/mockups/plugin_dependencies_prototype.html` (bulk actions after Gmail; `warn` for
+`blocked`). Implementation next.
+**NFT ready** (PO, 2026-11-06): foundations first as **N0.6 ter** (disabled-by-default
+plugins, `api.secrets`), then **N3 bis — NFT minimal** with Solana as first chain.
 
 **Decision (2026-11-03, PO): a preferences step is added to N0.5**, after the Debug
 Console (Terminal moves after it). After Inkscape: *Edit › Preferences…* opens a
@@ -265,7 +268,8 @@ Commands / Actions, command palette), TscgOntologyExplorer (plugins), Cryptocalc
 | N0.4 | Localisation (JSON, en / fr) — merged into N0.3 | contract §13.6 | ✅ 2026-10-30 |
 | N0.5 | **Bottom panel** after VS Code: tabs Terminal, Debug Console, Output; resizable (splitter), foldable; layout reserves the object explorer's column; witness = the application's own traces | Output panel ✅ | ✅ 2026-11-05 |
 | N0.6 | Server and renderer plugins (dummy ones); *Plugins* menu with submenus, after Inkscape; Output **source selector**; **enable / disable** each plugin (Preferences › Plugins) | Plugin API (validated 2026-11-05) | ✅ 2026-11-05 |
-| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies (draft 2026-11-05) | ⏳ in progress |
+| N0.6 bis | **Dependencies between plugins**: declared, loading order, missing / disabled / failed dependency, cycles refused, reuse through `exports` (same process) | Plugin dependencies (validated 2026-11-06) | ⏳ in progress — implementation next |
+| N0.6 ter | **NFT-ready foundations**, inactive by default: plugins **disabled by default** (`ld-enabled-by-default`) and a **secret store** per plugin (`api.secrets`, after VS Code's `SecretStorage`, encrypted with Electron `safeStorage`, main only) — witness: a dummy plugin shipped disabled that stores a fake API key | Plugin defaults and secrets | — |
 | N0.7 | **Multi-document, one tab per document**: *File › New* (Ctrl+N), *File › Close* (Ctrl+W), switch tabs (Ctrl+Tab / Ctrl+Shift+Tab), close button per tab, one active document; each document owns its state | Document model (multi-document) | — |
 | N0.8 | Calques + undo / redo per document (every mutation is an EditTransaction; « modified » mark on the tab); **Calques panel** (= object explorer: tree, full height, right by default, right / left as a preference) and *View › Show / Hide Calques* | Calque / object model, EditTransaction | — |
 | N0.9 | Selection + copy / paste | — | — |
@@ -285,6 +289,12 @@ Clear messages on invalid files; visual non-regression run on every change.
 
 ### N3 — Control
 Grid size, Random / Sequence, seed, PNG export, save.
+
+**N3 bis — NFT minimal** (PO, 2026-11-06; requested by the sponsor): `nft-core` and
+**one** chain, **Solana**, as plugins disabled by default (foundations: N0.6 ter);
+mint one generated artwork (PNG + metadata) on a **test network**. Reference target,
+SDK and storage service to fix in its own contract. Other chains and generative
+collections stay in the backlog (*NFT mode*).
 
 ### N4 — Generative pipeline *(specification)*
 Predefined calque types, bottom → top: **Background, Trame, Pattern, Scene**. Each
@@ -338,7 +348,9 @@ promotes it to a step, with its reference target.
   `nft-sui`, `nft-aptos`, `nft-tezos` on `nft-core`. Chains: Solana, Sui, Base,
   Polygon, Tezos, Aptos, Immutable — *Immutable X has been merged into Immutable
   zkEVM; check the target when promoted*. Keys and signing in main only (as
-  Cryptocalc), never in the renderer; compatible with the batch mode.
+  Cryptocalc), never in the renderer; compatible with the batch mode. API keys (IPFS
+  pinning, RPC providers…) in the per-plugin secret store (N0.6 ter). **Promoted in
+  part (2026-11-06):** foundations → N0.6 ter, first chain (Solana) → N3 bis.
 ## Quality axes (every delivery reports on them)
 
 Reliable · Intuitive · Guiding · Evolvable · Interoperable.

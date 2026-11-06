@@ -1,9 +1,8 @@
 # Contract — Dependencies between plugins (N0.6 bis)
 
-**Status:** DRAFT — every point below was decided by the Product Owner on 2026-11-05,
-one at a time (§12). To validate after trying the interactive mock-up
-`docs/mockups/plugin_dependencies_prototype.html`, the reference target of the Design
-gate.
+**Status:** VALIDATED by the Product Owner, 2026-11-06, after trying the interactive
+mock-up `docs/mockups/plugin_dependencies_prototype.html`, the reference target of the
+Design gate. Points decided one at a time on 2026-11-05 / 06 (§12).
 **Authors:** JeanArt & Echopraxium (Michel) · 2026-11-05
 
 This contract lets a plugin **reuse another plugin**. It extends `PLUGIN_API.md`
@@ -149,8 +148,7 @@ Cannot load 'LayoutDesigner.a' because of a dependency cycle: LayoutDesigner.a �
 **Where they are shown** — as a failure today (`PLUGIN_API.md` §7, §16): an Output
 line under the source « Layout Designer », the status bar (last message), and the
 tooltip of the state in *Preferences › Plugins*. Level of the Output line: **`warn`**
-for `blocked` (nothing is broken in the plugin), `error` for `failed` — *to confirm on
-the mock-up*.
+for `blocked` (nothing is broken in the plugin), `error` for `failed` (PO, 2026-11-06).
 
 ## 5. Loading order
 
@@ -230,7 +228,7 @@ state; a change applies at the next start, with the restart warning), plus:
 | Batch mode (main without a window) | Guaranteed possible by §2: the server graph never depends on the renderer. |
 | `both` plugins (`PLUGIN_API.md` §9) | Their two parts would follow §2 each. |
 | Install a missing dependency | With install / uninstall (backlog). |
-| **Plugins disabled by default** (PO, 2026-11-06 — NFT mode, requested by the sponsor) | A manifest field `"ld-enabled-by-default": false` (default `true`): such a plugin is `disabled` until the user enables it in *Preferences › Plugins*. Preferences then need to store **enabled** plugins too, not only `disabledPlugins` (`PLUGIN_API.md` §15). First real case: the NFT plugins (ROADMAP backlog), whose graph — `nft-core` ← `nft-evm` ← one plugin per chain — also exercises transitive dependencies and the *Enable them too* confirmation. |
+| **Plugins disabled by default** — *promoted to N0.6 ter* (PO, 2026-11-06 — NFT mode, requested by the sponsor) | A manifest field `"ld-enabled-by-default": false` (default `true`): such a plugin is `disabled` until the user enables it in *Preferences › Plugins*. Preferences then need to store **enabled** plugins too, not only `disabledPlugins` (`PLUGIN_API.md` §15). First real case: the NFT plugins (ROADMAP backlog), whose graph — `nft-core` ← `nft-evm` ← one plugin per chain — also exercises transitive dependencies and the *Enable them too* confirmation. |
 
 ## 9. Witness case
 
@@ -312,6 +310,9 @@ confirmation); restart. Try the select-all box.
 10. Mock-up: *Preferences › Plugins* with the `blocked` state, the two confirmations,
     the third *Plugins › Demo* entry with its Output line, and the start-up lines in two
     scenarios (all loaded / `dummy-server` disabled).
+11. Output level: `warn` for `blocked`, `error` for `failed` (2026-11-06).
+12. Bulk actions after Gmail and the dependency confirmation (« … them too »)
+    validated on the mock-up (2026-11-06).
 
 ## 13. Complexity budget (N0.6 bis)
 

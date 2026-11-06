@@ -209,6 +209,7 @@ chooses which sources the Output view mixes (`OUTPUT_PANEL.md` §4). Its exact m
 | Contributions to documents, calques, EditTransactions | Written with the N0.7 / N0.8 contracts. |
 | Install / uninstall (`.tgz`) | Backlog. |
 | **Enable / disable** each plugin | **Promoted into N0.6** (PO, 2026-11-05) — §15. |
+| **Disabled by default** and a **secret store** per plugin (`api.secrets`) | **Sub-step N0.6 ter**, NFT-ready foundations (PO, 2026-11-06). |
 | **Dependencies between plugins** (a plugin reusing another) | **Sub-step N0.6 bis**, right after N0.6, with its own contract and witness (PO, 2026-11-05) — §15. |
 
 ## 10. Departures from TscgOntologyExplorer, and why
@@ -350,7 +351,7 @@ keeps its dependents unloaded, with the reason; cycles are refused; a plugin reu
 another through what that one **exports** (same process only — across processes, through
 its Commands). Witness: a third dummy plugin depending on another. The sub-step is
 named « N0.6 bis » so that the later sub-steps keep their numbers.
-**Contract:** `docs/contracts/PLUGIN_DEPENDENCIES.md` (drafted 2026-11-05).
+**Contract:** `docs/contracts/PLUGIN_DEPENDENCIES.md` (validated 2026-11-06).
 
 ## 16. Implementation notes (N0.6, 2026-11-05)
 
